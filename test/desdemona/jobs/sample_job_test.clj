@@ -31,7 +31,7 @@
     (catch InterruptedException e
       (Thread/interrupted))
     (finally
-     (user/stop))))
+      (user/stop))))
 
 (deftest test-sample-prod-job
   (try
@@ -50,4 +50,4 @@
     (catch InterruptedException e
       (Thread/interrupted))
     (finally
-     (user/stop))))
+      (user/stop))))

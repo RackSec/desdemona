@@ -1,8 +1,8 @@
 (ns desdemona.utils
-    (:require [clojure.test :refer [is]]
-              [clojure.core.async :refer [chan sliding-buffer >!!]]
-              [clojure.java.io :refer [resource]]
-              [onyx.plugin.core-async :refer [take-segments!]]))
+  (:require [clojure.test :refer [is]]
+            [clojure.core.async :refer [chan sliding-buffer >!!]]
+            [clojure.java.io :refer [resource]]
+            [onyx.plugin.core-async :refer [take-segments!]]))
 
 ;;;; Test utils ;;;;
 
@@ -68,14 +68,14 @@
 
 (defn load-peer-config [onyx-id]
   (assoc (-> "dev-peer-config.edn" resource slurp read-string)
-    :onyx/id onyx-id
-    :zookeeper/address zk-str))
+         :onyx/id onyx-id
+         :zookeeper/address zk-str))
 
 (defn load-env-config [onyx-id]
   (assoc (-> "env-config.edn" resource slurp read-string)
-    :onyx/id onyx-id
-    :zookeeper/address zk-str
-    :zookeeper.server/port zk-port))
+         :onyx/id onyx-id
+         :zookeeper/address zk-str
+         :zookeeper.server/port zk-port))
 
 (defn in-memory-catalog
   "Takes a catalog and a set of input/output task names,
@@ -160,7 +160,6 @@
                 :lifecycle/calls :onyx.plugin.core-async/writer-calls}]
               :else [lifecycle])))
     lifecycles)))
-
 
 (defn bind-inputs! [lifecycles mapping]
   (doseq [[task segments] mapping]
