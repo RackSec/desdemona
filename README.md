@@ -1,5 +1,7 @@
 # desdemona
 
+[![Build Status](https://travis-ci.org/RackSec/desdemona.svg?branch=master)](https://travis-ci.org/RackSec/desdemona)
+
 An Onyx 0.8.2 application that does distributed things. This project
 has been populated with a sample job and some basic Onyx idioms to
 make development easier to use.
