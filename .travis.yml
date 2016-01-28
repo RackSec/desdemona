@@ -11,3 +11,6 @@ script:
   - lein cljfmt check
   - lein test
   - lein uberjar
+
+notifications:
+  email: false
