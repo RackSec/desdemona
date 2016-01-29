@@ -1,6 +1,7 @@
 # desdemona
 
 [![Build Status](https://travis-ci.org/RackSec/desdemona.svg?branch=master)](https://travis-ci.org/RackSec/desdemona)
+[![codecov.io](https://codecov.io/github/RackSec/desdemona/coverage.svg?branch=master)](https://codecov.io/github/RackSec/desdemona?branch=master)
 
 An Onyx 0.8.2 application that does distributed things. This project
 has been populated with a sample job and some basic Onyx idioms to
