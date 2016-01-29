@@ -2,7 +2,8 @@ language: clojure
 jdk:
   - oraclejdk8
 
-sudo: false
+sudo: required
+dist: trusty
 
 cache:
   directories:
