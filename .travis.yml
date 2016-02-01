@@ -10,11 +10,23 @@ cache:
     - $HOME/.lein
     - $HOME/.m2
 
+matrix:
+  include:
+    - env: EASTWOOD=false
+    - env: EASTWOOD=true
+  allow_failures:
+    - env: EASTWOOD=true
+
 script:
-  - lein cljfmt check
-  - lein kibit
-  - lein test
-  - lein uberjar
+  - |
+    if [[ "${EASTWOOD}" == "true" ]]; then
+      lein eastwood
+    else
+      lein cljfmt check
+      lein kibit
+      lein test
+      lein uberjar
+    fi
 
 after_success:
   - CLOVERAGE_VERSION=1.0.7-SNAPSHOT lein cloverage --codecov
