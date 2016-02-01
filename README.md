@@ -15,19 +15,18 @@ tests automatically start and stop the development environment, so
 make sure you don't already have the dev environment (explained below)
 running - otherwise you'd get a port conflict.
 
-### Start the Development Mode
+### Using from a REPL
 
-Load up `env/dev/user.clj`. Evaluate the `go` function.
+Fire up your favorite REPL or use `lein repl` (ideally with `rlwrap` so you
+get reasonable line editing). You will be placed in the `user` namespace,
+which should come pre-loaded with a number of functions to help you set up a
+development environment, notably:
 
-### Reset the Development Mode
+ * `(go 4)` sets up a development environment with 4 peers.
+ * `(reset)` resets your development environment.
+ * `(stop)` stops your development environment.
 
-Load up `env/dev/user.clj`. Evaluate the `reset` function.
-
-### Stop the Development Mode
-
-Load up `env/dev/user.clj`. Evaluate the `stop` function.
-
-### Launch the Development Sample Job in a REPL
+You can launch a sample job as follows:
 
 ```clojure
 (user/go 4)
