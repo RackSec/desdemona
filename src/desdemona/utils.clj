@@ -18,7 +18,7 @@
     result
     (assert false)))
 
-(defn find-task 
+(defn find-task
   "Finds the catalog entry where the :onyx/name key equals task-name"
   [catalog task-name]
   (let [matches (filter #(= task-name (:onyx/name %)) catalog)]
