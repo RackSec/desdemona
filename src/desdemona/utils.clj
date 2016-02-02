@@ -62,7 +62,7 @@
   "Onyx is a parallel, distributed system - so ordering isn't guaranteed.
    Does an unordered comparison of segments to check for equality."
   [expected actual]
-  (is (= (into #{} expected) (into #{} (remove (partial = :done) actual))))
+  (is (= (set expected) (set (remove (partial = :done) actual))))
   (is (= :done (last actual)))
   (is (= (dec (count actual)) (count expected))))
 
