@@ -27,7 +27,7 @@
                       {:catalog catalog :task-name task-name})))
     (first matches)))
 
-(defn update-task 
+(defn update-task
   "Finds the catalog entry with :onyx/name task-name
   and applies f to it, returning the full catalog with the 
   transformed catalog entry"
