@@ -8,7 +8,6 @@
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]
             [lein-kibit "0.1.2"]
-            [lein-kibit "0.1.2"]
             [jonase/eastwood "0.2.3"]]
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
                              desdemona.launcher.launch-prod-peers]}
