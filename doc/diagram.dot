@@ -5,9 +5,10 @@ digraph desdemona {
                 dashboard [label="Dashboard"];                
         }       
 
+        dashboard -> dashboard [label="Cached recent data"];        
         dashboard -> onyx [label="Queries"];
         onyx -> dashboard [label="Live data"];
-        onyx -> dashboard [label="Results"];        
+        onyx -> dashboard [label="Results"];     
 
         subgraph envs {
                 syslog;                
