@@ -52,7 +52,7 @@
   "Takes a workflow and catalog, returns the minimum number of peers
    needed to execute this job."
   [catalog workflow]
-  (let [task-set (into #{} (apply concat workflow))]
+  (let [task-set (set (apply concat workflow))]
     (reduce
      (fn [sum t]
        (+ sum (or (:onyx/min-peers (find-task catalog t)) 1)))
