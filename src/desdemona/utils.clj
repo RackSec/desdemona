@@ -29,7 +29,7 @@
 
 (defn update-task
   "Finds the catalog entry with :onyx/name task-name
-  and applies f to it, returning the full catalog with the 
+  and applies f to it, returning the full catalog with the
   transformed catalog entry"
   [catalog task-name f]
   (mapv (fn [entry]
