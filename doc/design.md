@@ -55,3 +55,11 @@ Latency requirements fall in three main groups:
 2. ~1-10m: queries over increased amounts of data; new aggregate data.
 3. ~1-10h: training machine learning models, high-level overviews and
    metrics
+
+# Guidelines
+
+## Enrichment and correlation should be pure functions
+
+By making functions that we apply to our source data pure, we only
+_have_ to store our source data. We then have more freedom to decide
+what to cache (precompute) and compute on the fly.
