@@ -3,7 +3,16 @@
 ;;; The workflow of an Onyx job describes the graph of all possible
 ;;; tasks that data can flow between.
 
-(def workflow
-  [[:read-lines :format-line]
-   [:format-line :upper-case]
-   [:upper-case :write-lines]])
+(defmulti build-workflow :mode)
+
+(defmethod build-workflow :dev
+  [ctx]
+  [[:read-lines :extract-line-info]
+   [:extract-line-info :prepare-rows]
+   [:prepare-rows :write-lines]])
+
+(defmethod build-workflow :prod
+  [ctx]
+  [[:read-lines :extract-line-info]
+   [:extract-line-info :prepare-rows]
+   [:prepare-rows :write-lines]])

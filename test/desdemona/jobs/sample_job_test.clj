@@ -1,53 +1,28 @@
 (ns desdemona.jobs.sample-job-test
   (:require [clojure.test :refer [deftest is]]
-            [clojure.core.async :refer [>!!]]
-            [clojure.java.io :refer [resource]]
-            [com.stuartsierra.component :as component]
-            [desdemona.launcher.dev-system :refer [onyx-dev-env]]
-            [desdemona.workflows.sample-workflow :refer [workflow]]
-            [desdemona.catalogs.sample-catalog :refer [build-catalog] :as sc]
-            [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles] :as sl]
-            [desdemona.plugins.http-reader]
-            [desdemona.functions.sample-functions]
-            [desdemona.dev-inputs.sample-input :as dev-inputs]
-            [desdemona.utils :as u]
-            [onyx.api]))
+			[onyx api
+			 [test-helper :refer [feedback-exception! validate-enough-peers! load-config with-test-env]]]
+			[desdemona.jobs.sample-submit-job :refer [build-job]]
+			[desdemona.tasks.core-async :refer [get-core-async-channels]]
+			[onyx.plugin.core-async :refer [take-segments!]]
+			; Make the plugins load
+			[onyx.plugin.kafka]
+			[onyx.plugin.seq]
+			[onyx.plugin.sql]))
 
-(deftest test-sample-dev-job
-  (try
-    (let [stubs [:read-lines :write-lines]
-          catalog (u/in-memory-catalog (build-catalog) stubs)
-          lifecycles (u/in-memory-lifecycles (build-lifecycles) catalog stubs)]
-      (user/go (u/n-peers catalog workflow))
-      (u/bind-inputs! lifecycles {:read-lines dev-inputs/lines})
-      (let [peer-config (u/load-peer-config (:onyx-id user/system))
-            job {:workflow workflow
-                 :catalog catalog
-                 :lifecycles lifecycles
-                 :task-scheduler :onyx.task-scheduler/balanced}]
-        (onyx.api/submit-job peer-config job)
-        (let [[results] (u/collect-outputs! lifecycles [:write-lines])]
-          (is (seq results)))))
-    (catch InterruptedException e
-      (Thread/interrupted))
-    (finally
-      (user/stop))))
-
-(deftest test-sample-prod-job
-  (try
-    (let [catalog (build-catalog 20 500)
-          lifecycles (build-lifecycles)]
-      (user/go (u/n-peers catalog workflow))
-      (u/bind-inputs! lifecycles {:read-lines dev-inputs/lines})
-      (let [peer-config (u/load-peer-config (:onyx-id user/system))
-            job {:workflow workflow
-                 :catalog catalog
-                 :lifecycles lifecycles
-                 :task-scheduler :onyx.task-scheduler/balanced}]
-        (onyx.api/submit-job peer-config job)
-        (let [[results] (u/collect-outputs! lifecycles [:write-lines])]
-          (is (seq results)))))
-    (catch InterruptedException e
-      (Thread/interrupted))
-    (finally
-      (user/stop))))
+(deftest onyx-dev-job-test
+  (let [id (java.util.UUID/randomUUID)
+		config (load-config)
+		env-config (assoc (:env-config config) :onyx/id id)
+		peer-config (assoc (:peer-config config) :onyx/id id)]
+	;; Be sure to set the peer count (5 here) to a number greater than
+	;; the amount of tasks in your job.
+	(with-test-env [test-env [5 env-config peer-config]]
+	  (let [job (build-job :dev)
+			{:keys [write-lines]} (get-core-async-channels job)
+			_ (validate-enough-peers! test-env job)
+			{:keys [job-id]} (onyx.api/submit-job peer-config job)]
+		(feedback-exception! peer-config job-id)
+		(let [results (take-segments! write-lines)]
+		  (is (= 4 (count results)))
+		  (is (= :done (last results))))))))
