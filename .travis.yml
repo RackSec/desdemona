@@ -18,6 +18,8 @@ matrix:
 
 script:
   - |
+    set -e
+    set -x
     if [[ "${EASTWOOD}" == "true" ]]; then
       lein eastwood
     else
