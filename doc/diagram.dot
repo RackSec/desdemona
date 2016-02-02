@@ -1,0 +1,26 @@
+digraph desdemona {
+        onyx [label="Onyx cluster"];
+
+        subgraph frontend {
+                dashboard [label="Dashboard"];                
+        }       
+
+        dashboard -> dashboard [label="Cached recent data"];        
+        dashboard -> onyx [label="Queries"];
+        onyx -> dashboard [label="Live data"];
+        onyx -> dashboard [label="Results"];     
+
+        subgraph envs {
+                syslog;                
+                bro [label="bro"];                
+                misc [label="other event sources"];               
+        }
+
+        kafka [label="Kafka"];                
+        syslog, bro, misc -> kafka;
+        kafka -> onyx [label="Live data"];        
+
+        cloudfiles [label="Cloud Files"];
+        cloudfiles -> onyx [label="Old data"];        
+        onyx -> cloudfiles [label="Archival"];        
+}
