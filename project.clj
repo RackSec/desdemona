@@ -4,7 +4,8 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.onyxplatform/onyx "0.8.2"]]
+                 [org.onyxplatform/onyx "0.8.2"]
+                 [org.clojure/core.logic "0.8.10"]]
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]]
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
