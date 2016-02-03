@@ -18,6 +18,7 @@ main repo.
 
 Please note that this project is released with a Contributor Code of
 Conduct. By participating in this project you agree to abide by its
-terms. You can find the code of conduct in `CONDUCT.md`.
+terms. You can find the code of conduct in [`CONDUCT.md`][conduct].
 
 [ec]: http://editorconfig.org/
+[conduct]: https://github.com/RackSec/desdemona/blob/master/CONDUCT.md
