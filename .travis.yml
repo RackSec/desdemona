@@ -12,6 +12,7 @@ cache:
 
 script:
   - lein cljfmt check
+  - lein kibit
   - lein test
   - lein uberjar
 
