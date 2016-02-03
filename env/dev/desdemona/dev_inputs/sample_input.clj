@@ -1,8 +1,5 @@
 (ns desdemona.dev-inputs.sample-input)
 
-;; Story from http://textfiles.com/stories/advtthum.txt
-;; Warning, I haven't read it. :)
-
 (def lines
   [{:line "2016-01-29T21:44:01+00:00 192.168.99.1 102 <1> Jan 29 15:44:01 lips.local sean[68673]: hello ernie, it's 2016-01-29 15:44:01.150100217 -0600 CST"}
    {:line ""}
