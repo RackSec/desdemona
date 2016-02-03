@@ -18,7 +18,7 @@
     result
     (assert false)))
 
-(defn find-task 
+(defn find-task
   "Finds the catalog entry where the :onyx/name key equals task-name"
   [catalog task-name]
   (let [matches (filter #(= task-name (:onyx/name %)) catalog)]
@@ -27,9 +27,9 @@
                       {:catalog catalog :task-name task-name})))
     (first matches)))
 
-(defn update-task 
+(defn update-task
   "Finds the catalog entry with :onyx/name task-name
-  and applies f to it, returning the full catalog with the 
+  and applies f to it, returning the full catalog with the
   transformed catalog entry"
   [catalog task-name f]
   (mapv (fn [entry]
@@ -52,7 +52,7 @@
   "Takes a workflow and catalog, returns the minimum number of peers
    needed to execute this job."
   [catalog workflow]
-  (let [task-set (into #{} (apply concat workflow))]
+  (let [task-set (set (apply concat workflow))]
     (reduce
      (fn [sum t]
        (+ sum (or (:onyx/min-peers (find-task catalog t)) 1)))
@@ -62,7 +62,7 @@
   "Onyx is a parallel, distributed system - so ordering isn't guaranteed.
    Does an unordered comparison of segments to check for equality."
   [expected actual]
-  (is (= (into #{} expected) (into #{} (remove (partial = :done) actual))))
+  (is (= (set expected) (set (remove (partial = :done) actual))))
   (is (= :done (last actual)))
   (is (= (dec (count actual)) (count expected))))
 
@@ -180,4 +180,4 @@
 (defn collect-outputs! [lifecycles output-tasks]
   (->> output-tasks
        (map #(get-output-channel (channel-id-for lifecycles %)))
-       (map #(take-segments! %))))
+       (map take-segments!)))
