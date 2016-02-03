@@ -10,5 +10,5 @@ charset = utf-8
 indent_style = space
 indent_size = 2
 
-[{*.clj,*.cljs,*.cljc}]
+[{*.clj,*.cljs,*.cljc,*.md}]
 indent_size = default
