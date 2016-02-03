@@ -10,7 +10,8 @@ We aspire to perfect test coverage. This is protected by a gating
 continuous integration check: pull requests can not land if they
 reduce test coverage. We also aim to enforce consistent, idiomatic use
 of our tools. Wherever possible, this is also implemented by gating
-CI.
+CI. This includes an [EditorConfig][ec] file: please consider
+installing an EditorConfig plugin for your editor.
 
 Push changes to your own fork, even if you have push access to the
 main repo.
@@ -18,3 +19,5 @@ main repo.
 Please note that this project is released with a Contributor Code of
 Conduct. By participating in this project you agree to abide by its
 terms. You can find the code of conduct in `CONDUCT.md`.
+
+[ec]: http://editorconfig.org/
