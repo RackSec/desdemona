@@ -28,11 +28,11 @@
                                  (= threading-mode "dedicated")
                                  ThreadingMode/DEDICATED                                                                                                                                                                                     (= threading-mode "shared-network")
                                  ThreadingMode/SHARED_NETWORK)
-        _ (println "Starting media driver with threading mode:" threading-mode". Use -t to supply an alternative threading mode.")
+        _ (println "Starting media driver with threading mode:" threading-mode ". Use -t to supply an alternative threading mode.")
         ctx (cond-> (MediaDriver$Context.)
               threading-mode (.threadingMode threading-mode-obj)
               delete-dirs (.dirsDeleteOnStart delete-dirs))
         media-driver (try                                                                                                                                                                                                          (MediaDriver/launch ctx)
-                          (catch IllegalStateException ise                                                                                                                                                                              (throw (Exception. "Error starting media driver. This may be due to a media driver data incompatibility between versions. Check that no other media driver has been started and then use -d to delete the directory on startup" ise))))]
+                                                                                                                                                                                                                                   (catch IllegalStateException ise                                                                                                                                                                              (throw (Exception. "Error starting media driver. This may be due to a media driver data incompatibility between versions. Check that no other media driver has been started and then use -d to delete the directory on startup" ise))))]
     (println "Launched the Media Driver. Blocking forever...")
     (<!! (chan))))

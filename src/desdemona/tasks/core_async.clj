@@ -40,7 +40,6 @@
                      (:onyx/name item)
                      (get-channel (:core.async/id item)))) {} (filter :core.async/id lifecycle-catalog-join))))
 
-
 (defn add-core-async-input
   ([job task opts] (add-core-async-input job task opts default-channel-size))
   ([job task opts chan-size]

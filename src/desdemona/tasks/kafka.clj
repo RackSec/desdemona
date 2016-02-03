@@ -1,6 +1,6 @@
 (ns desdemona.tasks.kafka
-    (:require [taoensso.timbre :refer [info]]
-              [cheshire.core :as json]))
+  (:require [taoensso.timbre :refer [info]]
+            [cheshire.core :as json]))
 
 (defn deserialize-message-json [bytes]
   (try
@@ -16,9 +16,9 @@
 
 (defn deserialize-message-raw [bytes]
   (try
-	{:line (String. bytes "UTF-8")}
-	(catch Exception e
-	  {:error e})))
+    {:line (String. bytes "UTF-8")}
+    (catch Exception e
+      {:error e})))
 
 (defn serialize-message-json [segment]
   (.getBytes (json/generate-string segment)))

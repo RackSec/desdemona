@@ -1,7 +1,7 @@
 (ns desdemona.functions.sample-functions
   (:require [clojure
-			 [string :refer [capitalize trim]]
-			 [walk :refer [postwalk]]]))
+             [string :refer [capitalize trim]]
+             [walk :refer [postwalk]]]))
 
 ;;; Defines functions to be used by the peers. These are located
 ;;; with fully qualified namespaced keywords, such as

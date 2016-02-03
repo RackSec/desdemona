@@ -34,11 +34,11 @@
 (defn add-sql-insert-output
   "Adds an sql insert rows output task to a job"
   [job task opts]
-   (-> job
-       (update :catalog conj (merge {:onyx/name task
-                                     :onyx/plugin :onyx.plugin.sql/write-rows
-                                     :onyx/type :output
-                                     :onyx/medium :sql
+  (-> job
+      (update :catalog conj (merge {:onyx/name task
+                                    :onyx/plugin :onyx.plugin.sql/write-rows
+                                    :onyx/type :output
+                                    :onyx/medium :sql
                                      ;:onyx/batch-size batch-size
                                      ;:sql/classname classname
                                      ;:sql/subprotocol subprotocol
@@ -46,7 +46,7 @@
                                      ;:sql/user user
                                      ;:sql/password password
                                      ;:sql/table table-name
-                                     :onyx/doc "Writes segments from the :rows keys to the SQL database"}
-                                    opts))
-       (update :lifecycles conj {:lifecycle/task task
-                                 :lifecycle/calls :onyx.plugin.sql/write-rows-calls})))
+                                    :onyx/doc "Writes segments from the :rows keys to the SQL database"}
+                                   opts))
+      (update :lifecycles conj {:lifecycle/task task
+                                :lifecycle/calls :onyx.plugin.sql/write-rows-calls})))

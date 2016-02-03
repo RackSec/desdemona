@@ -1,15 +1,15 @@
 (ns desdemona.jobs.sample-submit-job
-    (:require [desdemona.catalogs.sample-catalog :refer [build-catalog]]
-              [desdemona.tasks.kafka :refer [add-kafka-input add-kafka-output]]
-              [desdemona.tasks.core-async :refer [add-core-async-input add-core-async-output]]
-              [desdemona.tasks.sql :refer [add-sql-partition-input add-sql-insert-output]]
-              [desdemona.tasks.file-input :refer [add-seq-file-input]]
-              [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
-              [desdemona.lifecycles.metrics :refer [add-metrics]]
-              [desdemona.lifecycles.logging :refer [add-logging]]
-              [desdemona.workflows.sample-workflow :refer [build-workflow]]
-              [aero.core :refer [read-config]]
-              [onyx.api]))
+  (:require [desdemona.catalogs.sample-catalog :refer [build-catalog]]
+            [desdemona.tasks.kafka :refer [add-kafka-input add-kafka-output]]
+            [desdemona.tasks.core-async :refer [add-core-async-input add-core-async-output]]
+            [desdemona.tasks.sql :refer [add-sql-partition-input add-sql-insert-output]]
+            [desdemona.tasks.file-input :refer [add-seq-file-input]]
+            [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
+            [desdemona.lifecycles.metrics :refer [add-metrics]]
+            [desdemona.lifecycles.logging :refer [add-logging]]
+            [desdemona.workflows.sample-workflow :refer [build-workflow]]
+            [aero.core :refer [read-config]]
+            [onyx.api]))
 
 ;;;;
 ;; Lets build a job
@@ -52,7 +52,7 @@
   (let [config (read-config (clojure.java.io/resource "config.edn") {:profile :dev})
         peer-config (get config :peer-config)
         job (build-job :prod)]
-	(println peer-config)
-	(println job)
+    (println peer-config)
+    (println job)
     (let [{:keys [job-id]} (onyx.api/submit-job peer-config job)]
       (println "Submitted job: " job-id))))
