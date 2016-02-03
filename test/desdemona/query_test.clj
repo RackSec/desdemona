@@ -5,5 +5,5 @@
 
 (deftest query-tests
   (is (= [{:ip "10.0.0.1"}]
-         (q/query '(== (:ip entry) "10.0.0.1")
+         (q/query '(== (:ip x) "10.0.0.1")
                   [{:ip "10.0.0.1"}]))))
