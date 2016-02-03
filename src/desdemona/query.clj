@@ -5,8 +5,8 @@
   [n-answers query events]
   `(l/run ~n-answers [results#]
      (l/fresh [~'x]
-       (l/membero ~'x results#)
        (l/everyg #(l/membero % results#) ~events)
+       (l/== [~'x] results#)
        ~query)))
 
 (defn run-query
