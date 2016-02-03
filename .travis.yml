@@ -13,8 +13,11 @@ matrix:
     - jdk: oraclejdk8
     - jdk: oraclejdk8
       env: EASTWOOD=true
+    - jdk: oraclejdk8
+      env: KIBIT=true
   allow_failures:
     - env: EASTWOOD=true
+    - env: KIBIT=true
 
 script:
   - |
@@ -22,9 +25,10 @@ script:
     set -x
     if [[ "${EASTWOOD}" == "true" ]]; then
       lein eastwood
+    elif [[ "${KIBIT}" == "true" ]]; then
+      lein kibit
     else
       lein cljfmt check
-      lein kibit
       lein test
       lein uberjar
     fi
