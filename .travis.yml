@@ -19,6 +19,9 @@ matrix:
     - env: EASTWOOD=true
     - env: KIBIT=true
 
+install:
+  - npm install -g eclint
+
 script:
   - |
     set -e
@@ -28,6 +31,7 @@ script:
     elif [[ "${KIBIT}" == "true" ]]; then
       lein kibit
     else
+      eclint check *
       lein cljfmt check
       lein test
       lein uberjar
