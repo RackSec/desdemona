@@ -4,6 +4,6 @@
    [clojure.test :refer [deftest is]]))
 
 (deftest query-tests
-  (is (= [{:ip "10.0.0.1"}]
+  (is (= [[{:ip "10.0.0.1"}]]
          (q/run-query '(== (:ip x) "10.0.0.1")
-                      [[{:ip "10.0.0.1"}]]))))
+                      [{:ip "10.0.0.1"}]))))
