@@ -7,7 +7,9 @@
                  [org.onyxplatform/onyx "0.8.2"]
                  [org.clojure/core.logic "0.8.10"]]
   :plugins [[lein-cljfmt "0.3.0"]
-            [lein-cloverage "1.0.7-SNAPSHOT"]]
+            [lein-cloverage "1.0.7-SNAPSHOT"]
+            [lein-kibit "0.1.2"]
+            [jonase/eastwood "0.2.3"]]
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
