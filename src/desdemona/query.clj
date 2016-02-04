@@ -1,7 +1,7 @@
 (ns desdemona.query
   (:require [clojure.core.logic :as l]))
 
-(defn ^:private gen-query
+(defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
   it."
   [n-answers query events]
@@ -11,12 +11,12 @@
        (l/membero ~'x ~events)
        ~query)))
 
-(defn run-query
+(defn run-logic-query
   "Runs a query over some events and finds n answers (default 1)."
   ([query events]
    (run-query 1 query events))
   ([n-answers query events]
-   (let [compiled-query (gen-query n-answers query events)
+   (let [compiled-query (generate-logic-query n-answers query events)
          old-ns *ns*]
      (try
        (in-ns 'desdemona.query)
