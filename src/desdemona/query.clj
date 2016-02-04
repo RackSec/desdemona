@@ -13,4 +13,10 @@
   ([query events]
    (run-query 1 query events))
   ([n-answers query events]
-   (eval (gen-query n-answers query events))))
+   (let [compiled-query (gen-query n-answers query events)
+         old-ns *ns*]
+     (try
+       (in-ns 'desdemona.query)
+       (eval compiled-query)
+       (finally
+         (in-ns (ns-name old-ns)))))))
