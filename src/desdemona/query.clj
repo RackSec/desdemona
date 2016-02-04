@@ -12,6 +12,7 @@
        ~query)))
 
 (defn run-query
+  "Runs a query over some events and finds n answers (default 1)."
   ([query events]
    (run-query 1 query events))
   ([n-answers query events]
