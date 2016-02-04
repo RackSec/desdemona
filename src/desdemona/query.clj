@@ -4,22 +4,21 @@
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
   it."
-  [n-answers query events]
+  [n-answers logic-query events]
   `(l/run ~n-answers [results#]
      (l/fresh [~'x]
        (l/== [~'x] results#)
        (l/membero ~'x ~events)
-       ~query)))
+       ~logic-query)))
 
 (defn run-logic-query
   "Runs a query over some events and finds n answers (default 1)."
-  ([query events]
-   (run-query 1 query events))
-  ([n-answers query events]
-   (let [compiled-query (generate-logic-query n-answers query events)
-         old-ns *ns*]
+  ([logic-query events]
+   (run-logic-query 1 logic-query events))
+  ([n-answers logic-query events]
+   (let [old-ns *ns*]
      (try
        (in-ns 'desdemona.query)
-       (eval compiled-query)
+       (eval (generate-logic-query n-answers logic-query events))
        (finally
          (in-ns (ns-name old-ns)))))))

@@ -3,7 +3,7 @@
    [desdemona.query :as q]
    [clojure.test :refer [deftest is]]))
 
-(deftest query-tests
+(deftest logic-query-tests
   (is (= []
          (q/run-logic-query 'l/fail
                             [{:ip "10.0.0.1"}])))
