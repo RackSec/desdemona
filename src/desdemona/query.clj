@@ -2,6 +2,8 @@
   (:require [clojure.core.logic :as l]))
 
 (defn ^:private gen-query
+  "Expands a query and events to a core.logic program that executes
+  it."
   [n-answers query events]
   `(l/run ~n-answers [results#]
      (l/fresh [~'x]
