@@ -8,6 +8,8 @@
                  [org.clojure/core.logic "0.8.10"]]
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]]
+  :cljfmt {:indents {run [[:inner 0]] ;; core.logic
+                     fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
                              desdemona.launcher.launch-prod-peers]}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
