@@ -14,6 +14,9 @@
   "Add's logging output to a tasks output-batch. "
   [job task]
   (if-let [entry (first (filter #(= (:onyx/name %) task) (:catalog job)))]
-    (-> job
-        (update-in [:lifecycles] conj {:lifecycle/task task
-                                       :lifecycle/calls ::log-calls}))))
+    (update-in
+     job
+     [:lifecycles]
+     conj
+     {:lifecycle/task task,
+      :lifecycle/calls :desdemona.lifecycles.logging/log-calls})))
