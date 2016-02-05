@@ -39,5 +39,5 @@
                          (onyx.api/shutdown-peer-group peer-group)
                          (shutdown-agents))))
     (println "Started peers. Blocking forever.")
-	;; Block forever.
+    ;; Block forever.
     (<!! (chan))))
