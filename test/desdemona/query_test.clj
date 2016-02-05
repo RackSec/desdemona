@@ -3,6 +3,13 @@
    [desdemona.query :as q]
    [clojure.test :refer [deftest is]]))
 
+(def dsl->logic
+  @#'desdemona.query/dsl->logic)
+
+(deftest dsl->logic-tests
+  (is (= '(l/featurec x {:ip "10.0.0.1"})
+         (dsl->logic '(= (:ip x) "10.0.0.1")))))
+
 (deftest logic-query-tests
   (is (= []
          (q/run-logic-query 'l/fail
