@@ -20,15 +20,15 @@
 (defn -main [n & args]
   (let [n-peers (Integer/parseInt n)
         config (read-config (clojure.java.io/resource "config.edn") {:profile :default})
-        (assoc
-         (:peer-config config)
-         :onyx.log/config
-         {:appenders
-          {:standard-out
-           {:enabled? true,
-            :async? false,
-            :output-fn t/default-output-fn,
-            :fn standard-out-logger}}})
+        peer-config (assoc
+                     (:peer-config config)
+                     :onyx.log/config
+                     {:appenders
+                      {:standard-out
+                       {:enabled? true,
+                        :async? false,
+                        :output-fn t/default-output-fn,
+                        :fn standard-out-logger}}})
         peer-group (onyx.api/start-peer-group peer-config)
         env (onyx.api/start-env (:env-config config))
         peers (onyx.api/start-peers n-peers peer-group)]
