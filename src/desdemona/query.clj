@@ -1,5 +1,17 @@
 (ns desdemona.query
-  (:require [clojure.core.logic :as l]))
+  (:require [clojure.core.logic :as l]
+            [clojure.core.match :as m]
+            [clojure.core.logic.fd :as fd]))
+
+(defn ^:private dsl->logic
+  "Given a DSL query, compile it to the underlying logic (miniKanren)
+  expressions."
+  [dsl-query]
+  (m/match
+   [dsl-query]
+
+   [((= [attr lvar] value) :seq)]
+   ['l/featurec {attr value}]))
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
