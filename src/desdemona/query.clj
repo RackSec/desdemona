@@ -36,5 +36,7 @@
    `(l/featurec ~lvar {~attr ~value})))
 
 (defn run-dsl-query
-  [dsl-query events]
-  (run-logic-query (dsl->logic dsl-query) events))
+  ([dsl-query events]
+   (run-logic-query (dsl->logic dsl-query) events))
+  ([n-answers dsl-query events]
+   (run-logic-query n-answers (dsl->logic dsl-query) events)))
