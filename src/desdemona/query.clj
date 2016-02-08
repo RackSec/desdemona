@@ -3,16 +3,6 @@
             [clojure.core.match :as m]
             [clojure.core.logic.fd :as fd]))
 
-(defn ^:private dsl->logic
-  "Given a DSL query, compile it to the underlying logic (miniKanren)
-  expressions."
-  [dsl-query]
-  (m/match
-   [dsl-query]
-
-   [((= ([attr lvar] :seq) value) :seq)]
-   ['l/featurec lvar {attr value}]))
-
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
   it."
@@ -34,3 +24,17 @@
        (eval (generate-logic-query n-answers logic-query events))
        (finally
          (in-ns (ns-name old-ns)))))))
+
+(defn ^:private dsl->logic
+  "Given a DSL query, compile it to the underlying logic (miniKanren)
+  expressions."
+  [dsl-query]
+  (m/match
+   [dsl-query]
+
+   [((= ([attr lvar] :seq) value) :seq)]
+   `(l/featurec ~lvar {~attr ~value})))
+
+(defn run-dsl-query
+  [dsl-query events]
+  (run-logic-query (dsl->logic dsl-query) events))
