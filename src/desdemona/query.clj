@@ -29,11 +29,9 @@
   "Given a DSL query, compile it to the underlying logic (miniKanren)
   expressions."
   [dsl-query]
-  (m/match
-   [dsl-query]
-
-   [((= ([attr lvar] :seq) value) :seq)]
-   `(l/featurec ~lvar {~attr ~value})))
+  (m/match [dsl-query]
+    [((= ([attr lvar] :seq) value) :seq)]
+    `(l/featurec ~lvar {~attr ~value})))
 
 (defn run-dsl-query
   "Run a DSL query over some events and finds n answers (default 1)."

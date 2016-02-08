@@ -21,11 +21,11 @@
     '(= (:ip x) "BOGUS")
     [])
   (testing "explicit maximum number of results"
-    (are [n-results]
-        (= [[{:ip "10.0.0.1"}]]
-           (q/run-dsl-query n-results '(= (:ip x) "10.0.0.1") events))
-      1
-      10)))
+    (let [results [[{:ip "10.0.0.1"}]]
+          query '(= (:ip x) "10.0.0.1")]
+      (are [n-results] (= results (q/run-dsl-query n-results query events))
+        1
+        10))))
 
 (deftest logic-query-tests
   (are [query results] (= results (q/run-logic-query query events))
@@ -35,10 +35,8 @@
     '(l/featurec x {:ip "10.0.0.1"})
     [[{:ip "10.0.0.1"}]])
   (testing "explicit maximum number of results"
-    (are [n-results]
-        (= [[{:ip "10.0.0.1"}]]
-           (q/run-logic-query n-results
-                              '(l/featurec x {:ip "10.0.0.1"})
-                              events))
-      1
-      10)))
+    (let [results [[{:ip "10.0.0.1"}]]
+          query '(l/featurec x {:ip "10.0.0.1"})]
+      (are [n-results] (= results (q/run-logic-query n-results query events))
+        1
+        10))))
