@@ -9,5 +9,5 @@
 
 (deftest prepare-rows-test
   (let [got (prepare-rows {"line" "this is a log line"})
-        expected {"rows" {"line" "this is a log line"}}]
+        expected {:rows [{"line" "this is a log line"}]}]
     (is (= got expected))))
