@@ -7,7 +7,7 @@
   @#'desdemona.query/dsl->logic)
 
 (deftest dsl->logic-tests
-  (is (= '(l/featurec x {:ip "10.0.0.1"})
+  (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
          (dsl->logic '(= (:ip x) "10.0.0.1")))))
 
 (deftest dsl-query-tests
