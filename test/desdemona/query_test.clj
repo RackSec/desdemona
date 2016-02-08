@@ -14,9 +14,9 @@
   [{:ip "10.0.0.1"}])
 
 (deftest dsl-query-tests
-  (is (= [[{:ip "10.0.0.1"}]]
-         (q/run-dsl-query '(= (:ip x) "10.0.0.1")
-                          [{:ip "10.0.0.1"}]))))
+  (are [query results] (= results (q/run-dsl-query query events))
+    '(= (:ip x) "10.0.0.1")
+    [[{:ip "10.0.0.1"}]]))
 
 (deftest logic-query-tests
   (are [query results] (= results (q/run-logic-query query events))
