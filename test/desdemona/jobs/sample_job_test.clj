@@ -5,7 +5,7 @@
             [desdemona.jobs.sample-submit-job :refer [build-job]]
             [desdemona.tasks.core-async :refer [get-core-async-channels]]
             [onyx.plugin.core-async :refer [take-segments!]]
-			; Make the plugins load
+            ; Make the plugins load
             [onyx.plugin.kafka]
             [onyx.plugin.seq]
             [onyx.plugin.sql]))
@@ -15,8 +15,8 @@
         config (load-config)
         env-config (assoc (:env-config config) :onyx/id id)
         peer-config (assoc (:peer-config config) :onyx/id id)]
-	;; Be sure to set the peer count (5 here) to a number greater than
-	;; the amount of tasks in your job.
+    ;; Be sure to set the peer count (5 here) to a number greater than
+    ;; the amount of tasks in your job.
     (with-test-env [test-env [5 env-config peer-config]]
       (let [job (build-job :dev)
             {:keys [write-lines]} (get-core-async-channels job)
