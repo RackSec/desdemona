@@ -10,8 +10,8 @@
   (m/match
    [dsl-query]
 
-   [((= [attr lvar] value) :seq)]
-   ['l/featurec {attr value}]))
+   [((= ([attr lvar] :seq) value) :seq)]
+   ['l/featurec lvar {attr value}]))
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
