@@ -10,6 +10,11 @@
   (is (= '(l/featurec x {:ip "10.0.0.1"})
          (dsl->logic '(= (:ip x) "10.0.0.1")))))
 
+(deftest dsl-query-tests
+  (is (= []
+         (q/run-dsl-query '(= (:ip x) "10.0.0.1")
+                          [{:ip "10.0.0.1"}]))))
+
 (deftest logic-query-tests
   (is (= []
          (q/run-logic-query 'l/fail
