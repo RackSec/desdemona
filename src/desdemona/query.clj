@@ -36,6 +36,7 @@
    `(l/featurec ~lvar {~attr ~value})))
 
 (defn run-dsl-query
+  "Run a DSL query over some events and finds n answers (default 1)."
   ([dsl-query events]
    (run-logic-query (dsl->logic dsl-query) events))
   ([n-answers dsl-query events]
