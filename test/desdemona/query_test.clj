@@ -8,7 +8,8 @@
 
 (deftest dsl->logic-tests
   (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
-         (dsl->logic '(= (:ip x) "10.0.0.1")))))
+         (dsl->logic '(= (:ip x) "10.0.0.1"))
+         (dsl->logic '(= "10.0.0.1" (:ip x))))))
 
 (def events
   [{:ip "10.0.0.1"}])
