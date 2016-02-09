@@ -19,6 +19,12 @@
     [[{:ip "10.0.0.1"}]]
 
     '(= (:ip x) "BOGUS")
+    []
+
+    '(= "10.0.0.1" (:ip x))
+    [[{:ip "10.0.0.1"}]]
+
+    '(= "BOGUS" (:ip x))
     [])
   (testing "explicit maximum number of results"
     (let [results [[{:ip "10.0.0.1"}]]
