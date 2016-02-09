@@ -1,9 +1,7 @@
 (ns desdemona.jobs.sample-submit-job
   (:require [desdemona.catalogs.sample-catalog :refer [build-catalog]]
             [desdemona.tasks.kafka :refer [add-kafka-input add-kafka-output]]
-            [desdemona.tasks.core-async :refer [add-core-async-input add-core-async-output]]
             [desdemona.tasks.sql :refer [add-sql-partition-input add-sql-insert-output]]
-            [desdemona.tasks.file-input :refer [add-seq-file-input]]
             [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
             [desdemona.lifecycles.metrics :refer [add-metrics]]
             [desdemona.lifecycles.logging :refer [add-logging]]
