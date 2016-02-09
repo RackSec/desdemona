@@ -5,14 +5,7 @@
 
 (defmulti build-workflow :mode)
 
-(defmethod build-workflow :dev
-  [ctx]
-  [[:read-lines :extract-line-info]
-   [:extract-line-info :prepare-rows]
-   [:prepare-rows :write-lines]])
-
-(defmethod build-workflow :prod
-  [ctx]
+(defn build-workflow []
   [[:read-lines :extract-line-info]
    [:extract-line-info :prepare-rows]
    [:prepare-rows :write-lines]])
