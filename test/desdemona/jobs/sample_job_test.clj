@@ -1,13 +1,11 @@
 (ns desdemona.jobs.sample-job-test
   (:require [clojure.test :refer [deftest is]]
             [desdemona.jobs.sample-submit-job :refer [build-job]]
+            [desdemona.utils :refer [find-task]]
             ; Make the plugins load
             [onyx.plugin.kafka]
             [onyx.plugin.seq]
             [onyx.plugin.sql]))
-
-(defn by-name [catalog name]
-  (first (filter (fn [x] (= name (x :onyx/name))) catalog)))
 
 (deftest build-job-test
   (let [job (build-job)
@@ -23,7 +21,7 @@
                              {:lifecycle/task :write-lines :lifecycle/calls :onyx.plugin.sql/write-rows-calls}
                              {:lifecycle/task :read-lines, :lifecycle/calls :onyx.plugin.kafka/read-messages-calls}]]
     (is (= (map :onyx/name catalog) expected-catalog-names))
-    (is (= ((by-name catalog :read-lines) :kafka/topic) "test1"))
-    (is (= ((by-name catalog :write-lines) :sql/table) :logLines))
+    (is (= ((find-task catalog :read-lines) :kafka/topic) "test1"))
+    (is (= ((find-task catalog :write-lines) :sql/table) :logLines))
     (is (= workflow expected-workflow))
     (is (= lifecycles expected-lifecycles))))
