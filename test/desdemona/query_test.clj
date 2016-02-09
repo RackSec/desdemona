@@ -7,6 +7,7 @@
   @#'desdemona.query/dsl->logic)
 
 (deftest dsl->logic-tests
+  (is (thrown? IllegalArgumentException (dsl->logic '(BOGUS BOGUS BOGUS))))
   (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
          (dsl->logic '(= (:ip x) "10.0.0.1")))))
 
