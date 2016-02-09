@@ -6,3 +6,7 @@
   (let [got (deserialize-message-raw (.getBytes "this is raw text"))
         expected {:line "this is raw text"}]
     (is (= got expected))))
+
+(deftest deserialize-message-raw-fails-test
+  (let [got (deserialize-message-raw "this should be bytes")]
+    (is (= (.getMessage (got :error)) "No matching ctor found for class java.lang.String"))))
