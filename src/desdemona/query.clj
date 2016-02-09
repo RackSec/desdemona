@@ -43,7 +43,6 @@
     [((= value ((attr lvar) :seq)) :seq)]
     `(l/featurec ~lvar {~attr ~value})))
 
-
 (defn run-dsl-query
   "Run a DSL query over some events and finds n answers (default 1)."
   ([dsl-query events]
