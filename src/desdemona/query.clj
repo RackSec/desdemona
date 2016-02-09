@@ -5,10 +5,17 @@
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
-  it."
+  it.
+
+  This is implemented using syntax-quote because that was the easiest
+  way to produce this data structure with some values interpolated.
+
+  The n-answers is simply passed to core.logic/run; we're relying on
+  it to correctly bound the number of answers. This helps us limit how
+  long it takes to query."
   [n-answers logic-query events]
   `(l/run ~n-answers [results#]
-     (l/fresh [~'x]
+     (l/fresh [~'x] ;; ~'x means "literally x, don't gensym", see #28
        (l/== [~'x] results#)
        (l/membero ~'x ~events)
        ~logic-query)))
