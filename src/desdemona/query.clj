@@ -3,10 +3,13 @@
 
 (defn ^:private gen-query
   "Expands a query and events to a core.logic program that executes
-  it."
+  it.
+
+  This is implemented using syntax-quote because that was the easiest
+  way to produce this data structure with some values interpolated."
   [n-answers query events]
   `(l/run ~n-answers [results#]
-     (l/fresh [~'x]
+     (l/fresh [~'x] ;; ~'x means "literally x, don't gensym", see #28
        (l/== [~'x] results#)
        (l/membero ~'x ~events)
        ~query)))
