@@ -11,11 +11,14 @@
                  [org.onyxplatform/onyx-seq "0.8.8.0"]
                  [cheshire "5.5.0"]
                  [org.clojure/tools.cli "0.3.3"]
-                 [aero "0.1.3"]]
+                 [aero "0.1.3"]
+                 [org.clojure/core.logic "0.8.10"]]
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]
             [lein-kibit "0.1.2"]
             [jonase/eastwood "0.2.3"]]
+  :cljfmt {:indents {run [[:inner 0]] ;; core.logic
+                     fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
                              desdemona.launcher.launch-prod-peers]}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
