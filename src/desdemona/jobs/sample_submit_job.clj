@@ -1,33 +1,46 @@
 (ns desdemona.jobs.sample-submit-job
-  (:require [clojure.java.io :refer [resource]]
-            [com.stuartsierra.component :as component]
-            [desdemona.workflows.sample-workflow :refer [workflow]]
-            [desdemona.catalogs.sample-catalog :refer [build-catalog] :as sc]
-            [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles] :as sl]
-            [desdemona.flow-conditions.sample-flow-conditions :as sf]
-            [desdemona.functions.sample-functions]
-            [desdemona.dev-inputs.sample-input :as dev-inputs]
-            [desdemona.utils :as u]
+  (:require [desdemona.catalogs.sample-catalog :refer [build-catalog]]
+            [desdemona.tasks.kafka :refer [add-kafka-input add-kafka-output]]
+            [desdemona.tasks.sql :refer [add-sql-partition-input add-sql-insert-output]]
+            [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
+            [desdemona.lifecycles.metrics :refer [add-metrics]]
+            [desdemona.lifecycles.logging :refer [add-logging]]
+            [desdemona.workflows.sample-workflow :refer [build-workflow]]
+            [aero.core :refer [read-config]]
             [onyx.api]))
 
-(defn submit-job [dev-env]
-  (let [dev-cfg (-> "dev-peer-config.edn" resource slurp read-string)
-        peer-config (assoc dev-cfg :onyx/id (:onyx-id dev-env))
-        ;; Turn :read-lines and :write-lines into core.async I/O channels
-        stubs [:read-lines :write-lines]
-        ;; Stubs the catalog entries for core.async I/O
-        dev-catalog (u/in-memory-catalog (build-catalog 20 50) stubs)
-        ;; Stubs the lifecycles for core.async I/O
-        dev-lifecycles (u/in-memory-lifecycles (build-lifecycles) dev-catalog stubs)]
-    ;; Automatically pipes the data structure into the channel, attaching :done at the end
-    (u/bind-inputs! dev-lifecycles {:read-lines dev-inputs/lines})
-    (let [job {:workflow workflow
-               :catalog dev-catalog
-               :lifecycles dev-lifecycles
-               :flow-conditions sf/flow-conditions
-               :task-scheduler :onyx.task-scheduler/balanced}]
-      (onyx.api/submit-job peer-config job)
-      ;; Automatically grab output from the stubbed core.async channels,
-      ;; returning a vector of the results with data structures representing
-      ;; the output.
-      (u/collect-outputs! dev-lifecycles [:write-lines]))))
+;;;;
+;; Lets build a job
+;; Since we always run in Docker Compose, kafka is added as an input, and onyx-sql is used as the output
+
+(defn build-job []
+  (let [batch-size 1
+        batch-timeout 1000
+        base-job {:catalog (build-catalog batch-size batch-timeout)
+                  :lifecycles (build-lifecycles)
+                  :workflow (build-workflow)
+                  :task-scheduler :onyx.task-scheduler/balanced}]
+    (-> base-job
+        (add-kafka-input :read-lines {:onyx/batch-size batch-size
+                                      :onyx/max-peers 1
+                                      :kafka/topic "test1"
+                                      :kafka/group-id "onyx-consumer"
+                                      :kafka/zookeeper "zk:2181"
+                                      :kafka/deserializer-fn :desdemona.tasks.kafka/deserialize-message-raw
+                                      :kafka/offset-reset :smallest})
+        (add-sql-insert-output :write-lines {:onyx/batch-size batch-size
+                                             :sql/classname "com.mysql.jdbc.Driver"
+                                             :sql/subprotocol "mysql"
+                                             :sql/subname "//db:3306/logs"
+                                             :sql/user "onyx"
+                                             :sql/password "onyx"
+                                             :sql/table :logLines})
+        (add-logging :read-lines)
+        (add-logging :write-lines))))
+
+(defn -main [& args]
+  (let [config (read-config (clojure.java.io/resource "config.edn") {:profile :dev})
+        peer-config (get config :peer-config)
+        job (build-job)]
+    (let [{:keys [job-id]} (onyx.api/submit-job peer-config job)]
+      (println "Submitted job: " job-id))))
