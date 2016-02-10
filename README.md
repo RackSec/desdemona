@@ -48,17 +48,19 @@ Wait until it's all started. It should say this and then wait:
 peer_1      | Started peers. Blocking forever.
 ```
 
-Make sure you create the Kafka topic:
+Make sure you create the Kafka topic by connecting to the producer:
 
 ```
-docker run --rm -it --link desdemona_kafka_1:kafka1 kafka bash -c "\$KAFKA_HOME/bin/kafka-console-producer.sh --topic test1 --broker-list=kafka1:9092"
+script/connect_kafka.sh
 ```
 
 And the MySQL database:
 
 ```
-docker run -it --link desdemona_db_1:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+script/connect_mysql.sh
 ```
+
+Run this SQL, which is available in `resources/table.sql`:
 
 ```
 use logs;
@@ -68,7 +70,7 @@ CREATE TABLE logLines (id int primary key auto_increment, line text);
 Now you can submit the job:
 
 ```
-ZOOKEEPER=$(echo $DOCKER_HOST|cut -d ':' -f 2|sed "s/\/\///g") lein run -m desdemona.jobs.sample-submit-job
+script/submit_job.sh
 ```
 
 Anything you send to syslog on that Docker host (there's a syslog-ng relay running as a container) will appear in MySQL.
