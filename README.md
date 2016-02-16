@@ -34,6 +34,47 @@ You can launch a sample job as follows:
 (desdemona.jobs.sample-submit-job/submit-job user/system)
 ```
 
+### Using Docker Compose
+
+Start the cluster:
+
+```
+docker-compose up
+```
+
+Wait until it's all started. It should say this and then wait:
+
+```
+peer_1      | Started peers. Blocking forever.
+```
+
+Make sure you create the Kafka topic by connecting to the producer:
+
+```
+script/connect_kafka.sh
+```
+
+And the MySQL database:
+
+```
+script/connect_mysql.sh
+```
+
+Run this SQL, which is available in `resources/table.sql`:
+
+```
+use logs;
+CREATE TABLE logLines (id int primary key auto_increment, line text);
+```
+
+Now you can submit the job:
+
+```
+script/submit_job.sh
+```
+
+Anything you send to syslog on that Docker host (there's a syslog-ng relay running as a container) will appear in MySQL.
+
 ### Production Mode Peers
 
 First start the Aeron media driver, which should be used in production

@@ -1,7 +1,7 @@
 (ns desdemona.query
-  (:require [clojure.core.logic :as l]
-            [clojure.core.match :as m]
-            [clojure.core.logic.fd :as fd]))
+  (:require
+   [clojure.core.logic :as l]
+   [clojure.core.match :as m]))
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes

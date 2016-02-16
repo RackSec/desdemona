@@ -1,53 +1,27 @@
 (ns desdemona.jobs.sample-job-test
   (:require [clojure.test :refer [deftest is]]
-            [clojure.core.async :refer [>!!]]
-            [clojure.java.io :refer [resource]]
-            [com.stuartsierra.component :as component]
-            [desdemona.launcher.dev-system :refer [onyx-dev-env]]
-            [desdemona.workflows.sample-workflow :refer [workflow]]
-            [desdemona.catalogs.sample-catalog :refer [build-catalog] :as sc]
-            [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles] :as sl]
-            [desdemona.plugins.http-reader]
-            [desdemona.functions.sample-functions]
-            [desdemona.dev-inputs.sample-input :as dev-inputs]
-            [desdemona.utils :as u]
-            [onyx.api]))
+            [desdemona.jobs.sample-submit-job :refer [build-job]]
+            [desdemona.utils :refer [find-task]]
+            ; Make the plugins load
+            [onyx.plugin.kafka]
+            [onyx.plugin.seq]
+            [onyx.plugin.sql]))
 
-(deftest test-sample-dev-job
-  (try
-    (let [stubs [:read-lines :write-lines]
-          catalog (u/in-memory-catalog (build-catalog) stubs)
-          lifecycles (u/in-memory-lifecycles (build-lifecycles) catalog stubs)]
-      (user/go (u/n-peers catalog workflow))
-      (u/bind-inputs! lifecycles {:read-lines dev-inputs/lines})
-      (let [peer-config (u/load-peer-config (:onyx-id user/system))
-            job {:workflow workflow
-                 :catalog catalog
-                 :lifecycles lifecycles
-                 :task-scheduler :onyx.task-scheduler/balanced}]
-        (onyx.api/submit-job peer-config job)
-        (let [[results] (u/collect-outputs! lifecycles [:write-lines])]
-          (is (seq results)))))
-    (catch InterruptedException e
-      (Thread/interrupted))
-    (finally
-      (user/stop))))
-
-(deftest test-sample-prod-job
-  (try
-    (let [catalog (build-catalog 20 500)
-          lifecycles (build-lifecycles)]
-      (user/go (u/n-peers catalog workflow))
-      (u/bind-inputs! lifecycles {:read-lines dev-inputs/lines})
-      (let [peer-config (u/load-peer-config (:onyx-id user/system))
-            job {:workflow workflow
-                 :catalog catalog
-                 :lifecycles lifecycles
-                 :task-scheduler :onyx.task-scheduler/balanced}]
-        (onyx.api/submit-job peer-config job)
-        (let [[results] (u/collect-outputs! lifecycles [:write-lines])]
-          (is (seq results)))))
-    (catch InterruptedException e
-      (Thread/interrupted))
-    (finally
-      (user/stop))))
+(deftest build-job-test
+  (let [job (build-job)
+        expected-catalog-names [:extract-line-info :prepare-rows :read-lines :write-lines]
+        catalog (job :catalog)
+        workflow (job :workflow)
+        expected-workflow [[:read-lines :extract-line-info]
+                           [:extract-line-info :prepare-rows]
+                           [:prepare-rows :write-lines]]
+        lifecycles (job :lifecycles)
+        expected-lifecycles [{:lifecycle/task :write-lines :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
+                             {:lifecycle/task :read-lines :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
+                             {:lifecycle/task :write-lines :lifecycle/calls :onyx.plugin.sql/write-rows-calls}
+                             {:lifecycle/task :read-lines, :lifecycle/calls :onyx.plugin.kafka/read-messages-calls}]]
+    (is (= (map :onyx/name catalog) expected-catalog-names))
+    (is (= ((find-task catalog :read-lines) :kafka/topic) "test1"))
+    (is (= ((find-task catalog :write-lines) :sql/table) :logLines))
+    (is (= workflow expected-workflow))
+    (is (= lifecycles expected-lifecycles))))
