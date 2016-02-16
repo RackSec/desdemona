@@ -36,6 +36,12 @@ You can launch a sample job as follows:
 
 ### Using Docker Compose
 
+First, build the project:
+
+```
+script/build.sh
+```
+
 Start the cluster:
 
 ```
@@ -67,7 +73,7 @@ use logs;
 CREATE TABLE logLines (id int primary key auto_increment, line text);
 ```
 
-Now you can submit the job:
+Now you can submit a job:
 
 ```
 script/submit_job.sh
