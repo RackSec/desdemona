@@ -1,12 +1,43 @@
 (ns desdemona.query-test
   (:require
    [desdemona.query :as q]
-   [clojure.test :refer [deftest is]]))
+   [clojure.test :refer [deftest is are testing]]))
 
-(deftest query-tests
-  (is (= []
-         (q/run-query 'l/fail
-                      [{:ip "10.0.0.1"}])))
-  (is (= [[{:ip "10.0.0.1"}]]
-         (q/run-query '(l/featurec x {:ip "10.0.0.1"})
-                      [{:ip "10.0.0.1"}]))))
+(def dsl->logic
+  @#'desdemona.query/dsl->logic)
+
+(deftest dsl->logic-tests
+  (is (thrown? IllegalArgumentException (dsl->logic '(BOGUS BOGUS BOGUS))))
+  (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
+         (dsl->logic '(= (:ip x) "10.0.0.1")))))
+
+(def events
+  [{:ip "10.0.0.1"}])
+
+(deftest dsl-query-tests
+  (are [query results] (= results (q/run-dsl-query query events))
+    '(= (:ip x) "10.0.0.1")
+    [[{:ip "10.0.0.1"}]]
+
+    '(= (:ip x) "BOGUS")
+    [])
+  (testing "explicit maximum number of results"
+    (let [results [[{:ip "10.0.0.1"}]]
+          query '(= (:ip x) "10.0.0.1")]
+      (are [n-results] (= results (q/run-dsl-query n-results query events))
+        1
+        10))))
+
+(deftest logic-query-tests
+  (are [query results] (= results (q/run-logic-query query events))
+    'l/fail
+    []
+
+    '(l/featurec x {:ip "10.0.0.1"})
+    [[{:ip "10.0.0.1"}]])
+  (testing "explicit maximum number of results"
+    (let [results [[{:ip "10.0.0.1"}]]
+          query '(l/featurec x {:ip "10.0.0.1"})]
+      (are [n-results] (= results (q/run-logic-query n-results query events))
+        1
+        10))))

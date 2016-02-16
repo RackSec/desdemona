@@ -1,7 +1,9 @@
 (ns desdemona.query
-  (:require [clojure.core.logic :as l]))
+  (:require
+   [clojure.core.logic :as l]
+   [clojure.core.match :as m]))
 
-(defn ^:private gen-query
+(defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
   it.
 
@@ -11,22 +13,36 @@
   The n-answers is simply passed to core.logic/run; we're relying on
   it to correctly bound the number of answers. This helps us limit how
   long it takes to query."
-  [n-answers query events]
+  [n-answers logic-query events]
   `(l/run ~n-answers [results#]
      (l/fresh [~'x] ;; ~'x means "literally x, don't gensym", see #28
        (l/== [~'x] results#)
        (l/membero ~'x ~events)
-       ~query)))
+       ~logic-query)))
 
-(defn run-query
+(defn run-logic-query
   "Runs a query over some events and finds n answers (default 1)."
-  ([query events]
-   (run-query 1 query events))
-  ([n-answers query events]
-   (let [compiled-query (gen-query n-answers query events)
-         old-ns *ns*]
+  ([logic-query events]
+   (run-logic-query 1 logic-query events))
+  ([n-answers logic-query events]
+   (let [old-ns *ns*]
      (try
        (in-ns 'desdemona.query)
-       (eval compiled-query)
+       (eval (generate-logic-query n-answers logic-query events))
        (finally
          (in-ns (ns-name old-ns)))))))
+
+(defn ^:private dsl->logic
+  "Given a DSL query, compile it to the underlying logic (miniKanren)
+  expressions."
+  [dsl-query]
+  (m/match [dsl-query]
+    [((= ([attr lvar] :seq) value) :seq)]
+    `(l/featurec ~lvar {~attr ~value})))
+
+(defn run-dsl-query
+  "Run a DSL query over some events and finds n answers (default 1)."
+  ([dsl-query events]
+   (run-logic-query (dsl->logic dsl-query) events))
+  ([n-answers dsl-query events]
+   (run-logic-query n-answers (dsl->logic dsl-query) events)))
