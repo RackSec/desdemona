@@ -39,7 +39,7 @@ You can launch a sample job as follows:
 First, build the project:
 
 ```
-script/build.sh
+docker-compose build
 ```
 
 Start the cluster:
