@@ -42,6 +42,12 @@ First, build the project:
 docker-compose build
 ```
 
+If you want to run the tests in Docker, you may now do so:
+
+```
+docker-compose run test
+```
+
 Start the cluster:
 
 ```
