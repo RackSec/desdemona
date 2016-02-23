@@ -39,7 +39,13 @@ You can launch a sample job as follows:
 First, build the project:
 
 ```
-script/build.sh
+docker-compose build
+```
+
+If you want to run the tests in Docker, you may now do so:
+
+```
+docker-compose run test
 ```
 
 Start the cluster:

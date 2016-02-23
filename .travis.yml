@@ -8,6 +8,9 @@ cache:
     - $HOME/.lein
     - $HOME/.m2
 
+services:
+  - docker
+
 matrix:
   include:
     - jdk: oraclejdk8
@@ -15,9 +18,11 @@ matrix:
       env: EASTWOOD=true
     - jdk: oraclejdk8
       env: KIBIT=true
+    - env: DOCKER=true
   allow_failures:
     - env: EASTWOOD=true
     - env: KIBIT=true
+    - env: DOCKER=true
 
 install:
   - npm install -g eclint
@@ -30,6 +35,15 @@ script:
       lein eastwood
     elif [[ "${KIBIT}" == "true" ]]; then
       lein kibit
+    elif [[ "${DOCKER}" == "true" ]]; then
+      docker-compose build
+      docker-compose up -d
+      sleep 5
+      NUM_UP=`docker-compose ps | tee /dev/stderr | grep -c Up`
+      docker-compose stop
+      if [[ "${NUM_UP}" != "5" ]]; then
+        exit 1
+      fi
     else
       eclint check *
       lein cljfmt check

@@ -1,46 +1,49 @@
 peer:
-        image: 'desdemona:0.1.0'
-        links:
-          - zookeeper:zk
-          - kafka:kafka
-          - db:db
-          - syslog-ng:syslog-ng
-        environment:
-          ONYX_ID: 1
-          NPEERS: 6
-        privileged: true
-        expose:
-          - "40200"
-          - "40200/udp"
+  build: .
+  links:
+    - zookeeper:zk
+    - kafka:kafka
+    - db:db
+    - syslog-ng:syslog-ng
+  environment:
+    ONYX_ID: 1
+    NPEERS: 6
+  privileged: true
+  expose:
+    - "40200"
+    - "40200/udp"
 zookeeper:
-        image: 'wurstmeister/zookeeper'
-        ports:
-          - '2181:2181'
+  image: 'wurstmeister/zookeeper'
+  ports:
+    - '2181:2181'
 kafka:
-        image: 'wurstmeister/kafka'
-        environment:
-          KAFKA_BROKER_ID: 1
-          HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
-        links:
-          - zookeeper:zk
-        ports:
-          - "9092:9092"
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
+  image: 'wurstmeister/kafka'
+  environment:
+    KAFKA_BROKER_ID: 1
+    HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+  links:
+    - zookeeper:zk
+  ports:
+    - "9092:9092"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
 db:
-        image: mysql
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-          MYSQL_USER: onyx
-          MYSQL_PASSWORD: onyx
-          MYSQL_DATABASE: logs
-        ports:
-          - "3306:3306"
+  image: mysql
+  environment:
+    MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    MYSQL_USER: onyx
+    MYSQL_PASSWORD: onyx
+    MYSQL_DATABASE: logs
+  ports:
+    - "3306:3306"
 syslog-ng:
-    build: script/syslog-ng
-    links:
-        - kafka:kafka
-    volumes:
-        - ./script/syslog-ng/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf
-    ports:
-        - "601:601"
+  build: script/syslog-ng
+  links:
+      - kafka:kafka
+  volumes:
+      - ./script/syslog-ng/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf
+  ports:
+      - "601:601"
+test:
+  image: desdemona_peer
+  command: lein test
