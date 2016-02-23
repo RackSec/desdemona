@@ -9,7 +9,8 @@
 (deftest dsl->logic-tests
   (is (thrown? IllegalArgumentException (dsl->logic '(BOGUS BOGUS BOGUS))))
   (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
-         (dsl->logic '(= (:ip x) "10.0.0.1")))))
+         (dsl->logic '(= (:ip x) "10.0.0.1"))
+         (dsl->logic '(= "10.0.0.1" (:ip x))))))
 
 (def events
   [{:ip "10.0.0.1"}])
@@ -20,6 +21,12 @@
     [[{:ip "10.0.0.1"}]]
 
     '(= (:ip x) "BOGUS")
+    []
+
+    '(= "10.0.0.1" (:ip x))
+    [[{:ip "10.0.0.1"}]]
+
+    '(= "BOGUS" (:ip x))
     [])
   (testing "explicit maximum number of results"
     (let [results [[{:ip "10.0.0.1"}]]
