@@ -1,7 +1,7 @@
 (ns desdemona.jobs.sample-submit-job
   (:require [desdemona.catalogs.sample-catalog :refer [build-catalog]]
-            [desdemona.tasks.kafka :refer [add-kafka-input add-kafka-output]]
-            [desdemona.tasks.sql :refer [add-sql-partition-input add-sql-insert-output]]
+            [desdemona.tasks.kafka :refer [add-kafka-input]]
+            [desdemona.tasks.sql :refer [add-sql-insert-output]]
             [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
             [desdemona.lifecycles.metrics :refer [add-metrics]]
             [desdemona.lifecycles.logging :refer [add-logging]]
@@ -41,6 +41,6 @@
 (defn -main [& args]
   (let [config (read-config (clojure.java.io/resource "config.edn") {:profile :dev})
         peer-config (get config :peer-config)
-        job (build-job)]
-    (let [{:keys [job-id]} (onyx.api/submit-job peer-config job)]
-      (println "Submitted job: " job-id))))
+        job (build-job)
+        {:keys [job-id]} (onyx.api/submit-job peer-config job)]
+    (println "Submitted job: " job-id)))
