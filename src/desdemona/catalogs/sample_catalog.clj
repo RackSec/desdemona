@@ -6,19 +6,18 @@
 ;;; and adjusting performance settings.
 
 (defn build-catalog
-  ([] (build-catalog 5 50))
-  ([batch-size batch-timeout]
-   [{:onyx/name :extract-line-info
-     :onyx/fn :desdemona.functions.sample-functions/transform-segment-shape
-     :onyx/type :function
-     :onyx/batch-size batch-size
-     :onyx/batch-timeout batch-timeout
-     :keypath {"line" [:line]}
-     :onyx/params [:keypath]
-     :onyx/doc "Extracts the line"}
+  [batch-size batch-timeout]
+  [{:onyx/name :extract-line-info
+    :onyx/fn :desdemona.functions.sample-functions/transform-segment-shape
+    :onyx/type :function
+    :onyx/batch-size batch-size
+    :onyx/batch-timeout batch-timeout
+    :keypath {"line" [:line]}
+    :onyx/params [:keypath]
+    :onyx/doc "Extracts the line"}
 
-    {:onyx/name :prepare-rows
-     :onyx/fn :desdemona.functions.sample-functions/prepare-rows
-     :onyx/type :function
-     :onyx/batch-size batch-size
-     :onyx/batch-timeout batch-timeout}]))
+   {:onyx/name :prepare-rows
+    :onyx/fn :desdemona.functions.sample-functions/prepare-rows
+    :onyx/type :function
+    :onyx/batch-size batch-size
+    :onyx/batch-timeout batch-timeout}])
