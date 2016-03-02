@@ -4,10 +4,10 @@
 
 ;;; Defines functions to be used by the peers. These are located
 ;;; with fully qualified namespaced keywords, such as
-;;; desdemona.functions.sample-functions/format-line
+;;; desdemona.functions.sample-functions/add-message-origin
 
 (defn build-row [segment]
-  {:line (str (name (:origin segment)) ": " (segment "MESSAGE"))})
+  {:line (str (name (segment :origin)) ": " (segment "MESSAGE"))})
 
 (defn prepare-rows [segment]
   {:rows [segment]})
