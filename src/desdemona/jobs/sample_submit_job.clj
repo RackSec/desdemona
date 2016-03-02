@@ -26,7 +26,7 @@
                                       :kafka/topic "test1"
                                       :kafka/group-id "onyx-consumer"
                                       :kafka/zookeeper "zk:2181"
-                                      :kafka/deserializer-fn :desdemona.tasks.kafka/deserialize-message-raw
+                                      :kafka/deserializer-fn :desdemona.tasks.kafka/deserialize-message-json
                                       :kafka/offset-reset :smallest})
         (add-sql-insert-output :write-lines {:onyx/batch-size batch-size
                                              :sql/classname "com.mysql.jdbc.Driver"

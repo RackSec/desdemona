@@ -1,5 +1,4 @@
-(ns desdemona.catalogs.sample-catalog
-  (:require [desdemona.functions.sample-functions :refer [transform-segment-shape prepare-rows]]))
+(ns desdemona.catalogs.sample-catalog)
 
 ;;; Catalogs describe each task in a workflow. We use
 ;;; them for describing input and output sources, injecting parameters,
@@ -7,14 +6,19 @@
 
 (defn build-catalog
   [batch-size batch-timeout]
-  [{:onyx/name :extract-line-info
-    :onyx/fn :desdemona.functions.sample-functions/transform-segment-shape
+  [{:onyx/name :determine-origin
+    :onyx/fn :desdemona.functions.sample-functions/add-message-origin
     :onyx/type :function
     :onyx/batch-size batch-size
     :onyx/batch-timeout batch-timeout
-    :keypath {"line" [:line]}
-    :onyx/params [:keypath]
-    :onyx/doc "Extracts the line"}
+    :onyx/doc "Determine the origin of the message"}
+
+   {:onyx/name :build-row
+    :onyx/fn :desdemona.functions.sample-functions/build-row
+    :onyx/type :function
+    :onyx/batch-size batch-size
+    :onyx/batch-timeout batch-timeout
+    :onyx/doc "Transform the segment into a row for MySQL"}
 
    {:onyx/name :prepare-rows
     :onyx/fn :desdemona.functions.sample-functions/prepare-rows
