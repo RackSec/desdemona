@@ -3,30 +3,42 @@
             [clojure.java.io :as io]
             [byte-streams :as bs]
             [cheshire.core :as json]
-            [desdemona.functions.sample-functions :refer [prepare-rows message-origin add-message-origin build-row]]))
+            [desdemona.functions.sample-functions :refer [prepare-rows message-origin add-message-origin build-row add-original-wrapper]]))
+
+(deftest add-original-wrapper-test
+  (let [segment {:some :values}
+        got (add-original-wrapper segment)]
+    (is (= got {:original {:some :values}}))))
 
 (deftest prepare-rows-test
   (let [got (prepare-rows {"line" "this is a log line"})
         expected {:rows [{"line" "this is a log line"}]}]
     (is (= got expected))))
 
-(defn example
+(defn raw-example
   [kind]
   (json/parse-stream (bs/to-reader (io/file (io/resource (str "test/example_" (name kind) ".json")))) true))
 
+(defn example
+  [kind]
+  {:original (raw-example kind)})
+
 (deftest message-origin-test
   (are [expected got] (= expected got)
-       :syslog (message-origin (example :syslog))
-       :json (message-origin (example :json))
-       :falconhose (message-origin (example :falconhose))
-       :cloudpassage (message-origin (example :cloudpassage))))
+    :syslog (message-origin (raw-example :syslog))
+    :json (message-origin (raw-example :json))
+    :falconhose (message-origin (raw-example :falconhose))
+    :cloudpassage (message-origin (raw-example :cloudpassage))))
 
 (deftest add-message-origin-test
-  (let [got (add-message-origin (example :syslog))]
-    (is (= :syslog (got :origin)))))
+  (are [expected got] (= expected (got :origin))
+    :syslog (add-message-origin (example :syslog))
+    :json (add-message-origin (example :json))
+    :falconhose (add-message-origin (example :falconhose))
+    :cloudpassage (add-message-origin (example :cloudpassage))))
 
 (deftest build-row-test
-  (let [input {:origin :somewhere :MESSAGE "This is the message!"}
+  (let [input {:origin :somewhere :original {:MESSAGE "This is the message!"}}
         expected {:line "somewhere: This is the message!"}
         got (build-row input)]
     (is (= got expected))))

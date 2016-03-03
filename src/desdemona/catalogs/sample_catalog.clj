@@ -6,7 +6,14 @@
 
 (defn build-catalog
   [batch-size batch-timeout]
-  [{:onyx/name :determine-origin
+  [{:onyx/name :original-wrapper
+    :onyx/fn :desdemona.functions.sample-functions/add-original-wrapper
+    :onyx/type :function
+    :onyx/batch-size batch-size
+    :onyx/batch-timeout batch-timeout
+    :onyx/doc "Wrap the original message before further processing"}
+
+   {:onyx/name :determine-origin
     :onyx/fn :desdemona.functions.sample-functions/add-message-origin
     :onyx/type :function
     :onyx/batch-size batch-size
