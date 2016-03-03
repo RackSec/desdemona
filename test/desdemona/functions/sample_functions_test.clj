@@ -18,7 +18,11 @@
 
 (defn raw-example
   [kind]
-  (kwify-map (json/parse-stream (bs/to-reader (io/file (io/resource (str "test/example_" (name kind) ".json")))) true)))
+  (-> (str "test/example_" (name kind) ".json")
+      io/resource
+      io/reader
+      (json/parse-stream true)
+      kwify-map))
 
 (defn example
   [kind]
