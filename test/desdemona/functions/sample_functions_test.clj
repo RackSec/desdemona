@@ -9,12 +9,12 @@
 (deftest add-original-wrapper-test
   (let [segment {:some :values}
         got (add-original-wrapper segment)]
-    (is (= got {:original {:some :values}}))))
+    (is (= {:original {:some :values}} got))))
 
 (deftest prepare-rows-test
   (let [got (prepare-rows {"line" "this is a log line"})
         expected {:rows [{"line" "this is a log line"}]}]
-    (is (= got expected))))
+    (is (= expected got))))
 
 (defn raw-example
   [kind]
@@ -25,21 +25,21 @@
   {:original (raw-example kind)})
 
 (deftest message-origin-test
-  (are [expected got] (= expected got)
-    :syslog (message-origin (raw-example :syslog))
-    :json (message-origin (raw-example :json))
-    :falconhose (message-origin (raw-example :falconhose))
-    :cloudpassage (message-origin (raw-example :cloudpassage))))
+  (are [origin] (= origin (message-origin (raw-example origin)))
+    :syslog
+    :json
+    :falconhose
+    :cloudpassage))
 
 (deftest add-message-origin-test
-  (are [expected got] (= expected (got :origin))
-    :syslog (add-message-origin (example :syslog))
-    :json (add-message-origin (example :json))
-    :falconhose (add-message-origin (example :falconhose))
-    :cloudpassage (add-message-origin (example :cloudpassage))))
+  (are [origin] (= origin ((add-message-origin (example origin)) :origin))
+    :syslog
+    :json
+    :falconhose
+    :cloudpassage))
 
 (deftest build-row-test
   (let [input {:origin :somewhere :original {:message "This is the message!"}}
         expected {:line "somewhere: This is the message!"}
         got (build-row input)]
-    (is (= got expected))))
+    (is (= expected got))))

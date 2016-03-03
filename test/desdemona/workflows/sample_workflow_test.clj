@@ -9,4 +9,4 @@
                   [:build-row :prepare-rows]
                   [:prepare-rows :write-lines]]
         got (build-workflow)]
-    (is (= got expected))))
+    (is (= expected got))))

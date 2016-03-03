@@ -11,17 +11,17 @@
             "_that_we" "will change"}
         encoded (json/generate-string in)
         got (deserialize-message-json (.getBytes encoded))]
-    (is (= got {:this "will"
-                :be "json"
-                :with-different "forms"
-                :that-we "will change"}))))
+    (is (= {:this "will"
+            :be "json"
+            :with-different "forms"
+            :that-we "will change"} got))))
 
 (deftest deserialize-message-json-falconhose-test
   (let [raw (slurp (io/file (io/resource "test/example_falconhose.json")))
         decoded (json/parse-string raw true)
         got (deserialize-message-json (.getBytes raw))]
-    (is (= (got :facility) (decoded :FACILITY)))
-    (is (= (-> got :parsed :metadata :customerIDString) (-> decoded :_parsed :metadata :customerIDString)))))
+    (is (= (decoded :FACILITY) (got :facility)))
+    (is (= (-> decoded :_parsed :metadata :customerIDString) (-> got :parsed :metadata :customerIDString)))))
 
 (deftest deserialize-message-json-fails-test
   (let [got (deserialize-message-json "this should be bytes")]
@@ -34,8 +34,8 @@
 (deftest deserialize-message-raw-test
   (let [got (deserialize-message-raw (.getBytes "this is raw text"))
         expected {:line "this is raw text"}]
-    (is (= got expected))))
+    (is (= expected got))))
 
 (deftest deserialize-message-raw-fails-test
   (let [got (deserialize-message-raw "this should be bytes")]
-    (is (= (.getMessage (got :error)) "No matching ctor found for class java.lang.String"))))
+    (is (= "No matching ctor found for class java.lang.String" (.getMessage (got :error))))))
