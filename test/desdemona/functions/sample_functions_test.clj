@@ -3,6 +3,7 @@
             [clojure.java.io :as io]
             [byte-streams :as bs]
             [cheshire.core :as json]
+            [desdemona.utils :refer [kwify-map]]
             [desdemona.functions.sample-functions :refer [prepare-rows message-origin add-message-origin build-row add-original-wrapper]]))
 
 (deftest add-original-wrapper-test
@@ -17,7 +18,7 @@
 
 (defn raw-example
   [kind]
-  (json/parse-stream (bs/to-reader (io/file (io/resource (str "test/example_" (name kind) ".json")))) true))
+  (kwify-map (json/parse-stream (bs/to-reader (io/file (io/resource (str "test/example_" (name kind) ".json")))) true)))
 
 (defn example
   [kind]
@@ -38,7 +39,7 @@
     :cloudpassage (add-message-origin (example :cloudpassage))))
 
 (deftest build-row-test
-  (let [input {:origin :somewhere :original {:MESSAGE "This is the message!"}}
+  (let [input {:origin :somewhere :original {:message "This is the message!"}}
         expected {:line "somewhere: This is the message!"}
         got (build-row input)]
     (is (= got expected))))

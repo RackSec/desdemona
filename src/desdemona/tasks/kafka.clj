@@ -1,11 +1,12 @@
 (ns desdemona.tasks.kafka
   (:require [taoensso.timbre :refer [info]]
             [byte-streams :as bs]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [desdemona.utils :refer [kwify-map]]))
 
 (defn deserialize-message-json [bytes]
   (try
-    (json/parse-stream (bs/to-reader bytes) true)
+    (kwify-map (json/parse-stream (bs/to-reader bytes) true))
     (catch Exception e
       {:error e})))
 

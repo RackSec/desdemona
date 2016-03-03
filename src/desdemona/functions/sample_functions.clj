@@ -8,7 +8,7 @@
 
 (defn build-row
   [segment]
-  {:line (str (name (:origin segment)) ": " (-> segment :original :MESSAGE))})
+  {:line (str (name (:origin segment)) ": " (-> segment :original :message))})
 
 (defn prepare-rows
   [segment]
@@ -17,9 +17,9 @@
 (defn message-origin
   [message]
   (match [message]
-    [{:_parsed {:metadata {:customerIDString _}}}] :falconhose
-    [{:_parsed {:id _ :type _ :critical _ :message _}}] :cloudpassage
-    [{:_parsed _}] :json
+    [{:parsed {:metadata {:customerIDString _}}}] :falconhose
+    [{:parsed {:id _ :type _ :critical _ :message _}}] :cloudpassage
+    [{:parsed _}] :json
     :else :syslog))
 
 (defn add-message-origin
