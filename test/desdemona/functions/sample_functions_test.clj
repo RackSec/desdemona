@@ -1,7 +1,8 @@
 (ns desdemona.functions.sample-functions-test
   (:require [clojure.test :refer [deftest is are]]
             [clojure.java.io :as io]
-            [clojure.edn :as edn]
+            [byte-streams :as bs]
+            [cheshire.core :as json]
             [desdemona.functions.sample-functions :refer [prepare-rows message-origin add-message-origin build-row]]))
 
 (deftest prepare-rows-test
@@ -11,7 +12,7 @@
 
 (defn example
   [kind]
-  (edn/read-string (slurp (io/file (io/resource (str "test/example_" (name kind) ".edn"))))))
+  (json/parse-stream (bs/to-reader (io/file (io/resource (str "test/example_" (name kind) ".json")))) true))
 
 (deftest message-origin-test
   (are [expected got] (= expected got)
@@ -22,10 +23,10 @@
 
 (deftest add-message-origin-test
   (let [got (add-message-origin (example :syslog))]
-    (is (= :syslog (got "origin")))))
+    (is (= :syslog (got :origin)))))
 
 (deftest build-row-test
-  (let [input {"origin" :somewhere "MESSAGE" "This is the message!"}
+  (let [input {:origin :somewhere :MESSAGE "This is the message!"}
         expected {:line "somewhere: This is the message!"}
         got (build-row input)]
     (is (= got expected))))

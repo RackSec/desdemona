@@ -7,11 +7,11 @@
   (let [in {"this" "will" "be" "json"}
         encoded (json/generate-string in)
         got (deserialize-message-json (.getBytes encoded))]
-    (is (= in got))))
+    (is (= got {:this "will" :be "json"}))))
 
 (deftest deserialize-message-json-fails-test
   (let [got (deserialize-message-json "this should be bytes")]
-    (is (= (.getMessage (got :error)) "No matching ctor found for class java.lang.String"))))
+    (is (.startsWith (.getMessage (got :error)) "Unrecognized token"))))
 
 (deftest deserialize-message-invalid-json-fails-test
   (let [got (deserialize-message-json (.getBytes "not json"))]
