@@ -17,7 +17,7 @@
 (defn message-origin
   [message]
   (match [message]
-    [{:parsed {:metadata {:customerIDString _}}}] :falconhose
+    [{:parsed {:metadata {:customer-id-string _}}}] :falconhose
     [{:parsed {:id _ :type _ :critical _ :message _}}] :cloudpassage
     [{:parsed _}] :json
     :else :syslog))

@@ -1,12 +1,12 @@
 (ns desdemona.tasks.kafka
   (:require [taoensso.timbre :refer [info]]
             [byte-streams :as bs]
-            [cheshire.core :as json]
-            [desdemona.utils :refer [kwify-map]]))
+            [clojure.data.json :as json]
+            [camel-snake-kebab.core :refer [->kebab-case-keyword]]))
 
 (defn deserialize-message-json [bytes]
   (try
-    (kwify-map (json/parse-stream (bs/to-reader bytes) true))
+    (json/read (bs/to-reader bytes) :key-fn ->kebab-case-keyword)
     (catch Exception e
       {:error e})))
 

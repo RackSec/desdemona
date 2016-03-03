@@ -1,9 +1,8 @@
 (ns desdemona.functions.sample-functions-test
   (:require [clojure.test :refer [deftest is are]]
             [clojure.java.io :as io]
-            [byte-streams :as bs]
-            [cheshire.core :as json]
-            [desdemona.utils :refer [kwify-map]]
+            [clojure.data.json :as json]
+            [camel-snake-kebab.core :refer [->kebab-case-keyword]]
             [desdemona.functions.sample-functions :refer [prepare-rows message-origin add-message-origin build-row add-original-wrapper]]))
 
 (deftest add-original-wrapper-test
@@ -21,8 +20,7 @@
   (-> (str "test/example_" (name kind) ".json")
       io/resource
       io/reader
-      (json/parse-stream true)
-      kwify-map))
+      (json/read :key-fn ->kebab-case-keyword)))
 
 (defn example
   [kind]
