@@ -1,7 +1,7 @@
 (ns desdemona.functions.sample-functions-test
   (:require [clojure.test :refer [deftest is are]]
             [clojure.java.io :as io]
-            [clojure.data.json :as json]
+            [cheshire.core :as json]
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]
             [desdemona.functions.sample-functions :refer [prepare-rows message-origin add-message-origin build-row add-original-wrapper]]))
 
@@ -20,7 +20,7 @@
   (-> (str "test/example_" (name kind) ".json")
       io/resource
       io/reader
-      (json/read :key-fn ->kebab-case-keyword)))
+      (json/decode-stream ->kebab-case-keyword)))
 
 (defn example
   [kind]
