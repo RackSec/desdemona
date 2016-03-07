@@ -27,7 +27,11 @@
             [lein-kibit "0.1.2"]
             [jonase/eastwood "0.2.3"]
             [lein-cljsbuild "1.1.2"]
-            [lein-figwheel "0.5.0-1"]]
+            [lein-figwheel "0.5.0-1"]
+            [lein-npm "0.6.2"]]
+  :npm {:dependencies [[karma ""]
+                       [karma-cljs-test ""]
+                       [karma-firefox-launcher ""]]}
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
                         :figwheel true
