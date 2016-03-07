@@ -51,6 +51,8 @@ script:
       if [[ "${NUM_UP}" != "5" ]]; then
         exit 1
       fi
+    elif [[ "${DOO}" == "true" ]]; then
+      lein doo firefox test once
     else
       eclint check *
       lein cljfmt check
