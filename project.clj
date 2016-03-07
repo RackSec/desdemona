@@ -28,6 +28,13 @@
             [jonase/eastwood "0.2.3"]
             [lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-1"]]
+  :cljsbuild {:builds [{:id "dev"
+                        :source-paths ["src"]
+                        :figwheel true
+                        :compiler {:main "desdemona.ui.core"
+                                   :output-to "resources/public/js/app.js"
+                                   :output-dir "resources/public/js/out"
+                                   :asset-path "js/out"}}]}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
