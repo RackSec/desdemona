@@ -35,6 +35,7 @@
                                    :output-to "resources/ui/js/main.js"
                                    :output-dir "resources/ui/js/out"
                                    :asset-path "js/out"}}]}
+  :figwheel {:http-server-root "ui"}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
