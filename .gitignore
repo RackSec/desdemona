@@ -16,3 +16,4 @@ hs_err_pid*
 /resources/ui/js
 figwheel_server.log
 /node_modules
+/out
