@@ -10,6 +10,9 @@ cache:
 services:
   - docker
 
+addons:
+  firefox: latest
+
 matrix:
   include:
     - jdk: oraclejdk8
