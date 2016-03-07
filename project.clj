@@ -32,7 +32,7 @@
                         :source-paths ["src"]
                         :figwheel true
                         :compiler {:main "desdemona.ui.core"
-                                   :output-to "resources/ui/js/app.js"
+                                   :output-to "resources/ui/js/main.js"
                                    :output-dir "resources/ui/js/out"
                                    :asset-path "js/out"}}]}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
