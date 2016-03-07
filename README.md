@@ -85,7 +85,23 @@ Now you can submit a job:
 script/submit_job.sh
 ```
 
-Anything you send to syslog on that Docker host (there's a syslog-ng relay running as a container) will appear in MySQL.
+Anything you send to syslog on that Docker host (there's a syslog-ng
+relay running as a container) will appear in MySQL.
+
+### Debugging `docker-compose up`
+
+If you're using docker-machine, your VM should have at least 2048MB
+RAM. This is because the Kafka container tries to pre-allocate quite a
+bit of memory. If it has insufficient memory, you'll see the following
+error message in the docker-compose output:
+
+```
+kafka_1     | # There is insufficient memory for the Java Runtime Environment to continue.
+kafka_1     | # Native memory allocation (mmap) failed to map 1073741824 bytes for committing reserved memory.
+```
+
+You can fix this by increasing the amount of RAM in the VirtualBox VM
+to 2048MB or more.
 
 ### Production Mode Peers
 
