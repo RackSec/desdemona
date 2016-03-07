@@ -25,7 +25,7 @@ matrix:
 
 install:
   - npm install -g eclint
-  - PYTHONWARNINGS=IGNORE pip install --upgrade \
+  - PYTHONWARNINGS=ignore pip install --upgrade \
         pyopenssl ndg-httpsclient pyasn1
   - pip install --upgrade pip setuptools
   - pip install docker-compose
