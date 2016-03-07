@@ -1,6 +1,7 @@
 language: clojure
 
-sudo: false
+sudo: required
+dist: trusty
 
 cache:
   directories:
@@ -25,10 +26,6 @@ matrix:
 
 install:
   - npm install -g eclint
-  - PYTHONWARNINGS=ignore pip install --user --upgrade \
-        pyopenssl ndg-httpsclient pyasn1
-  - pip install --user --upgrade pip setuptools
-  - pip install --user docker-compose
 
 script:
   - |
