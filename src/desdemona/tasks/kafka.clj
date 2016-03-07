@@ -1,6 +1,14 @@
 (ns desdemona.tasks.kafka
   (:require [taoensso.timbre :refer [info]]
-            [cheshire.core :as json]))
+            [byte-streams :as bs]
+            [cheshire.core :as json]
+            [camel-snake-kebab.core :refer [->kebab-case-keyword]]))
+
+(defn deserialize-message-json [bytes]
+  (try
+    (json/decode-stream (bs/to-reader bytes) ->kebab-case-keyword)
+    (catch Exception e
+      {:error e})))
 
 (defn deserialize-message-raw [bytes]
   (try

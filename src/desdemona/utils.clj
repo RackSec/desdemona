@@ -1,6 +1,4 @@
-(ns desdemona.utils
-  (:require [clojure.core.async :refer [chan sliding-buffer >!!]]
-            [clojure.java.io :refer [resource]]))
+(ns desdemona.utils)
 
 ;;;; Test utils ;;;;
 

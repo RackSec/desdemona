@@ -15,6 +15,9 @@
                  [org.clojure/tools.cli "0.3.3"]
                  [mysql/mysql-connector-java "5.1.18"]
 
+                 [byte-streams "0.2.0"]
+                 [camel-snake-kebab "0.3.2"]
+
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]]
   :plugins [[lein-cljfmt "0.3.0"]

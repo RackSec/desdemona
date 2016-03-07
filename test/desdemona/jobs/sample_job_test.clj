@@ -9,11 +9,13 @@
 
 (deftest build-job-test
   (let [job (build-job)
-        expected-catalog-names [:extract-line-info :prepare-rows :read-lines :write-lines]
+        expected-catalog-names [:original-wrapper :determine-origin :build-row :prepare-rows :read-lines :write-lines]
         catalog (job :catalog)
         workflow (job :workflow)
-        expected-workflow [[:read-lines :extract-line-info]
-                           [:extract-line-info :prepare-rows]
+        expected-workflow [[:read-lines :original-wrapper]
+                           [:original-wrapper :determine-origin]
+                           [:determine-origin :build-row]
+                           [:build-row :prepare-rows]
                            [:prepare-rows :write-lines]]
         lifecycles (job :lifecycles)
         expected-lifecycles [{:lifecycle/task :write-lines :lifecycle/calls :desdemona.lifecycles.logging/log-calls}

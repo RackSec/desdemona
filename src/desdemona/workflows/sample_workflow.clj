@@ -4,6 +4,8 @@
 ;;; tasks that data can flow between.
 
 (defn build-workflow []
-  [[:read-lines :extract-line-info]
-   [:extract-line-info :prepare-rows]
+  [[:read-lines :original-wrapper]
+   [:original-wrapper :determine-origin]
+   [:determine-origin :build-row]
+   [:build-row :prepare-rows]
    [:prepare-rows :write-lines]])
