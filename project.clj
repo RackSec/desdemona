@@ -25,7 +25,9 @@
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]
             [lein-kibit "0.1.2"]
-            [jonase/eastwood "0.2.3"]]
+            [jonase/eastwood "0.2.3"]
+            [lein-cljsbuild "1.1.2"]
+            [lein-figwheel "0.5.0-1"]]
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
