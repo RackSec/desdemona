@@ -1,6 +1,7 @@
 language: clojure
 
-sudo: false
+sudo: required
+dist: trusty
 
 cache:
   directories:
