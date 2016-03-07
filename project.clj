@@ -32,8 +32,8 @@
                         :source-paths ["src"]
                         :figwheel true
                         :compiler {:main "desdemona.ui.core"
-                                   :output-to "resources/public/js/app.js"
-                                   :output-dir "resources/public/js/out"
+                                   :output-to "resources/ui/js/app.js"
+                                   :output-dir "resources/ui/js/out"
                                    :asset-path "js/out"}}]}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
