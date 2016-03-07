@@ -25,6 +25,7 @@ matrix:
 
 install:
   - npm install -g eclint
+  - pip install docker-compose
 
 script:
   - |
