@@ -45,6 +45,7 @@
                         :compiler {:main "desdemona.ui.runner"
                                    :output-to "target/cljs-tests/test.js"
                                    :optimizations :none}}]}
+  :doo {:paths {:karma "node_modules/karma/bin/karma"}}
   :figwheel {:http-server-root "ui"}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
