@@ -3,3 +3,5 @@
 (defn -main
   []
   (.log js/console "Hello, Desdemona!"))
+
+(def add +)
