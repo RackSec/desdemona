@@ -39,7 +39,12 @@
                         :compiler {:main "desdemona.ui.core"
                                    :output-to "resources/ui/js/main.js"
                                    :output-dir "resources/ui/js/out"
-                                   :asset-path "js/out"}}]}
+                                   :asset-path "js/out"}}
+                       {:id "test"
+                        :source-paths ["src" "test"]
+                        :compiler {:main "desdemona.ui.runner"
+                                   :output-to "target/cljs-tests/test.js"
+                                   :optimizations :none}}]}
   :figwheel {:http-server-root "ui"}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
