@@ -25,6 +25,8 @@ matrix:
 
 install:
   - npm install -g eclint
+  - pip install --upgrade pip setuptools
+  - pip install --upgrade pyopenssl ndg-httpsclient pyasn1
   - pip install docker-compose
 
 script:
