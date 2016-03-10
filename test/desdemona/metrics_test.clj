@@ -1,7 +1,7 @@
 (ns desdemona.metrics-test
   (:require
    [desdemona.lifecycles.metrics :as m]
-   [clojure.test :as t]))
+   [clojure.test :refer [deftest is]]))
 
 (deftest add-metrics-tests
   (let [job {:lifecycles []}
