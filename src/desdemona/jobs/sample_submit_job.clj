@@ -3,7 +3,6 @@
             [desdemona.tasks.kafka :refer [add-kafka-input]]
             [desdemona.tasks.sql :refer [add-sql-insert-output]]
             [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
-            [desdemona.lifecycles.metrics :refer [add-metrics]]
             [desdemona.lifecycles.logging :refer [add-logging]]
             [desdemona.workflows.sample-workflow :refer [build-workflow]]
             [aero.core :refer [read-config]]
