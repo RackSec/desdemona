@@ -20,6 +20,13 @@
 
                  [org.clojure/clojurescript "1.7.228"]
 
+                 [reagent "0.5.1"]
+                 [reagent-forms "0.5.21"]
+                 [reagent-utils "0.1.7"]
+                 [hiccup "1.0.5"]
+                 [secretary "1.2.3"]
+                 [venantius/accountant "0.1.7"]
+
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]]
   :plugins [[lein-cljfmt "0.3.0"]
@@ -29,7 +36,8 @@
             [lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-1"]
             [lein-npm "0.6.2"]
-            [lein-doo "0.1.6"]]
+            [lein-doo "0.1.6"]
+            [lein-sassy "1.0.7"]]
   :npm {:dependencies [[karma ""]
                        [karma-cljs-test ""]
                        [karma-firefox-launcher ""]]}
@@ -45,8 +53,11 @@
                         :compiler {:main "desdemona.ui.runner"
                                    :output-to "target/cljs-tests/test.js"
                                    :optimizations :none}}]}
+  :sass {:src "resources/ui/sass"
+        :dst "resources/ui/css"}
   :doo {:paths {:karma "node_modules/karma/bin/karma"}}
-  :figwheel {:http-server-root "ui"}
+  :figwheel {:http-server-root "ui"
+             :css-dirs ["resources/ui/css"]}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
