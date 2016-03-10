@@ -7,7 +7,7 @@
   (let [job {:lifecycles []}
         task {}
         lifecycle {:lifecycle/task task
-                   :lifecycle/calls :onyx-lifecycle.metrics.metrics/calls}
+                   :lifecycle/calls :onyx.lifecycle.metrics.metrics/calls}
         opts {:pedantic true}
         lifecycle-with-opts (merge lifecycle opts)]
     (is (= {:lifecycles [lifecycle]}
