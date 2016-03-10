@@ -27,14 +27,25 @@
             [lein-kibit "0.1.2"]
             [jonase/eastwood "0.2.3"]
             [lein-cljsbuild "1.1.2"]
-            [lein-figwheel "0.5.0-1"]]
+            [lein-figwheel "0.5.0-1"]
+            [lein-npm "0.6.2"]
+            [lein-doo "0.1.6"]]
+  :npm {:dependencies [[karma ""]
+                       [karma-cljs-test ""]
+                       [karma-firefox-launcher ""]]}
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
                         :figwheel true
                         :compiler {:main "desdemona.ui.core"
                                    :output-to "resources/ui/js/main.js"
                                    :output-dir "resources/ui/js/out"
-                                   :asset-path "js/out"}}]}
+                                   :asset-path "js/out"}}
+                       {:id "test"
+                        :source-paths ["src" "test"]
+                        :compiler {:main "desdemona.ui.runner"
+                                   :output-to "target/cljs-tests/test.js"
+                                   :optimizations :none}}]}
+  :doo {:paths {:karma "node_modules/karma/bin/karma"}}
   :figwheel {:http-server-root "ui"}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
