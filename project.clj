@@ -44,9 +44,9 @@
                        [karma-cljs-test ""]
                        [karma-firefox-launcher ""]]}
   :cljsbuild {:builds [{:id "dev"
-                        :source-paths ["src"]
+                        :source-paths ["env/dev/desdemona/ui/dev.cljs"]
                         :figwheel true
-                        :compiler {:main "desdemona.ui.core"
+                        :compiler {:main "desdemona.dev"
                                    :output-to "resources/ui/js/main.js"
                                    :output-dir "resources/ui/js/out"
                                    :asset-path "js/out"}}
