@@ -119,6 +119,10 @@ reproducible Java 8 environment.
 Launch the `src/desdemona/launcher/submit_prod_sample_job.clj` main
 function, giving it an Onyx ID and ZooKeeper address.
 
+### Run the front-end for development
+
+First, make sure you have [Leiningen](http://leiningen.org/) installed. Run `lein sass watch & lein fighweel`. This will start a Leiningen server at `http://localhost:3449/` as well as automatically watch, compile and inject the project source files for you.
+
 ## License
 
 Copyright © 2015 Rackspace Hosting, Inc.
