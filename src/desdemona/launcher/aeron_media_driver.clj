@@ -2,7 +2,8 @@
   (:gen-class)
   (:require
    [clojure.core.async :refer [chan <!!]]
-   [clojure.tools.cli :refer [parse-opts]])
+   [clojure.tools.cli :refer [parse-opts]]
+   [clojure.string :as s])
   (:import
    [uk.co.real_logic.aeron.driver MediaDriver MediaDriver$Context]))
 
@@ -20,19 +21,38 @@
    "has been started and then use -d to delete the directory on startup"))
 
 (defn ^:private run-media-driver!
-  [opts]
+  [options]
   (let [ctx (doto (MediaDriver$Context.)
-              (.dirsDeleteOnStart (-> opts :options :delete-dirs)))]
+              (.dirsDeleteOnStart (options :delete-dirs)))]
     (try (MediaDriver/launch ctx)
          (catch IllegalStateException ise
            (throw (Exception. aeron-launch-error-message ise))))))
 
+(defn ^:private run-media-driver-and-block!
+  [options]
+  (do (run-media-driver! options)
+      (println "Launched the Media Driver. Blocking forever...")
+      (<!! (chan))))
+
+(defn ^:private usage
+  "Given usage summary, returns lines suitable to print as a usage summary."
+  [summary]
+  (concat ["Usage:" ""] summary))
+
+(defn ^:private cli-error-msg
+  "Given errors, returns lines suitable to print as error summary."
+  [errors]
+  (concat ["Couldn't parse your command:" ""] errors))
+
+(defn ^:private exit!
+  "Prints lines to *out* and exit with status."
+  [status lines]
+  (println (s/join \newline lines))
+  (System/exit status))
+
 (defn -main [& args]
-  (let [opts (parse-opts args cli-options)]
-    (if (-> opts :options :help)
-      (do (run! (fn [opt]
-                  (println (clojure.string/join " " (take 3 opt))))
-                cli-options))
-      (do (run-media-driver!)
-          (println "Launched the Media Driver. Blocking forever...")
-          (<!! (chan))))))
+  (let [{:keys [options errors summary]} (parse-opts args cli-options)]
+    (cond
+      (options :help) (exit! 0 (usage summary))
+      errors (exit! 1 (concat (cli-error-msg errors) ( q)))
+      :else (run-media-driver-and-block! options))))
