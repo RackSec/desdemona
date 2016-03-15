@@ -1,0 +1,16 @@
+// spacing
+$spacing_values: (0, 10, 15, 30, 100);
+
+@each $space in $spacing_values {
+  // margins
+  .mt-#{$space} { margin-top: #{$space}px; }
+  .mr-#{$space} { margin-right: #{$space}px; }
+  .mb-#{$space} { margin-bottom: #{$space}px; }
+  .ml-#{$space} { margin-left: #{$space}px; }
+
+  // paddings
+  .pt-#{$space} { padding-top: #{$space}px; }
+  .pr-#{$space} { padding-right: #{$space}px; }
+  .pb-#{$space} { padding-bottom: #{$space}px; }
+  .pl-#{$space} { padding-left: #{$space}px; }
+}
