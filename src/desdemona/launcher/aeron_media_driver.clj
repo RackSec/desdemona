@@ -6,8 +6,10 @@
            [uk.co.real_logic.aeron.driver MediaDriver MediaDriver$Context]))
 
 (def cli-options
-  [["-d" "--delete-dirs" "Delete the media drivers directory on startup" :default false]
    ["-h" "--help"]])
+  [["-d" "--delete-dirs"
+    "Delete the media drivers directory on startup"
+    :default false]
 
 (defn -main [& args]
   (let [opts (parse-opts args cli-options)
