@@ -41,7 +41,7 @@
     [:div.navbar-header
      [:a.navbar-brand.brand-logo {:href "#"}
       "Desdemona"]]
-    [search-form-component]]
+    (search-form-component)]
    [:div.container-fluid
     [:nav
      (let [current-page (session/get :current-page)
