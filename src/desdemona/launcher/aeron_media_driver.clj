@@ -4,7 +4,6 @@
    [clojure.core.async :refer [chan <!!]]
    [clojure.tools.cli :refer [parse-opts]])
   (:import
-   [uk.co.real_logic.aeron Aeron$Context]
    [uk.co.real_logic.aeron.driver MediaDriver MediaDriver$Context]))
 
 (def cli-options
