@@ -13,6 +13,8 @@ RUN mkdir /etc/service/aeron
 
 RUN apt-get install -y oracle-java8-installer
 
+RUN apt-get install -y npm
+
 # Install lein -- https://github.com/Quantisan/docker-clojure/blob/master/Dockerfile
 ENV LEIN_VERSION=2.5.3
 ENV LEIN_INSTALL=/usr/local/bin/
