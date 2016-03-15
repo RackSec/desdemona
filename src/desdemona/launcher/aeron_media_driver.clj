@@ -30,9 +30,9 @@
 
 (defn ^:private run-media-driver-and-block!
   [options]
-  (do (run-media-driver! options)
-      (println "Launched the Media Driver. Blocking forever...")
-      (<!! (chan))))
+  (run-media-driver! options)
+  (println "Launched the Media Driver. Blocking forever...")
+  (<!! (chan)))
 
 (defn ^:private usage
   "Given usage summary, returns lines suitable to print as a usage summary."
