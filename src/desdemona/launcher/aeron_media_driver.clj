@@ -3,24 +3,16 @@
   (:require [clojure.core.async :refer [chan <!!]]
             [clojure.tools.cli :refer [parse-opts]])
   (:import [uk.co.real_logic.aeron Aeron$Context]
-           [uk.co.real_logic.aeron.driver MediaDriver MediaDriver$Context ThreadingMode]))
+           [uk.co.real_logic.aeron.driver MediaDriver MediaDriver$Context]))
 
 (def cli-options
-  [["-t" "--threading-mode THREADING-MODE" "Aeron media driver threading mode: shared or dedicated or shared-network"
-    :default "shared"
-    :validate [#{"shared" "dedicated" "shared-network"} "Must be shared, dedicated, or shared-network"]]
-   ["-d" "--delete-dirs" "Delete the media drivers directory on startup" :default false]
+  [["-d" "--delete-dirs" "Delete the media drivers directory on startup" :default false]
    ["-h" "--help"]])
 
 (defn -main [& args]
   (let [opts (parse-opts args cli-options)
-        {:keys [help threading-mode delete-dirs]} (:options opts)
-        threading-mode-obj (cond
-                             (= threading-mode "dedicated") ThreadingMode/DEDICATED
-                             (= threading-mode "shared-network") ThreadingMode/SHARED_NETWORK
-                             :else ThreadingMode/SHARED)
+        {:keys [help delete-dirs]} (:options opts)
         ctx (cond-> (MediaDriver$Context.)
-              threading-mode (.threadingMode threading-mode-obj)
               delete-dirs (.dirsDeleteOnStart delete-dirs))
         media-driver (try (MediaDriver/launch ctx)
                           (catch IllegalStateException ise
@@ -30,8 +22,5 @@
               (println (clojure.string/join " " (take 3 opt)))) 
             cli-options)
       (System/exit 0))
-    (when (and (System/getProperty "aeron.threading.mode") threading-mode)
-      (throw (Exception. "Cannot set both aeron.threading.mode property and threading-mode command-line arg")))
-    (println "Starting media driver with threading mode:" threading-mode ". Use -t to supply an alternative threading mode.")
     (println "Launched the Media Driver. Blocking forever...")
     (<!! (chan))))
