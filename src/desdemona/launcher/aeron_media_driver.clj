@@ -27,13 +27,11 @@
            (throw (Exception. aeron-launch-error-message ise))))))
 
 (defn -main [& args]
-  (let [opts (parse-opts args cli-options)
-        {:keys [help delete-dirs]} (:options opts)]
-    (when help
-      (run! (fn [opt]
-              (println (clojure.string/join " " (take 3 opt))))
-            cli-options)
-      (System/exit 0))
-    (run-media-driver!)
-    (println "Launched the Media Driver. Blocking forever...")
-    (<!! (chan))))
+  (let [opts (parse-opts args cli-options)]
+    (if (-> opts :options :help)
+      (do (run! (fn [opt]
+                  (println (clojure.string/join " " (take 3 opt))))
+                cli-options))
+      (do (run-media-driver!)
+          (println "Launched the Media Driver. Blocking forever...")
+          (<!! (chan))))))
