@@ -19,7 +19,7 @@
                             (throw (Exception. "Error starting media driver. This may be due to a media driver data incompatibility between versions. Check that no other media driver has been started and then use -d to delete the directory on startup" ise))))]
     (when help
       (run! (fn [opt]
-              (println (clojure.string/join " " (take 3 opt)))) 
+              (println (clojure.string/join " " (take 3 opt))))
             cli-options)
       (System/exit 0))
     (println "Launched the Media Driver. Blocking forever...")
