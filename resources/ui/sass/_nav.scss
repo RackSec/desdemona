@@ -1,0 +1,23 @@
+// nav
+.navbar-double-row {
+
+  .navbar-form {
+    width: calc(100% - #{$logo-width});
+  }
+
+  .input-group {
+    width: 100%;
+  }
+
+  .input-group .input-group-btn {
+    width: 130px;
+  }
+
+  .nav-tabs {
+    border-bottom: 0;
+
+    a:focus {
+      outline: none;
+    }
+  }
+}
