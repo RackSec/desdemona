@@ -1,7 +1,8 @@
 (ns desdemona.launcher.launch-prod-peers
   (:require [clojure.core.async :refer [<!! chan]]
-            [aero.core :refer [read-config]]
+            [aero.core :as aero]
             [taoensso.timbre :as t]
+            [clojure.java.io :as io]
             [onyx.plugin.kafka]
             [onyx.plugin.sql]
             [onyx.plugin.core-async]
@@ -17,9 +18,13 @@
   (let [{:keys [output-fn]} data]
     (println (output-fn data))))
 
+(defn ^:private read-config!
+  []
+  (aero/read-config (io/resource "config.edn") {:profile :default}))
+
 (defn -main [n & args]
   (let [n-peers (Integer/parseInt n)
-        config (read-config (clojure.java.io/resource "config.edn") {:profile :default})
+        config (read-config!)
         peer-config (assoc
                      (:peer-config config)
                      :onyx.log/config
