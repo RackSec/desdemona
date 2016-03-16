@@ -34,7 +34,8 @@
   ["Usage:"
    ""
    "  -d, --delete-dirs  Delete the media drivers directory on startup"
-   "  -h, --help         Display a help message\n"])
+   "  -h, --help         Display a help message"
+   ""])
 
 (def ^:private error-lines
   ["Unknown option: \"--xyzzy\""])
