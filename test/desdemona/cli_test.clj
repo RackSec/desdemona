@@ -1,10 +1,19 @@
 (ns desdemona.cli-test
   (:require
    [desdemona.launcher.aeron-media-driver :as aeron]
+   [desdemona.launcher.utils :as utils]
    [clojure.test :refer [deftest testing is]]
-   [clojure.string :as s])
+   [clojure.string :as s]
+   [clojure.core.async :as a])
   (:import
    [java.io StringWriter]))
+
+(deftest block-forever!-tests
+  (let [ch (a/chan)]
+    (with-redefs [a/chan (fn []
+                           (a/put! ch ::blocked-forever)
+                           ch)]
+      (is (= (utils/block-forever!) ::blocked-forever)))))
 
 (def fake-block-forever!
   (constantly ::blocked-forever))
