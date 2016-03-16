@@ -33,8 +33,8 @@
   (let [ctx (doto (MediaDriver$Context.)
               (.dirsDeleteOnStart (options :delete-dirs)))]
     (try (launch-media-driver! ctx)
-         (catch IllegalStateException ise
-           (throw (Exception. aeron-launch-error-message ise))))))
+         (catch IllegalStateException e
+           (throw (Exception. aeron-launch-error-message e))))))
 
 (defn ^:private run-media-driver-and-block!
   [options]
