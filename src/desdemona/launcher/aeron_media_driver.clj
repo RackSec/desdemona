@@ -47,11 +47,6 @@
   [summary]
   (conj ["Usage:" ""] summary))
 
-(defn ^:private cli-error-msg
-  "Given errors, returns lines suitable to print as error summary."
-  [errors]
-  (concat ["Couldn't parse your command:" ""] errors))
-
 (defn ^:private exit!
   "Prints lines to *out* and exit with status."
   [status lines]
