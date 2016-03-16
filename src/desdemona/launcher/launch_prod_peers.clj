@@ -24,9 +24,9 @@
 
 (defn -main [n & args]
   (let [n-peers (Integer/parseInt n)
-        config (read-config!)
+        {:keys [peer-config env-config]} (read-config!)
         peer-config (assoc
-                     (:peer-config config)
+                     peer-config
                      :onyx.log/config
                      {:appenders
                       {:stdout
@@ -35,7 +35,7 @@
                         :output-fn t/default-output-fn,
                         :fn stdout-logger}}})
         peer-group (onyx.api/start-peer-group peer-config)
-        env (onyx.api/start-env (:env-config config))
+        env (onyx.api/start-env env-config)
         peers (onyx.api/start-peers n-peers peer-group)]
     (println "Attempting to connect to Zookeeper: " (:zookeeper/address peer-config))
     (.addShutdownHook (Runtime/getRuntime)
