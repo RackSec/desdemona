@@ -1,7 +1,7 @@
 (ns desdemona.launcher.aeron-media-driver
   (:gen-class)
   (:require
-   [clojure.core.async :refer [chan <!!]]
+   [desdemona.launcher.utils :as utils]
    [clojure.tools.cli :refer [parse-opts]]
    [clojure.string :as s])
   (:import
@@ -32,7 +32,7 @@
   [options]
   (run-media-driver! options)
   (println "Launched the Media Driver. Blocking forever...")
-  (<!! (chan)))
+  (utils/block-forever!))
 
 (defn ^:private usage
   "Given usage summary, returns lines suitable to print as a usage summary."
