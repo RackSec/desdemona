@@ -35,5 +35,5 @@
   (testing "usage"
     (let [[result stdout] (with-fake-launcher-side-effects
                             (aeron/-main "--help"))]
-      (is (= result 0))
       (is (= stdout nil)))))
+      (is (= result [::exited 0]))
