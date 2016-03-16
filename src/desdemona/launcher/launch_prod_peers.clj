@@ -41,7 +41,7 @@
         peer-group (onyx.api/start-peer-group peer-config)
         env (onyx.api/start-env env-config)
         peers (onyx.api/start-peers n-peers peer-group)]
-    (println "Attempting to connect to Zookeeper: " (:zookeeper/address peer-config))
+    (println "Connecting to Zookeeper: " (:zookeeper/address peer-config))
     (add-shutdown-hook! (fn []
                           (doseq [v-peer peers]
                             (onyx.api/shutdown-peer v-peer))
