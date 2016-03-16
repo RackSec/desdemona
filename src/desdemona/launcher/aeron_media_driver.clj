@@ -55,5 +55,5 @@
   (let [{:keys [options errors summary]} (parse-opts args cli-options)]
     (cond
       (options :help) (exit! 0 (usage summary))
-      errors (exit! 1 (concat (cli-error-msg errors) (usage summary)))
+      errors (exit! 1 (into errors (usage summary)))
       :else (run-media-driver-and-block! options))))
