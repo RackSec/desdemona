@@ -3,7 +3,8 @@
   (:require
    [desdemona.launcher.utils :as utils]
    [clojure.tools.cli :refer [parse-opts]]
-   [clojure.string :as s])
+   [clojure.string :as s]
+   [com.gfredericks.system-slash-exit :as system-slash-exit])
   (:import
    [uk.co.real_logic.aeron.driver MediaDriver MediaDriver$Context]))
 
@@ -48,7 +49,7 @@
   "Prints lines to *out* and exit with status."
   [status lines]
   (println (s/join \newline lines))
-  (System/exit status))
+  (system-slash-exit/exit status))
 
 (defn -main [& args]
   (let [{:keys [options errors summary]} (parse-opts args cli-options)]
