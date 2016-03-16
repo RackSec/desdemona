@@ -11,7 +11,7 @@
             [desdemona.lifecycles.sample-lifecycle])
   (:gen-class))
 
-(defn standard-out-logger
+(defn stdout-logger
   "Logger to output on std-out, for use with docker-compose"
   [data]
   (let [{:keys [output-fn]} data]
@@ -24,11 +24,11 @@
                      (:peer-config config)
                      :onyx.log/config
                      {:appenders
-                      {:standard-out
+                      {:stdout
                        {:enabled? true,
                         :async? false,
                         :output-fn t/default-output-fn,
-                        :fn standard-out-logger}}})
+                        :fn stdout-logger}}})
         peer-group (onyx.api/start-peer-group peer-config)
         env (onyx.api/start-env (:env-config config))
         peers (onyx.api/start-peers n-peers peer-group)]
