@@ -21,11 +21,18 @@
    "incompatibility between versions. Check that no other media driver "
    "has been started and then use -d to delete the directory on startup"))
 
+(defn ^:private launch-media-driver!
+  "Calls MediaDriver/launch.
+
+  This only exists so the var can be mocked out."
+  [ctx]
+  (MediaDriver/launch ctx))
+
 (defn ^:private run-media-driver!
   [options]
   (let [ctx (doto (MediaDriver$Context.)
               (.dirsDeleteOnStart (options :delete-dirs)))]
-    (try (MediaDriver/launch ctx)
+    (try (launch-media-driver! ctx)
          (catch IllegalStateException ise
            (throw (Exception. aeron-launch-error-message ise))))))
 
