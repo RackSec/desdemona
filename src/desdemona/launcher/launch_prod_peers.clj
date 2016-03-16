@@ -34,9 +34,9 @@
                      :onyx.log/config
                      {:appenders
                       {:stdout
-                       {:enabled? true,
-                        :async? false,
-                        :output-fn t/default-output-fn,
+                       {:enabled? true
+                        :async? false
+                        :output-fn t/default-output-fn
                         :fn stdout-logger}}})
         peer-group (onyx.api/start-peer-group peer-config)
         env (onyx.api/start-env env-config)
