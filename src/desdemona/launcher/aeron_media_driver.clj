@@ -38,7 +38,7 @@
 (defn ^:private usage
   "Given usage summary, returns lines suitable to print as a usage summary."
   [summary]
-  (concat ["Usage:" ""] summary))
+  (conj ["Usage:" ""] summary))
 
 (defn ^:private cli-error-msg
   "Given errors, returns lines suitable to print as error summary."
