@@ -53,6 +53,12 @@
       (is (= result [::exited 1]))
       (is (= stdout (s/join \newline (concat error-lines usage-lines))))))
   (testing "regular run"
-    (let [[result stdout] (with-fake-launcher-side-effects (aeron/-main))]
-      (is (= result ::blocked-forever))
-      (is (= stdout "Launched the Media Driver. Blocking forever...\n")))))
+    (let [launched (atom false)]
+      (with-redefs [aeron/launch-media-driver!
+                    (fn [ctx]
+                      (is (not (.dirsDeleteOnStart ctx)))
+                      (reset! launched true))]
+        (let [[result stdout] (with-fake-launcher-side-effects (aeron/-main))]
+          (is @launched)
+          (is (= result ::blocked-forever))
+          (is (= stdout "Launched the Media Driver. Blocking forever...\n")))))))
