@@ -38,7 +38,7 @@
 
 (deftest aeron-main-tests
   "Tests for the aeron-media-driver main."
-  (testing "usage"
+  (testing "--help displays usage"
     (let [[result stdout] (with-fake-launcher-side-effects
                             (aeron/-main "--help"))]
       (is (= result [::exited 0]))
