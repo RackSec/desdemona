@@ -40,7 +40,7 @@
             [lein-figwheel "0.5.0-1"]
             [lein-npm "0.6.2"]
             [lein-doo "0.1.6"]
-            [lein-sassy "1.0.7"]]
+            [lein-scss "0.2.3"]]
   :npm {:dependencies [[karma ""]
                        [karma-cljs-test ""]
                        [karma-firefox-launcher ""]]}
@@ -56,8 +56,11 @@
                         :compiler {:main "desdemona.ui.runner"
                                    :output-to "target/cljs-tests/test.js"
                                    :optimizations :none}}]}
-  :sass {:src "resources/ui/sass"
-        :dst "resources/ui/css"}
+  :scss {:builds
+         {:dev {:source-dir "resources/ui/sass/"
+                :dest-dir "resources/ui/css/"
+                :executable "sassc"
+                :args ["-m" "-I" "resources/ui/sass/" "-t" "nested"]}}}
   :doo {:paths {:karma "node_modules/karma/bin/karma"}}
   :figwheel {:http-server-root "ui"
              :css-dirs ["resources/ui/css"]
