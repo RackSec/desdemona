@@ -20,7 +20,7 @@
 
                  [org.clojure/clojurescript "1.7.228"]
 
-                 [reagent "0.5.1"]
+                 [reagent "0.6.0-alpha"]
                  [reagent-forms "0.5.21"]
                  [reagent-utils "0.1.7"]
                  [hiccup "1.0.5"]
@@ -28,7 +28,7 @@
                  [venantius/accountant "0.1.7"]
                  [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
                  [org.clojure/tools.nrepl "0.2.12"]
-                 [cljsjs/react-bootstrap "0.25.1-0"]
+                 [cljsjs/react-bootstrap "0.28.1-1"]
 
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]]
