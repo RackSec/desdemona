@@ -1,7 +1,8 @@
 (ns desdemona.cli-test
   (:require
    [desdemona.launcher.aeron-media-driver :as aeron]
-   [clojure.test :refer [deftest testing is]])
+   [clojure.test :refer [deftest testing is]]
+   [clojure.string :as s])
   (:import
    [java.io StringWriter]))
 
@@ -29,11 +30,16 @@
          (let [result# ~@body]
            [result# (str stdout#)])))))
 
+(def ^:private usage-lines
+  ["Usage:"
+   ""
+   "  -d, --delete-dirs  Delete the media drivers directory on startup"
+   "  -h, --help         Display a help message\n"])
 
 (deftest aeron-main-tests
   "Tests for the aeron-media-driver main."
   (testing "usage"
     (let [[result stdout] (with-fake-launcher-side-effects
                             (aeron/-main "--help"))]
-      (is (= stdout nil)))))
       (is (= result [::exited 0]))
+      (is (= stdout (s/join \newline usage-lines))))))
