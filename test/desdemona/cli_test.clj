@@ -51,4 +51,8 @@
     (let [[result stdout] (with-fake-launcher-side-effects
                             (aeron/-main "--xyzzy"))]
       (is (= result [::exited 1]))
-      (is (= stdout (s/join \newline (concat error-lines usage-lines)))))))
+      (is (= stdout (s/join \newline (concat error-lines usage-lines))))))
+  (testing "regular run"
+    (let [[result stdout] (with-fake-launcher-side-effects (aeron/-main))]
+      (is (= result ::blocked-forever))
+      (is (= stdout "Launched the Media Driver. Blocking forever...\n")))))
