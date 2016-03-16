@@ -36,10 +36,18 @@
    "  -d, --delete-dirs  Delete the media drivers directory on startup"
    "  -h, --help         Display a help message\n"])
 
+(def ^:private error-lines
+  ["Unknown option: \"--xyzzy\""])
+
 (deftest aeron-main-tests
   "Tests for the aeron-media-driver main."
   (testing "--help displays usage"
     (let [[result stdout] (with-fake-launcher-side-effects
                             (aeron/-main "--help"))]
       (is (= result [::exited 0]))
-      (is (= stdout (s/join \newline usage-lines))))))
+      (is (= stdout (s/join \newline usage-lines)))))
+  (testing "bogus parameters display errors + usage"
+    (let [[result stdout] (with-fake-launcher-side-effects
+                            (aeron/-main "--xyzzy"))]
+      (is (= result [::exited 1]))
+      (is (= stdout (s/join \newline (concat error-lines usage-lines)))))))
