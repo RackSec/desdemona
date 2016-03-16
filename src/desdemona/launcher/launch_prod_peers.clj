@@ -22,6 +22,10 @@
   []
   (aero/read-config (io/resource "config.edn") {:profile :default}))
 
+(defn ^:private add-shutdown-hook!
+  [f]
+  (.addShutdownHook (Runtime/getRuntime) (Thread. f)))
+
 (defn -main [n & args]
   (let [n-peers (Integer/parseInt n)
         {:keys [peer-config env-config]} (read-config!)
@@ -38,13 +42,11 @@
         env (onyx.api/start-env env-config)
         peers (onyx.api/start-peers n-peers peer-group)]
     (println "Attempting to connect to Zookeeper: " (:zookeeper/address peer-config))
-    (.addShutdownHook (Runtime/getRuntime)
-                      (Thread.
-                       (fn []
-                         (doseq [v-peer peers]
-                           (onyx.api/shutdown-peer v-peer))
-                         (onyx.api/shutdown-peer-group peer-group)
-                         (shutdown-agents))))
+    (add-shutdown-hook! (fn []
+                          (doseq [v-peer peers]
+                            (onyx.api/shutdown-peer v-peer))
+                          (onyx.api/shutdown-peer-group peer-group)
+                          (shutdown-agents)))
     (println "Started peers. Blocking forever.")
     ;; Block forever.
     (<!! (chan))))
