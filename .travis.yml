@@ -24,10 +24,6 @@ matrix:
     - env: DOCKER=true
     - jdk: oraclejdk8
       env: DOO=true
-  allow_failures:
-    - env: EASTWOOD=true
-    - env: KIBIT=true
-    - env: DOCKER=true
 
 install:
   - npm install -g eclint
