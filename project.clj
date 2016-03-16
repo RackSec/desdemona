@@ -40,7 +40,9 @@
             [lein-figwheel "0.5.0-1"]
             [lein-npm "0.6.2"]
             [lein-doo "0.1.6"]
-            [lein-scss "0.2.3"]]
+            [lein-scss "0.2.3"]
+            [lein-pdo "0.1.1"]]
+  :aliases {"figsass" ["pdo" ["scss" ":dev" "auto"] ["figwheel"]]}
   :npm {:dependencies [[karma ""]
                        [karma-cljs-test ""]
                        [karma-firefox-launcher ""]]}
