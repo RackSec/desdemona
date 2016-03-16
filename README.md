@@ -121,7 +121,9 @@ function, giving it an Onyx ID and ZooKeeper address.
 
 ### Run the front-end for development
 
-First, make sure you have [Leiningen](http://leiningen.org/) installed. Run `lein sass watch & lein fighweel`. This will start a Leiningen server at `http://localhost:3449/` as well as automatically watch, compile and inject the project source files for you.
+First, make sure you have [Leiningen](http://leiningen.org/) installed and then run `lein figsass` from the project directory. This will start a Leiningen server at `http://localhost:3449/` as well as automatically watch, compile and inject the project source files for you.
+
+`lein figsass` is just an alias running two tasks in parallel: `scss :dev auto` and `figwheel`. For Sass compilation, project assumes you have [sassc](https://github.com/sass/sassc) binary installed. You can use different binary by changing the `:executable` under `:scss` inside `project.clj`.
 
 ## License
 
