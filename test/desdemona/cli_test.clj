@@ -36,7 +36,7 @@
                  desdemona.launcher.utils/block-forever! fake-block-forever!]
      (let [stdout# (StringWriter.)]
        (binding [*out* stdout#]
-         (let [result# ~@body]
+         (let [result# (do ~@body)]
            [result# (str stdout#)])))))
 
 (def ^:private usage-lines
