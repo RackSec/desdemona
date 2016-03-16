@@ -1,5 +1,5 @@
 (ns desdemona.launcher.launch-prod-peers
-  (:require [clojure.core.async :refer [<!! chan]]
+  (:require [desdemona.launcher.utils :as utils]
             [aero.core :as aero]
             [taoensso.timbre :as t]
             [clojure.java.io :as io]
@@ -48,5 +48,4 @@
                           (onyx.api/shutdown-peer-group peer-group)
                           (shutdown-agents)))
     (println "Started peers. Blocking forever.")
-    ;; Block forever.
-    (<!! (chan))))
+    (utils/block-forever!)))
