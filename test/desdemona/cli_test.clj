@@ -41,7 +41,6 @@
   ["Unknown option: \"--xyzzy\""])
 
 (deftest aeron-main-tests
-  "Tests for the aeron-media-driver main."
   (testing "--help displays usage"
     (let [[result stdout] (with-fake-launcher-side-effects
                             (aeron/-main "--help"))]
