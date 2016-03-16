@@ -43,8 +43,7 @@
         peers (onyx.api/start-peers n-peers peer-group)]
     (println "Connecting to Zookeeper: " (:zookeeper/address peer-config))
     (add-shutdown-hook! (fn []
-                          (doseq [v-peer peers]
-                            (onyx.api/shutdown-peer v-peer))
+                          (onyx.api/shutdown-peers peers)
                           (onyx.api/shutdown-peer-group peer-group)
                           (shutdown-agents)))
     (println "Started peers. Blocking forever.")
