@@ -29,6 +29,7 @@
                  [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [cljsjs/react-bootstrap "0.25.1-0"]
+                 [ring/ring-defaults "0.2.0"]
 
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]]
@@ -65,7 +66,8 @@
              :nrepl-port 7002
              :nrepl-middleware ["cider.nrepl/cider-middleware"
                                 "refactor-nrepl.middleware/wrap-refactor"
-                                "cemerick.piggieback/wrap-cljs-repl"]}
+                                "cemerick.piggieback/wrap-cljs-repl"]
+             :ring-handler desdemona.ui.server/spa-server}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
