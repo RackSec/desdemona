@@ -6,9 +6,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y npm
 # Build desdemona
 RUN mkdir -p /usr/src/desdemona
 WORKDIR /usr/src/desdemona
-COPY project.clj /usr/src/desdemona/
+ADD project.clj /usr/src/desdemona/
 RUN lein deps
-COPY . /usr/src/desdemona
+ADD . /usr/src/desdemona
 RUN mv "$(lein uberjar | sed -n 's/^Created \(.*standalone\.jar\)/\1/p')" /srv/desdemona.jar
 
 RUN mkdir /etc/service/onyx_peer
