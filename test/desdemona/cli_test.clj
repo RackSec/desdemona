@@ -72,4 +72,11 @@
                                 (aeron/-main "-d"))]
           (is @launched)
           (is (= result ::blocked-forever))
-          (is (= stdout "Launched the Media Driver. Blocking forever...\n")))))))
+          (is (= stdout "Launched the Media Driver. Blocking forever...\n"))))))
+  (testing "bail with exception"
+    (let [launched (atom false)]
+      (with-redefs [aeron/launch-media-driver!
+                    (fn [ctx] (throw (IllegalStateException. "yolo")))]
+        (is (thrown-with-msg?
+             Exception (re-pattern @#'aeron/aeron-launch-error-message)
+             (with-fake-launcher-side-effects (aeron/-main))))))))
