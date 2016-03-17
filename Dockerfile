@@ -1,6 +1,10 @@
 FROM clojure
 MAINTAINER Rackspace Managed Security <rms-engineering@rackspace.com>
 
+# npm would not be necessary with a separate build container; it is only used
+# for testing. However, omitting it currently breaks the build. See issues:
+# https://github.com/RackSec/desdemona/issues/79
+# https://github.com/RackSec/desdemona/issues/76
 RUN apt-get update && apt-get upgrade -y && apt-get install -y npm
 
 # Build desdemona
