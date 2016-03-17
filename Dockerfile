@@ -4,10 +4,9 @@ MAINTAINER Rackspace Managed Security <rms-engineering@rackspace.com>
 RUN apt-get update && apt-get upgrade -y && apt-get install -y npm
 
 # Build desdemona
-RUN mkdir -p /usr/src/desdemona
-WORKDIR /usr/src/desdemona
-COPY project.clj /usr/src/desdemona/
 COPY . /usr/src/desdemona
+WORKDIR /usr/src/desdemona
+
 # Cache the dependencies.
 # RUN lein deps
 RUN mv "$(lein uberjar | sed -n 's/^Created \(.*standalone\.jar\)/\1/p')" /srv/desdemona.jar
