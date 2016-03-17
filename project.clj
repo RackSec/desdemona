@@ -20,7 +20,7 @@
 
                  [org.clojure/clojurescript "1.7.228"]
 
-                 [reagent "0.5.1"]
+                 [reagent "0.6.0-alpha"]
                  [reagent-forms "0.5.21"]
                  [reagent-utils "0.1.7"]
                  [hiccup "1.0.5"]
@@ -28,11 +28,13 @@
                  [venantius/accountant "0.1.7"]
                  [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
                  [org.clojure/tools.nrepl "0.2.12"]
-                 [cljsjs/react-bootstrap "0.25.1-0"]
+                 [cljsjs/react-bootstrap "0.28.1-1" :exclusions [org.webjars.bower/jquery]]
                  [ring/ring-defaults "0.2.0"]
 
                  [org.clojure/core.logic "0.8.10"]
-                 [org.clojure/core.match "0.3.0-alpha4"]]
+                 [org.clojure/core.match "0.3.0-alpha4"]
+
+                 [com.gfredericks/system-slash-exit "0.2.0"]]
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]
             [lein-kibit "0.1.2"]
@@ -41,7 +43,9 @@
             [lein-figwheel "0.5.0-1"]
             [lein-npm "0.6.2"]
             [lein-doo "0.1.6"]
-            [lein-sassy "1.0.7"]]
+            [lein-scss "0.2.3"]
+            [lein-pdo "0.1.1"]]
+  :aliases {"figsass" ["pdo" ["scss" ":dev" "auto"] ["figwheel"]]}
   :npm {:dependencies [[karma ""]
                        [karma-cljs-test ""]
                        [karma-firefox-launcher ""]]}
@@ -57,8 +61,11 @@
                         :compiler {:main "desdemona.ui.runner"
                                    :output-to "target/cljs-tests/test.js"
                                    :optimizations :none}}]}
-  :sass {:src "resources/ui/sass"
-        :dst "resources/ui/css"}
+  :scss {:builds
+         {:dev {:source-dir "resources/ui/sass/"
+                :dest-dir "resources/ui/css/"
+                :executable "sassc"
+                :args ["-m" "-I" "resources/ui/sass/" "-t" "nested"]}}}
   :doo {:paths {:karma "node_modules/karma/bin/karma"}}
   :figwheel {:http-server-root "ui"
              :css-dirs ["resources/ui/css"]
