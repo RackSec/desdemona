@@ -22,5 +22,5 @@
    :headers {"Content-Type" "text/html"}
    :body page})
 
-(def spa-server
+(def server
   (wrap-defaults handler site-defaults))

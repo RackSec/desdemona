@@ -74,7 +74,7 @@
              :nrepl-middleware ["cider.nrepl/cider-middleware"
                                 "refactor-nrepl.middleware/wrap-refactor"
                                 "cemerick.piggieback/wrap-cljs-repl"]
-             :ring-handler desdemona.ui.server/spa-server}
+             :ring-handler desdemona.ui.server/server}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
