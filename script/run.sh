@@ -11,6 +11,5 @@ mount -t tmpfs \
       -o remount,rw,nosuid,nodev,noexec,relatime,size=256M \
       tmpfs /dev/shm
 
-exec lein pdo \
-     run -m desdemona.launcher.aeron-media-driver, \
-     run -m desdemona.launcher.launch-prod-peers $N_PEERS
+java -cp /srv/desdemona.jar desdemona.launcher.aeron_media_driver 2>&1 &
+java -cp /srv/desdemona.jar desdemona.launcher.launch_prod_peers $N_PEERS

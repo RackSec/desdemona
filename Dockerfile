@@ -14,6 +14,9 @@ WORKDIR /usr/src/desdemona
 # Cache the dependencies in a Docker fs layer.
 RUN lein deps
 
+RUN lein uberjar
+RUN mv target/desdemona-*-standalone.jar /srv/desdemona.jar
+
 EXPOSE 40200/tcp
 EXPOSE 40200/udp
 
