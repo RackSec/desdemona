@@ -9,6 +9,7 @@ WORKDIR /usr/src/desdemona
 
 # Cache the dependencies.
 # RUN lein deps
+
 RUN mv "$(lein uberjar | sed -n 's/^Created \(.*standalone\.jar\)/\1/p')" /srv/desdemona.jar
 
 RUN mkdir /etc/service/onyx_peer
