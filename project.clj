@@ -30,6 +30,7 @@
                  [org.clojure/tools.nrepl "0.2.12"]
                  [cljsjs/react-bootstrap "0.28.1-1" :exclusions [org.webjars.bower/jquery]]
                  [ring/ring-defaults "0.2.0"]
+                 [ring/ring-mock "0.3.0"]
 
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]
