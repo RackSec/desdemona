@@ -7,10 +7,10 @@
             [desdemona.ui.dom :as d]))
 
 (secretary/defroute "/" []
-  (session/put! :current-page dashboard-component))
+  (session/put! :current-page #'dashboard-component))
 
 (secretary/defroute "/table" []
-  (session/put! :current-page table-component))
+  (session/put! :current-page #'table-component))
 
 (defn ^:private search-form-component
   []
@@ -33,6 +33,11 @@
      [:button.btn.btn-primary {:aria-label "Search"}
       [:i.fa.fa-search {:aria-hidden true}]]]]])
 
+(defn ^:private maybe-deref
+  "(deref x), unless it's nil."
+  [x]
+  (when (some? x) @x))
+
 (defn nav
   "App navigation bar."
   []
@@ -45,7 +50,7 @@
    [:div.container-fluid
     [:nav
      (let [current-page (session/get :current-page)
-           active? #(= % current-page)]
+           active? #(= (maybe-deref current-page) %)]
        [:ul.nav.nav-tabs
         [:li {:class (when (active? dashboard-component) "active")}
          [:a {:href "/"} "Dashboard"]]
