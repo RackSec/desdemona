@@ -14,7 +14,7 @@ peer:
   expose:
     - "40200"
     - "40200/udp"
-  command: bash -c "echo 'desdemona is waiting for 20s because of docker'; sleep 20; /sbin/my_init"
+  command: bash -c "echo 'desdemona is waiting for 20s because of docker'; sleep 20; script/run.sh"
 zookeeper:
   image: 'wurstmeister/zookeeper'
   ports:
