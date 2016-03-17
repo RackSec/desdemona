@@ -1,8 +1,7 @@
 (ns desdemona.ui.server
   (:require
    [ring.middleware.defaults :refer :all]
-   [hiccup.page :refer [html5 include-js include-css]]
-   [hiccup.element :refer [javascript-tag]]))
+   [hiccup.page :refer [html5 include-js include-css]]))
 
 (def page
   (html5
