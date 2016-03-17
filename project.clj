@@ -33,8 +33,7 @@
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]
 
-                 [com.gfredericks/system-slash-exit "0.2.0"]
-                 [environ "1.0.2"]]
+                 [com.gfredericks/system-slash-exit "0.2.0"]]
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]
             [lein-kibit "0.1.2"]
@@ -44,8 +43,7 @@
             [lein-npm "0.6.2"]
             [lein-doo "0.1.6"]
             [lein-scss "0.2.3"]
-            [lein-pdo "0.1.1"]
-            [lein-environ "1.0.2"]]
+            [lein-pdo "0.1.1"]]
   :aliases {"figsass" ["pdo" ["scss" ":dev" "auto"] ["figwheel"]]}
   :npm {:dependencies [[karma ""]
                        [karma-cljs-test ""]
