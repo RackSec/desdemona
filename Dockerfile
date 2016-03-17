@@ -7,7 +7,7 @@ MAINTAINER Rackspace Managed Security <rms-engineering@rackspace.com>
 # https://github.com/RackSec/desdemona/issues/76
 RUN apt-get update && apt-get upgrade -y && apt-get install -y npm
 
-# Build desdemona
+# Add Desdemona to the Docker container.
 COPY . /usr/src/desdemona
 WORKDIR /usr/src/desdemona
 
