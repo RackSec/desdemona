@@ -7,7 +7,7 @@ peer:
     - syslog-ng:syslog-ng
   environment:
     ONYX_ID: 1
-    NPEERS: 6
+    N_PEERS: 6
   privileged: true
   expose:
     - "40200"
