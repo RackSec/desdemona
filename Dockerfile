@@ -11,8 +11,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y npm
 COPY . /usr/src/desdemona
 WORKDIR /usr/src/desdemona
 
-# RUN lein deps
 # Cache the dependencies in a Docker fs layer.
+RUN lein deps
 
 RUN mv "$(lein uberjar | sed -n 's/^Created \(.*standalone\.jar\)/\1/p')" /srv/desdemona.jar
 
