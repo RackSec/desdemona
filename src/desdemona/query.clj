@@ -43,7 +43,7 @@
     [((= value ((attr lvar) :seq)) :seq)]
     `(l/featurec ~lvar {~attr ~value})
 
-    [(['and & terms] :seq)]
+    [(('and & terms) :seq)]
     (let [logic-terms (map dsl->logic terms)]
       `(l/conde [~@logic-terms]))))
 
