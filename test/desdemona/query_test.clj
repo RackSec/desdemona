@@ -10,7 +10,13 @@
   (is (thrown? IllegalArgumentException (dsl->logic '(BOGUS BOGUS BOGUS))))
   (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
          (dsl->logic '(= (:ip x) "10.0.0.1"))
-         (dsl->logic '(= "10.0.0.1" (:ip x))))))
+         (dsl->logic '(= "10.0.0.1" (:ip x)))))
+  (testing "logical conjunction"
+    (is (= '(clojure.core.logic/conde
+             [(clojure.core.logic/featurec x {:ip "10.0.0.1"})
+              (clojure.core.logic/featurec x {:type "egress"})])
+           (dsl->logic '(and (= (:ip x) "10.0.0.1")
+                             (= (:type x) "egress")))))))
 
 (def events
   [{:ip "10.0.0.1"}])
