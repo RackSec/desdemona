@@ -20,7 +20,7 @@
        (l/membero ~'x ~events)
        ~logic-query)))
 
-(defn run-logic-query
+(defn ^:private run-logic-query
   "Runs a query over some events and finds n answers (default 1)."
   ([logic-query events]
    (run-logic-query 1 logic-query events))

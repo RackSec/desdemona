@@ -61,7 +61,7 @@
          :type "egress"}]])))
 
 (deftest logic-query-tests
-  (are [query results] (= results (q/run-logic-query query events))
+  (are [query results] (= results (#'q/run-logic-query query events))
     'l/fail
     []
 
@@ -70,6 +70,6 @@
   (testing "explicit maximum number of results"
     (let [results [[{:ip "10.0.0.1"}]]
           query '(l/featurec x {:ip "10.0.0.1"})]
-      (are [n-results] (= results (q/run-logic-query n-results query events))
+      (are [n-results] (= results (#'q/run-logic-query n-results query events))
         1
         10))))
