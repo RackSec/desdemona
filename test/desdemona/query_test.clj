@@ -19,7 +19,11 @@
                              (= (:type x) "egress")))))))
 
 (def events
-  [{:ip "10.0.0.1"}])
+  [{:ip "10.0.0.1"}
+   {:ip "10.0.0.2"
+    :type "egress"}
+   {:ip "10.0.0.2"
+    :type "ingress"}])
 
 (deftest dsl-query-tests
   (are [query results] (= results (q/run-dsl-query query events))
@@ -39,7 +43,22 @@
           query '(= (:ip x) "10.0.0.1")]
       (are [n-results] (= results (q/run-dsl-query n-results query events))
         1
-        10))))
+        10)))
+  (testing "conjunction"
+    (are [query results] (= results (q/run-dsl-query query events))
+      '(and (= (:ip x) "10.0.0.1")
+            (= (:type x) "egress"))
+      []
+
+      '(and (= (:ip x) "10.0.0.2")
+            (= (:type x) "egress"))
+      [[{:ip "10.0.0.2"
+         :type "egress"}]]
+
+      '(and (= (:type x) "egress")
+            (= (:ip x) "10.0.0.2"))
+      [[{:ip "10.0.0.2"
+         :type "egress"}]])))
 
 (deftest logic-query-tests
   (are [query results] (= results (q/run-logic-query query events))
