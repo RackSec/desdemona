@@ -12,12 +12,6 @@
             [desdemona.lifecycles.sample-lifecycle])
   (:gen-class))
 
-(defn stdout-logger
-  "Logger to output on std-out, for use with docker-compose"
-  [data]
-  (let [{:keys [output-fn]} data]
-    (println (output-fn data))))
-
 (defn ^:private read-config!
   []
   (aero/read-config (io/resource "config.edn") {:profile :default}))
@@ -29,15 +23,6 @@
 (defn -main [n & args]
   (let [n-peers (Integer/parseInt n)
         {:keys [peer-config env-config]} (read-config!)
-        peer-config (assoc
-                     peer-config
-                     :onyx.log/config
-                     {:appenders
-                      {:stdout
-                       {:enabled? true
-                        :async? false
-                        :output-fn t/default-output-fn
-                        :fn stdout-logger}}})
         peer-group (onyx.api/start-peer-group peer-config)
         env (onyx.api/start-env env-config)
         peers (onyx.api/start-peers n-peers peer-group)]
