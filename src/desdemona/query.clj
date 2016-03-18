@@ -41,7 +41,11 @@
     `(l/featurec ~lvar {~attr ~value})
 
     [((= value ((attr lvar) :seq)) :seq)]
-    `(l/featurec ~lvar {~attr ~value})))
+    `(l/featurec ~lvar {~attr ~value})
+
+    [(['and & terms] :seq)]
+    (let [logic-terms (map dsl->logic terms)]
+      `(l/conde [~@logic-terms]))))
 
 (defn run-dsl-query
   "Run a DSL query over some events and finds n answers (default 1)."
