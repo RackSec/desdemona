@@ -20,7 +20,7 @@
        (l/membero ~'x ~events)
        ~logic-query)))
 
-(defn run-logic-query
+(defn ^:private run-logic-query
   "Runs a query over some events and finds n answers (default 1)."
   ([logic-query events]
    (run-logic-query 1 logic-query events))
@@ -41,7 +41,11 @@
     `(l/featurec ~lvar {~attr ~value})
 
     [((= value ((attr lvar) :seq)) :seq)]
-    `(l/featurec ~lvar {~attr ~value})))
+    `(l/featurec ~lvar {~attr ~value})
+
+    [(['and & terms] :seq)]
+    (let [logic-terms (map dsl->logic terms)]
+      `(l/conde [~@logic-terms]))))
 
 (defn run-dsl-query
   "Run a DSL query over some events and finds n answers (default 1)."
