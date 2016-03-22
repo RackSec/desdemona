@@ -45,7 +45,11 @@
 
     [(('and & terms) :seq)]
     (let [logic-terms (map dsl->logic terms)]
-      `(l/conde [~@logic-terms]))))
+      `(l/conde [~@logic-terms]))
+
+    [(('or & terms) :seq)]
+    (let [clauses (map (comp vector dsl->logic) terms)]
+      `(l/conde ~@clauses))))
 
 (defn run-dsl-query
   "Run a DSL query over some events and finds n answers (default 1)."
