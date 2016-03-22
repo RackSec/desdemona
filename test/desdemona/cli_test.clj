@@ -90,6 +90,33 @@
              Exception (re-pattern @#'aeron/aeron-launch-error-message)
              (with-fake-launcher-side-effects (aeron/-main))))))))
 
+(def expected-env-config
+  {:onyx/id nil ;; from env
+   :onyx.bookkeeper/server? true
+   :onyx.bookkeeper/delete-server-data? true
+   :zookeeper/address "zk:2181"
+   :zookeeper/server? false
+   :zookeeper.server/port 2181})
+
+(def expected-peer-config
+  {:onyx/id nil ;; from env
+
+   :onyx.messaging/impl :aeron
+   :onyx.messaging/allow-short-circuit? true
+   :onyx.messaging.aeron/embedded-driver? false
+   :onyx.messaging/bind-addr "localhost"
+   :onyx.messaging/peer-port 40200
+
+   :zookeeper/address "zk:2181"
+
+   :onyx.peer/job-scheduler :onyx.job-scheduler/greedy
+   :onyx.peer/zookeeper-timeout 60000})
+
+(def read-config!-tests
+  (is (= (#'peers/read-config!)
+         {:env-config expected-env-config
+          :peer-config expected-peer-config})))
+
 (deftest peers-main-tests
   (testing "first argument must be an integer"
     (is (thrown-with-msg? NumberFormatException #"BOGUS"
