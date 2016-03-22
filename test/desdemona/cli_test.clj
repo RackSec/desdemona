@@ -1,6 +1,7 @@
 (ns desdemona.cli-test
   (:require
    [desdemona.launcher.aeron-media-driver :as aeron]
+   [desdemona.launcher.launch-prod-peers :as peers]
    [desdemona.launcher.utils :as utils]
    [clojure.test :refer [deftest testing is]]
    [clojure.string :as s]
@@ -88,3 +89,8 @@
         (is (thrown-with-msg?
              Exception (re-pattern @#'aeron/aeron-launch-error-message)
              (with-fake-launcher-side-effects (aeron/-main))))))))
+
+(deftest peers-main-tests
+  (testing "first argument must be an integer"
+    (is (thrown-with-msg? NumberFormatException #"BOGUS"
+         (peers/-main "BOGUS")))))
