@@ -22,7 +22,12 @@
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})]
              [(clojure.core.logic/featurec x {:type "egress"})])
            (dsl->logic '(or (= (:ip x) "10.0.0.1")
-                            (= (:type x) "egress")))))))
+                            (= (:type x) "egress")))))
+    (is (= '(clojure.core.logic/conde
+             [(clojure.core.logic/featurec x {:type "egress"})]
+             [(clojure.core.logic/featurec x {:ip "10.0.0.1"})])
+           (dsl->logic '(or (= (:type x) "egress")
+                            (= (:ip x) "10.0.0.1")))))))
 
 (def events
   [{:ip "10.0.0.1"}
