@@ -12,14 +12,14 @@
 
 (defn -main [n & args]
   (let [n-peers (Integer/parseInt n)
-        {:keys [peer-config env-config]} (read-config!)
+        {:keys [peer-config env-config]} (utils/read-config!)
         peer-group (onyx.api/start-peer-group peer-config)
         env (onyx.api/start-env env-config)
         peers (onyx.api/start-peers n-peers peer-group)]
     (println "Connecting to Zookeeper: " (:zookeeper/address peer-config))
-    (add-shutdown-hook! (fn []
-                          (onyx.api/shutdown-peers peers)
-                          (onyx.api/shutdown-peer-group peer-group)
-                          (shutdown-agents)))
+    (utils/add-shutdown-hook! (fn []
+                                (onyx.api/shutdown-peers peers)
+                                (onyx.api/shutdown-peer-group peer-group)
+                                (shutdown-agents)))
     (println "Started peers. Blocking forever.")
     (utils/block-forever!)))
