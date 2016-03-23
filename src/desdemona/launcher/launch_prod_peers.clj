@@ -14,7 +14,7 @@
   (let [n-peers (Integer/parseInt n)
         {:keys [peer-config env-config]} (utils/read-config!)
         peer-group (onyx.api/start-peer-group peer-config)
-        env (onyx.api/start-env env-config)
+        _ (onyx.api/start-env env-config)
         peers (onyx.api/start-peers n-peers peer-group)]
     (println "Connecting to Zookeeper: " (:zookeeper/address peer-config))
     (utils/add-shutdown-hook! (fn []
