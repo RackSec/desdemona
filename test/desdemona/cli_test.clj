@@ -139,7 +139,7 @@
                          (fn [& args]
                            (let [event (into [sym] args)]
                              (swap! events conj event)))])
-          redefs (spy (into {} redef-pairs))]
+          redefs (into {} redef-pairs)]
       (with-redefs-fn redefs
         (fn []
           (info "BEFORE" @events)
