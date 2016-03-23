@@ -20,4 +20,4 @@
      [:lifecycles]
      conj
      {:lifecycle/task task
-      :lifecycle/calls :desdemona.lifecycles.logging/log-calls})))
+      :lifecycle/calls ::log-calls})))
