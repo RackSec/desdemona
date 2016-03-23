@@ -149,9 +149,22 @@
           (is (= [] @events))
           (let [[result stdout] (with-fake-launcher-side-effects
                                   (peers/-main (str n-peers)))]
-            (info "AFTER" @events)
-            (is (= result ::blocked-forever))
-            (is (= stdout (s/join \newline
-                                  ["Connecting to Zookeeper:  zk:2181"
-                                   "Started peers. Blocking forever."
-                                   ""])))))))))
+            (let [before-events @events]
+              (is (= [['onyx.api/start-peer-group expected-peer-config]
+                      ['onyx.api/start-env expected-env-config]
+                      ['onyx.api/start-peers n-peers group]]
+                     (butlast before-events)))
+              (let [[sym hook] (last before-events)]
+                (is (= sym 'desdemona.launcher.utils/add-shutdown-hook!))
+                (is (fn? hook))
+                (hook)
+                (let [post-events (subvec @events (count before-events))]
+                  (is (= [['onyx.api/shutdown-peers peers]
+                          ['onyx.api/shutdown-peer-group group]
+                          ['clojure.core/shutdown-agents]]
+                         post-events))))
+              (is (= result ::blocked-forever))
+              (is (= stdout (s/join \newline
+                                    ["Connecting to Zookeeper:  zk:2181"
+                                     "Started peers. Blocking forever."
+                                     ""]))))))))))
