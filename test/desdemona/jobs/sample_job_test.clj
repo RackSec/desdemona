@@ -8,16 +8,13 @@
             [onyx.plugin.sql]))
 
 (deftest build-job-test
-  (let [job (build-job)
+  (let [{:keys [catalog workflow lifecycles]} (build-job)
         expected-catalog-names [:original-wrapper :determine-origin :build-row :prepare-rows :read-lines :write-lines]
-        catalog (job :catalog)
-        workflow (job :workflow)
         expected-workflow [[:read-lines :original-wrapper]
                            [:original-wrapper :determine-origin]
                            [:determine-origin :build-row]
                            [:build-row :prepare-rows]
                            [:prepare-rows :write-lines]]
-        lifecycles (job :lifecycles)
         expected-lifecycles [{:lifecycle/task :write-lines :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
                              {:lifecycle/task :read-lines :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
                              {:lifecycle/task :write-lines :lifecycle/calls :onyx.plugin.sql/write-rows-calls}
