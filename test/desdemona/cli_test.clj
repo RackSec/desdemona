@@ -5,7 +5,8 @@
    [desdemona.launcher.utils :as utils]
    [clojure.test :refer [deftest testing is]]
    [clojure.string :as s]
-   [clojure.core.async :as a])
+   [clojure.core.async :as a]
+   [taoensso.timbre :refer [spy info]])
   (:import
    [java.io StringWriter]))
 
@@ -119,5 +120,34 @@
 
 (deftest peers-main-tests
   (testing "first argument must be an integer"
-    (is (thrown-with-msg? NumberFormatException #"BOGUS"
-         (peers/-main "BOGUS")))))
+    (is (thrown-with-msg?
+         NumberFormatException #"BOGUS"
+         (peers/-main "BOGUS"))))
+  (testing "happy case"
+    (let [group (gensym)
+          n-peers 6
+          peers (for [_ (range n-peers)] (gensym))
+          events (atom [])
+          redef-pairs (for [sym ['onyx.api/start-peer-group
+                                 'onyx.api/start-env
+                                 'onyx.api/start-peers
+                                 'onyx.api/shutdown-peer
+                                 'onyx.api/shutdown-peers
+                                 'onyx.api/shutdown-peer-group
+                                 'clojure.core/shutdown-agents]]
+                        [(spy (resolve sym))
+                         (fn [& args]
+                           (let [event (into [sym] args)]
+                             (swap! events conj event)))])
+          redefs (spy (into {} redef-pairs))]
+      (with-redefs-fn redefs
+        (fn []
+          (info "BEFORE" @events)
+          (let [[result stdout] (with-fake-launcher-side-effects
+                                  (peers/-main (str n-peers)))]
+            (info "AFTER" @events)
+            (is (= result ::blocked-forever))
+            (is (= stdout (s/join \newline
+                                  ["Connecting to Zookeeper:  zk:2181"
+                                   "Started peers. Blocking forever."
+                                   ""])))))))))
