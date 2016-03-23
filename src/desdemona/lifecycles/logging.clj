@@ -1,9 +1,10 @@
 (ns desdemona.lifecycles.logging
   (:require [taoensso.timbre :refer [info]]))
 
-(defn log-batch [event lifecycle]
   (let [task-name (:onyx/name (:onyx.core/task-map event))]
     (doseq [m (map :message (mapcat :leaves (:tree (:onyx.core/results event))))]
+(defn log-batch
+  [event lifecycle]
       (info task-name " logging segment: " m)))
   {})
 
