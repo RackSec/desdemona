@@ -9,7 +9,12 @@
 
 (deftest build-job-test
   (let [{:keys [catalog workflow lifecycles]} (build-job)
-        expected-catalog-names [:original-wrapper :determine-origin :build-row :prepare-rows :read-lines :write-lines]
+        expected-catalog-names [:original-wrapper
+                                :determine-origin
+                                :build-row
+                                :prepare-rows
+                                :read-lines
+                                :write-lines]
         expected-workflow [[:read-lines :original-wrapper]
                            [:original-wrapper :determine-origin]
                            [:determine-origin :build-row]
