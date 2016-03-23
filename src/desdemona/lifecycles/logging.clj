@@ -18,5 +18,5 @@
      job
      [:lifecycles]
      conj
-     {:lifecycle/task task,
+     {:lifecycle/task task
       :lifecycle/calls :desdemona.lifecycles.logging/log-calls})))
