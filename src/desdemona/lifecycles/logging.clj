@@ -5,7 +5,7 @@
     (doseq [m (map :message (mapcat :leaves (:tree (:onyx.core/results event))))]
 (defn log-batch
   [event lifecycle]
-      (info task-name " logging segment: " m)))
+      (info task-name "logging segment:" m)))
   {})
 
 (def log-calls
