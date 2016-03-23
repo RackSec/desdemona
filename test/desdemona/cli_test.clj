@@ -22,6 +22,13 @@
   [status]
   [::exited status])
 
+(defmacro with-out-str-and-result
+  [& body]
+  `(let [stdout# (StringWriter.)]
+     (binding [*out* stdout#]
+       (let [result# (do ~@body)]
+         [result# (str stdout#)]))))
+
 (defmacro with-fake-launcher-side-effects
   "Runs body with a fake exit, block-forever! and stdout.
 
@@ -34,10 +41,7 @@
   [& body]
   `(with-redefs [com.gfredericks.system-slash-exit/exit fake-exit
                  desdemona.launcher.utils/block-forever! fake-block-forever!]
-     (let [stdout# (StringWriter.)]
-       (binding [*out* stdout#]
-         (let [result# (do ~@body)]
-           [result# (str stdout#)])))))
+     (with-out-str-and-result ~@body)))
 
 (def ^:private usage-lines
   ["Usage:"
