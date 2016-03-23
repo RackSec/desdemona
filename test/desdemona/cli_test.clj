@@ -4,7 +4,8 @@
    [desdemona.launcher.utils :as utils]
    [clojure.test :refer [deftest testing is]]
    [clojure.string :as s]
-   [clojure.core.async :as a])
+   [clojure.core.async :as a]
+   [desdemona.test-macros :refer [with-out-str-and-result]])
   (:import
    [java.io StringWriter]))
 
@@ -21,13 +22,6 @@
 (defn fake-exit
   [status]
   [::exited status])
-
-(defmacro with-out-str-and-result
-  [& body]
-  `(let [stdout# (StringWriter.)]
-     (binding [*out* stdout#]
-       (let [result# (do ~@body)]
-         [result# (str stdout#)]))))
 
 (defmacro with-fake-launcher-side-effects
   "Runs body with a fake exit, block-forever! and stdout.
