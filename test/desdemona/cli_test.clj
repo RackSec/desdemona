@@ -128,6 +128,8 @@
           group (gensym)
           peers (for [_ (range n-peers)] (gensym))
           events (atom [])
+          fn-results {'onyx.api/start-peer-group group
+                      'onyx.api/start-peers peers}
           redef-pairs (for [sym ['onyx.api/start-peer-group
                                  'onyx.api/start-env
                                  'onyx.api/start-peers
@@ -139,7 +141,8 @@
                         [(resolve sym)
                          (fn [& args]
                            (let [event (into [sym] args)]
-                             (swap! events conj event)))])
+                             (swap! events conj event)
+                             (fn-results sym)))])
           redefs (into {} redef-pairs)]
       (with-redefs-fn redefs
         (fn []
