@@ -31,7 +31,7 @@
     (is (= expected-catalog-names
            (map :onyx/name catalog)))
     (is (= "test1"
-           ((find-task catalog :read-lines) :kafka/topic) ))
+           ((find-task catalog :read-lines) :kafka/topic)))
     (is (thrown? Exception ((find-task catalog :doesnt-exist) :kafka/topic)))
     (is (= :logLines
            ((find-task catalog :write-lines) :sql/table)))
