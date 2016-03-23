@@ -33,6 +33,7 @@
     (is (= "test1"
            ((find-task catalog :read-lines) :kafka/topic) ))
     (is (thrown? Exception ((find-task catalog :doesnt-exist) :kafka/topic)))
-    (is (= ((find-task catalog :write-lines) :sql/table) :logLines))
-    (is (= workflow expected-workflow))
-    (is (= lifecycles expected-lifecycles))))
+    (is (= :logLines
+           ((find-task catalog :write-lines) :sql/table)))
+    (is (= expected-workflow workflow))
+    (is (= expected-lifecycles lifecycles))))
