@@ -131,6 +131,7 @@
           redef-pairs (for [sym ['onyx.api/start-peer-group
                                  'onyx.api/start-env
                                  'onyx.api/start-peers
+                                 'desdemona.launcher.utils/add-shutdown-hook!
                                  'onyx.api/shutdown-peer
                                  'onyx.api/shutdown-peers
                                  'onyx.api/shutdown-peer-group
