@@ -136,7 +136,7 @@
                                  'onyx.api/shutdown-peers
                                  'onyx.api/shutdown-peer-group
                                  'clojure.core/shutdown-agents]]
-                        [(spy (resolve sym))
+                        [(resolve sym)
                          (fn [& args]
                            (let [event (into [sym] args)]
                              (swap! events conj event)))])
