@@ -21,9 +21,5 @@
   "Adds logging output to a task's output-batch."
   [job task]
   (if-let [entry (first (filter #(= (:onyx/name %) task) (:catalog job)))]
-    (update-in
-     job
-     [:lifecycles]
-     conj
-     {:lifecycle/task task
-      :lifecycle/calls ::log-calls})))
+    (update job :lifecycles conj {:lifecycle/task task
+                                  :lifecycle/calls ::log-calls})))
