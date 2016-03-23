@@ -5,9 +5,7 @@
    [clojure.test :refer [deftest testing is]]
    [clojure.string :as s]
    [clojure.core.async :as a]
-   [desdemona.test-macros :refer [with-out-str-and-result]])
-  (:import
-   [java.io StringWriter]))
+   [desdemona.test-macros :refer [with-out-str-and-result]]))
 
 (deftest block-forever!-tests
   (let [ch (a/chan)]

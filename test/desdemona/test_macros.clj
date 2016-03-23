@@ -1,4 +1,6 @@
-(ns desdemona.test-macros)
+(ns desdemona.test-macros
+  (:import
+   [java.io StringWriter]))
 
 (defmacro with-out-str-and-result
   [& body]
