@@ -20,12 +20,16 @@
                            [:determine-origin :build-row]
                            [:build-row :prepare-rows]
                            [:prepare-rows :write-lines]]
-        expected-lifecycles [{:lifecycle/task :write-lines :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
-                             {:lifecycle/task :read-lines :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
-                             {:lifecycle/task :write-lines :lifecycle/calls :onyx.plugin.sql/write-rows-calls}
-                             {:lifecycle/task :read-lines :lifecycle/calls :onyx.plugin.kafka/read-messages-calls}]]
     (is (= (map :onyx/name catalog) expected-catalog-names))
     (is (= ((find-task catalog :read-lines) :kafka/topic) "test1"))
+        expected-lifecycles [{:lifecycle/task :write-lines
+                              :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
+                             {:lifecycle/task :read-lines
+                              :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
+                             {:lifecycle/task :write-lines
+                              :lifecycle/calls :onyx.plugin.sql/write-rows-calls}
+                             {:lifecycle/task :read-lines
+                              :lifecycle/calls :onyx.plugin.kafka/read-messages-calls}]]
     (is (thrown? Exception ((find-task catalog :doesnt-exist) :kafka/topic)))
     (is (= ((find-task catalog :write-lines) :sql/table) :logLines))
     (is (= workflow expected-workflow))
