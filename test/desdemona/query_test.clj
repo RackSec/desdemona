@@ -3,6 +3,10 @@
    [desdemona.query :as q]
    [clojure.test :refer [deftest is are testing]]))
 
+(deftest infix->dsl-tests
+  (is (= '(= (:ip x) "10.0.0.1")
+         (q/infix->dsl "ip(x) is 10.0.0.1"))))
+
 (def dsl->logic
   @#'desdemona.query/dsl->logic)
 
