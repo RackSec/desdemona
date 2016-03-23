@@ -4,6 +4,8 @@
    [clojure.test :refer [deftest is are testing]]))
 
 (deftest infix->dsl-tests
+  (is (= '(= 1 1)
+         (q/infix->dsl "1 = 1")))
   (is (= '(= (:ip x) "10.0.0.1")
          (q/infix->dsl "ip(x) = 10.0.0.1"))))
 
