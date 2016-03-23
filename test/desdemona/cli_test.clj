@@ -124,8 +124,8 @@
          NumberFormatException #"BOGUS"
          (peers/-main "BOGUS"))))
   (testing "happy case"
-    (let [group (gensym)
-          n-peers 6
+    (let [n-peers 6
+          group (gensym)
           peers (for [_ (range n-peers)] (gensym))
           events (atom [])
           redef-pairs (for [sym ['onyx.api/start-peer-group
