@@ -12,7 +12,7 @@
   {:lifecycle/after-batch log-batch})
 
 (defn add-logging
-  "Add's logging output to a tasks output-batch. "
+  "Adds logging output to a tasks output-batch."
   [job task]
   (if-let [entry (first (filter #(= (:onyx/name %) task) (:catalog job)))]
     (update-in
