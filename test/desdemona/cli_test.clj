@@ -143,7 +143,7 @@
           redefs (into {} redef-pairs)]
       (with-redefs-fn redefs
         (fn []
-          (info "BEFORE" @events)
+          (is (= [] @events))
           (let [[result stdout] (with-fake-launcher-side-effects
                                   (peers/-main (str n-peers)))]
             (info "AFTER" @events)
