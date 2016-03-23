@@ -1,6 +1,7 @@
 (ns desdemona.cli-test
   (:require
    [desdemona.launcher.aeron-media-driver :as aeron]
+   [desdemona.launcher.launch-prod-peers :as peers]
    [desdemona.launcher.utils :as utils]
    [clojure.test :refer [deftest testing is]]
    [clojure.string :as s]
@@ -13,6 +14,33 @@
                            (a/put! ch ::blocked-forever)
                            ch)]
       (is (= (utils/block-forever!) ::blocked-forever)))))
+
+(def expected-env-config
+  {:onyx/id nil ;; from env
+   :onyx.bookkeeper/server? true
+   :onyx.bookkeeper/delete-server-data? true
+   :zookeeper/address "zk:2181"
+   :zookeeper/server? false
+   :zookeeper.server/port 2181})
+
+(def expected-peer-config
+  {:onyx/id nil ;; from env
+
+   :onyx.messaging/impl :aeron
+   :onyx.messaging/allow-short-circuit? true
+   :onyx.messaging.aeron/embedded-driver? false
+   :onyx.messaging/bind-addr "localhost"
+   :onyx.messaging/peer-port 40200
+
+   :zookeeper/address "zk:2181"
+
+   :onyx.peer/job-scheduler :onyx.job-scheduler/greedy
+   :onyx.peer/zookeeper-timeout 60000})
+
+(def read-config!-tests
+  (is (= (utils/read-config!)
+         {:env-config expected-env-config
+          :peer-config expected-peer-config})))
 
 (def fake-block-forever!
   (constantly ::blocked-forever))
@@ -84,3 +112,54 @@
         (is (thrown-with-msg?
              Exception (re-pattern @#'aeron/aeron-launch-error-message)
              (with-fake-launcher-side-effects (aeron/-main))))))))
+
+(deftest peers-main-tests
+  (testing "first argument must be an integer"
+    (is (thrown-with-msg?
+         NumberFormatException #"BOGUS"
+         (peers/-main "BOGUS"))))
+  (testing "happy case"
+    (let [n-peers 6
+          group (gensym)
+          peers (for [_ (range n-peers)] (gensym))
+          events (atom [])
+          fn-results {'onyx.api/start-peer-group group
+                      'onyx.api/start-peers peers}
+          redef-pairs (for [sym ['onyx.api/start-peer-group
+                                 'onyx.api/start-env
+                                 'onyx.api/start-peers
+                                 'desdemona.launcher.utils/add-shutdown-hook!
+                                 'onyx.api/shutdown-peer
+                                 'onyx.api/shutdown-peers
+                                 'onyx.api/shutdown-peer-group
+                                 'clojure.core/shutdown-agents]]
+                        [(resolve sym)
+                         (fn [& args]
+                           (let [event (into [sym] args)]
+                             (swap! events conj event)
+                             (fn-results sym)))])
+          redefs (into {} redef-pairs)]
+      (with-redefs-fn redefs
+        (fn []
+          (is (= [] @events))
+          (let [[result stdout] (with-fake-launcher-side-effects
+                                  (peers/-main (str n-peers)))]
+            (let [before-events @events]
+              (is (= [['onyx.api/start-peer-group expected-peer-config]
+                      ['onyx.api/start-env expected-env-config]
+                      ['onyx.api/start-peers n-peers group]]
+                     (butlast before-events)))
+              (let [[sym hook] (last before-events)]
+                (is (= sym 'desdemona.launcher.utils/add-shutdown-hook!))
+                (is (fn? hook))
+                (hook)
+                (let [post-events (subvec @events (count before-events))]
+                  (is (= [['onyx.api/shutdown-peers peers]
+                          ['onyx.api/shutdown-peer-group group]
+                          ['clojure.core/shutdown-agents]]
+                         post-events))))
+              (is (= result ::blocked-forever))
+              (is (= stdout (s/join \newline
+                                    ["Connecting to Zookeeper:  zk:2181"
+                                     "Started peers. Blocking forever."
+                                     ""]))))))))))
