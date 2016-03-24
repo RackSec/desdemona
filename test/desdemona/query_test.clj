@@ -3,7 +3,7 @@
    [desdemona.query :as q]
    [clojure.test :refer [deftest is are testing]]))
 
-(deftest infx-parser-tests
+(deftest infix-parser-tests
   (is (= [:expr [:ipv4-address "10" "0" "0" "1"]]
          (#'q/infix-parser "10.0.0.1"))
       "infix parses ipv4 addresses")
