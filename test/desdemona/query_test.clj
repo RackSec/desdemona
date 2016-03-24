@@ -4,7 +4,7 @@
    [clojure.test :refer [deftest is are testing]]))
 
 (deftest infx-parser-tests
-  (is (= nil
+  (is (= [:expr [:ipv4-address "10" "0" "0" "1"]]
          (#'q/infix-parser "10.0.0.1"))))
 
 (deftest infix->dsl-tests
