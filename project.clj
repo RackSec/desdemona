@@ -80,6 +80,7 @@
              :ring-handler desdemona.ui.server/server}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
+  :auto {:default {:file-pattern #"\.(clj|cljs|cljx|edn|ebnf)$"}
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
                              desdemona.launcher.launch-prod-peers]}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
