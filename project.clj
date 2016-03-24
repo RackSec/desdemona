@@ -35,6 +35,8 @@
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]
 
+                 [instaparse "1.4.1"]
+
                  [com.gfredericks/system-slash-exit "0.2.0"]]
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]

@@ -1,7 +1,9 @@
 (ns desdemona.query
   (:require
    [clojure.core.logic :as l]
-   [clojure.core.match :as m]))
+   [clojure.core.match :as m]
+   [instaparse.core :as insta]
+   [clojure.java.io :refer [resource]]))
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
@@ -57,3 +59,9 @@
    (run-logic-query (dsl->logic dsl-query) events))
   ([n-answers dsl-query events]
    (run-logic-query n-answers (dsl->logic dsl-query) events)))
+
+(def ^:private infix-parser
+  (insta/parser (resource "infix-query-grammar.ebnf")))
+
+(defn infix->dsl
+  [infix])
