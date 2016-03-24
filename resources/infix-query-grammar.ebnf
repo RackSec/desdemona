@@ -1,4 +1,4 @@
-expr ::= fn-call | eq-expr | ipv4-address 
+expr ::= eq | fn-call | ipv4-address | identifier
 
 fn-call ::= identifier <"("> identifier <")">
 identifier ::= #"[A-Za-z-]+"
