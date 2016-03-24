@@ -5,11 +5,13 @@
 
 (deftest infx-parser-tests
   (is (= [:expr [:ipv4-address "10" "0" "0" "1"]]
-         (#'q/infix-parser "10.0.0.1")))
-  (is (= [:expr [:fn-application
+         (#'q/infix-parser "10.0.0.1"))
+      "infix parses ipv4 addresses")
+  (is (= [:expr [:fn-call
                  [:identifier "ip"]
                  [:identifier "x"]]]
-         (#'q/infix-parser "ip(x)"))))
+         (#'q/infix-parser "ip(x)"))
+      "infix parses simple fn calls"))
 
 (deftest infix->dsl-tests
   (is (= '(= (:ip x) "10.0.0.1")
