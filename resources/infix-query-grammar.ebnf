@@ -1,9 +1,9 @@
 expr ::= eq | fn-call | ipv4-address | identifier
 
-fn-call ::= identifier <"("> identifier <")">
 identifier ::= #"[A-Za-z-]+"
-
 maybe-whitespace ::= " "*
+
+fn-call ::= identifier <"("> identifier <")">
 
 eq ::= eqable <maybe-whitespace> <"="> <maybe-whitespace> eqable
 <eqable> ::= fn-call | identifier | ipv4-address
