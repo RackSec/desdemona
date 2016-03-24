@@ -11,7 +11,12 @@
                  [:identifier "ip"]
                  [:identifier "x"]]]
          (#'q/infix-parser "ip(x)"))
-      "infix parses simple fn calls"))
+      "infix parses simple fn calls")
+  (is (= [:expr [:eq
+                 [:identifier "a"]
+                 [:identifier "b"]]]
+         (#'q/infix-parser "a = b"))
+      "parse simple equality between identifiers"))
 
 (deftest infix->dsl-tests
   (is (= '(= (:ip x) "10.0.0.1")
