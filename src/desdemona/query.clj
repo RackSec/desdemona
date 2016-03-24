@@ -2,8 +2,10 @@
   (:require
    [clojure.core.logic :as l]
    [clojure.core.match :as m]
+   [clojure.string :as s]
    [instaparse.core :as insta]
-   [clojure.java.io :refer [resource]]))
+   [clojure.java.io :refer [resource]]
+   [taoensso.timbre :refer [spy]]))
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
@@ -63,5 +65,20 @@
 (def ^:private infix-parser
   (insta/parser (resource "infix-query-grammar.ebnf")))
 
-(defn infix->dsl
-  [infix])
+(defn ^:private parsed-infix->dsl
+  [parsed]
+  (m/match parsed
+    [:expr terms]
+    (parsed-infix->dsl terms)
+
+    [:eq
+     [:fn-call
+      [:identifier "ip"]
+      [:identifier arg]]
+     [:ipv4-address & addr-parts]]
+    (let [arg (symbol arg)
+          addr (s/join "." addr-parts)]
+      `(~'= (:ip ~arg) ~addr))))
+
+(def infix->dsl
+  (comp parsed-infix->dsl infix-parser))
