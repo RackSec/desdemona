@@ -156,7 +156,7 @@
        [{:ip "10.0.0.2"    ;; ip clause succeeded
          :type "ingress"}]])))
 
-(deftest logic-query-tests
+(deftest run-logic-query-tests
   (are [query results] (= results (#'q/run-logic-query query events))
     'l/fail
     []
