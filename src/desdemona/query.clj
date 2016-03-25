@@ -35,6 +35,11 @@
        (finally
          (in-ns (ns-name old-ns)))))))
 
+(defn free-sym
+  "Returns symbol, but marked as a free variable."
+  [sym]
+  (vary-meta sym assoc ::free true))
+
 (def ^:private free-sym?
   "Check if an object has the free variable metadata annotation."
   (every-pred symbol? (comp ::free meta)))
