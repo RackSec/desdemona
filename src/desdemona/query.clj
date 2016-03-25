@@ -35,6 +35,21 @@
        (finally
          (in-ns (ns-name old-ns)))))))
 
+(def ^:private free-sym?
+  "Check if an object has the free variable metadata annotation."
+  (every-pred symbol? (comp ::free meta)))
+
+(defn ^:private find-free-vars
+  "Finds all the free logic variables in a given logic query.
+
+  This takes advantage of the fact that function references for goal
+  functions/macros (conde, featurec...) will be fully qualified, but free
+  variables will be unadorned by a namespace."
+  [logic-query]
+  (->> (flatten logic-query)
+       (filter free-sym?)
+       (into #{})))
+
 (defn ^:private dsl->logic
   "Given a DSL query, compile it to the underlying logic (miniKanren)
   expressions."
@@ -81,16 +96,3 @@
 
 (def infix->dsl
   (comp parsed-infix->dsl infix-parser))
-
-(def ^:private free-sym?
-  "Check if an object has the free variable metadata annotation."
-  (every-pred symbol? (comp ::free meta)))
-
-(defn ^:private find-free-vars
-  "Finds all the free logic variables in a given logic query.
-
-  This takes advantage of the fact that function references for goal
-  functions/macros (conde, featurec...) will be fully qualified, but free
-  variables will be unadorned by a namespace."
-  [logic-query]
-  #{})
