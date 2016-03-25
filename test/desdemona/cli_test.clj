@@ -6,9 +6,7 @@
    [clojure.test :refer [deftest testing is]]
    [clojure.string :as s]
    [clojure.core.async :as a]
-   [taoensso.timbre :refer [spy info]])
-  (:import
-   [java.io StringWriter]))
+   [desdemona.test-macros :refer [with-out-str-and-result]]))
 
 (deftest block-forever!-tests
   (let [ch (a/chan)]
@@ -63,10 +61,7 @@
   [& body]
   `(with-redefs [com.gfredericks.system-slash-exit/exit fake-exit
                  desdemona.launcher.utils/block-forever! fake-block-forever!]
-     (let [stdout# (StringWriter.)]
-       (binding [*out* stdout#]
-         (let [result# (do ~@body)]
-           [result# (str stdout#)])))))
+     (with-out-str-and-result ~@body)))
 
 (def ^:private usage-lines
   ["Usage:"
