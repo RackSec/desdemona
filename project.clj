@@ -35,6 +35,8 @@
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]
 
+                 [instaparse "1.4.1"]
+
                  [com.gfredericks/system-slash-exit "0.2.0"]]
   :plugins [[lein-cljfmt "0.3.0"]
             [lein-cloverage "1.0.7-SNAPSHOT"]
@@ -78,6 +80,7 @@
              :ring-handler desdemona.ui.server/server}
   :cljfmt {:indents {run [[:inner 0]] ;; core.logic
                      fresh [[:inner 0]]}} ;; core.logic
+  :auto {:default {:file-pattern #"\.(clj|cljs|cljx|edn|ebnf)$"}}
   :profiles {:uberjar {:aot [desdemona.launcher.aeron-media-driver
                              desdemona.launcher.launch-prod-peers]}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]

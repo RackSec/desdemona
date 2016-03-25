@@ -3,6 +3,32 @@
    [desdemona.query :as q]
    [clojure.test :refer [deftest is are testing]]))
 
+(deftest infix-parser-tests
+  (is (= [:expr [:ipv4-address "10" "0" "0" "1"]]
+         (#'q/infix-parser "10.0.0.1"))
+      "ipv4 addresses")
+  (is (= [:expr [:fn-call
+                 [:identifier "ip"]
+                 [:identifier "x"]]]
+         (#'q/infix-parser "ip(x)"))
+      "simple fn calls")
+  (is (= [:expr [:eq
+                 [:identifier "a"]
+                 [:identifier "b"]]]
+         (#'q/infix-parser "a = b"))
+      "equality between identifiers")
+  (is (= [:expr [:eq
+                 [:fn-call
+                  [:identifier "ip"]
+                  [:identifier "x"]]
+                 [:ipv4-address "10" "0" "0" "1"]]]
+         (#'q/infix-parser "ip(x) = 10.0.0.1"))
+      "equality between fn call and IP address literal"))
+
+(deftest infix->dsl-tests
+  (is (= '(= (:ip x) "10.0.0.1")
+         (q/infix->dsl "ip(x) = 10.0.0.1"))))
+
 (def dsl->logic
   @#'desdemona.query/dsl->logic)
 
