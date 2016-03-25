@@ -16,7 +16,18 @@
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})
               (clojure.core.logic/featurec x {:type "egress"})])
            (dsl->logic '(and (= (:ip x) "10.0.0.1")
-                             (= (:type x) "egress")))))))
+                             (= (:type x) "egress"))))))
+  (testing "logical disjunction"
+    (is (= '(clojure.core.logic/conde
+             [(clojure.core.logic/featurec x {:ip "10.0.0.1"})]
+             [(clojure.core.logic/featurec x {:type "egress"})])
+           (dsl->logic '(or (= (:ip x) "10.0.0.1")
+                            (= (:type x) "egress")))))
+    (is (= '(clojure.core.logic/conde
+             [(clojure.core.logic/featurec x {:type "egress"})]
+             [(clojure.core.logic/featurec x {:ip "10.0.0.1"})])
+           (dsl->logic '(or (= (:type x) "egress")
+                            (= (:ip x) "10.0.0.1")))))))
 
 (def events
   [{:ip "10.0.0.1"}
@@ -58,7 +69,42 @@
       '(and (= (:type x) "egress")
             (= (:ip x) "10.0.0.2"))
       [[{:ip "10.0.0.2"
-         :type "egress"}]])))
+         :type "egress"}]]))
+  (testing "disjunction"
+    (are [query results] (= results (q/run-dsl-query 10 query events))
+      '(or (= (:ip x) "1.2.3.4")
+           (= (:type x) "bogus"))
+      []
+
+      '(or (= (:ip x) "10.0.0.1")
+           (= (:type x) "egress"))
+      [[{:ip "10.0.0.1"}]
+       [{:ip "10.0.0.2"
+         :type "egress"}]]
+
+      '(or (= (:ip x) "10.0.0.1")
+           (= (:type x) "ingress"))
+      [[{:ip "10.0.0.1"}]
+       [{:ip "10.0.0.2"
+         :type "ingress"}]]
+
+      '(or (= (:ip x) "10.0.0.2")
+           (= (:type x) "egress"))
+      [[{:ip "10.0.0.2"    ;; ip clause succeeded
+         :type "egress"}]
+       [{:ip "10.0.0.2"    ;; type clause succeeded
+         :type "egress"}]
+       [{:ip "10.0.0.2"    ;; ip clause succeeded
+         :type "ingress"}]]
+
+      '(or (= (:type x) "egress")
+           (= (:ip x) "10.0.0.2"))
+      [[{:ip "10.0.0.2"    ;; type clause succeeded
+         :type "egress"}]
+       [{:ip "10.0.0.2"    ;; ip clause succeeded
+         :type "egress"}]
+       [{:ip "10.0.0.2"    ;; ip clause succeeded
+         :type "ingress"}]])))
 
 (deftest logic-query-tests
   (are [query results] (= results (#'q/run-logic-query query events))
