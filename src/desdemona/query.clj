@@ -37,11 +37,14 @@
   it to correctly bound the number of answers. This helps us limit how
   long it takes to query."
   [n-answers logic-query events]
-  `(l/run ~n-answers [results#]
-     (l/fresh [~'x] ;; ~'x means "literally x, don't gensym", see #28
-       (l/== [~'x] results#)
-       (l/membero ~'x ~events)
-       ~logic-query)))
+  (let [free-vars (find-free-vars logic-query)
+        membero-clauses (for [v free-vars]
+                          `(l/membero ~v ~events))]
+    `(l/run ~n-answers [results#]
+       (l/fresh [~@free-vars]
+         (l/== [~@free-vars] results#)
+         ~@membero-clauses
+         ~logic-query))))
 
 (defn ^:private run-logic-query
   "Runs a query over some events and finds n answers (default 1)."
