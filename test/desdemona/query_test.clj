@@ -154,15 +154,6 @@
     #{'x}
     '(clojure.core.logic/featurec x {:ip "10.0.0.1"})))
 
-(deftest free-sym-tests
-  (is (#'q/free-sym 'x))
-  (is (#'q/free-sym 'y))
-
-  (is (not (#'q/free-sym 'clojure.core/=))
-      "fully qualified")
-  (is (not (#'q/free-sym 1))
-      "not a symbol"))
-
     ;; #{'x}
     ;; '(clojure.core.logic/conde
     ;;   [(clojure.core.logic/featurec x {:ip "10.0.0.1"})
