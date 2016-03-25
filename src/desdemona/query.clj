@@ -4,8 +4,7 @@
    [clojure.core.match :as m]
    [clojure.string :as s]
    [instaparse.core :as insta]
-   [clojure.java.io :refer [resource]]
-   [taoensso.timbre :refer [spy]]))
+   [clojure.java.io :refer [resource]]))
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
