@@ -7,12 +7,14 @@ peer:
     - syslog-ng:syslog-ng
   environment:
     ONYX_ID: 1
-    NPEERS: 6
+    N_PEERS: 6
+  # The container must be privileged to remount /dev/shm; which is necessary
+  # to be big enough for Aeron (256M, default 64k.)
   privileged: true
   expose:
     - "40200"
     - "40200/udp"
-  command: bash -c "echo 'desdemona is waiting for 20s because of docker'; sleep 20; /sbin/my_init"
+  command: bash -c "echo 'desdemona is waiting for 20s because of docker'; sleep 20; script/run.sh"
 zookeeper:
   image: 'wurstmeister/zookeeper'
   ports:
