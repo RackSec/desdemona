@@ -82,6 +82,11 @@
 (def infix->dsl
   (comp parsed-infix->dsl infix-parser))
 
+(def ^:private free-sym
+  "Check if an object is a non-fully-qualified symbol."
+  (every-pred symbol?
+              (comp nil? namespace)))
+
 (defn ^:private find-free-vars
   [logic-query]
   #{})
