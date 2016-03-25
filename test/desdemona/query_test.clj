@@ -61,6 +61,10 @@
   (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
          (#'q/dsl->logic '(= (:ip x) "10.0.0.1"))
          (#'q/dsl->logic '(= "10.0.0.1" (:ip x)))))
+  (testing "logic variable is not hard coded to 'x"
+    (is (= '(clojure.core.logic/featurec y {:ip "10.0.0.1"})
+           (#'q/dsl->logic '(= (:ip y) "10.0.0.1"))
+           (#'q/dsl->logic '(= "10.0.0.1" (:ip y))))))
   (testing "logical conjunction"
     (is (= '(clojure.core.logic/conde
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})
