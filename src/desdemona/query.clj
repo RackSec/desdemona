@@ -6,7 +6,7 @@
    [instaparse.core :as insta]
    [clojure.java.io :refer [resource]]))
 
-(defn free-sym
+(defn ^:private free-sym
   "Returns symbol, but marked as a free variable."
   [sym]
   (vary-meta sym assoc ::free true))
