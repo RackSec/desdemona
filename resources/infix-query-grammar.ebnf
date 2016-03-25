@@ -1,3 +1,5 @@
+(* -*- mode: bison -*- *)
+
 expr ::= eq | fn-call | ipv4-address | identifier
 
 identifier ::= #"[A-Za-z-]+"
