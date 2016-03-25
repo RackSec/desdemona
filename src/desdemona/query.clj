@@ -61,7 +61,8 @@
   [dsl-query]
   (m/match [dsl-query]
     [((= ((attr lvar) :seq) value) :seq)]
-    `(l/featurec ~lvar {~attr ~value})
+    (let [lvar (free-sym lvar)]
+      `(l/featurec ~lvar {~attr ~value}))
 
     [((= value ((attr lvar) :seq)) :seq)]
     `(l/featurec ~lvar {~attr ~value})
