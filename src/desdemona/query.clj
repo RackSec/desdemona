@@ -83,9 +83,8 @@
   (comp parsed-infix->dsl infix-parser))
 
 (def ^:private free-sym
-  "Check if an object is a non-fully-qualified symbol."
-  (every-pred symbol?
-              (comp nil? namespace)))
+  "Check if an object has the free variable metadata annotation."
+  (every-pred symbol? (comp ::free meta)))
 
 (defn ^:private find-free-vars
   "Finds all the free logic variables in a given logic query.
