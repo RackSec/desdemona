@@ -6,6 +6,26 @@
    [instaparse.core :as insta]
    [clojure.java.io :refer [resource]]))
 
+(defn free-sym
+  "Returns symbol, but marked as a free variable."
+  [sym]
+  (vary-meta sym assoc ::free true))
+
+(def ^:private free-sym?
+  "Check if an object has the free variable metadata annotation."
+  (every-pred symbol? (comp ::free meta)))
+
+(defn ^:private find-free-vars
+  "Finds all the free logic variables in a given logic query.
+
+  This takes advantage of the fact that function references for goal
+  functions/macros (conde, featurec...) will be fully qualified, but free
+  variables will be unadorned by a namespace."
+  [logic-query]
+  (->> (flatten logic-query)
+       (filter free-sym?)
+       (into #{})))
+
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
   it.
@@ -34,26 +54,6 @@
        (eval (generate-logic-query n-answers logic-query events))
        (finally
          (in-ns (ns-name old-ns)))))))
-
-(defn free-sym
-  "Returns symbol, but marked as a free variable."
-  [sym]
-  (vary-meta sym assoc ::free true))
-
-(def ^:private free-sym?
-  "Check if an object has the free variable metadata annotation."
-  (every-pred symbol? (comp ::free meta)))
-
-(defn ^:private find-free-vars
-  "Finds all the free logic variables in a given logic query.
-
-  This takes advantage of the fact that function references for goal
-  functions/macros (conde, featurec...) will be fully qualified, but free
-  variables will be unadorned by a namespace."
-  [logic-query]
-  (->> (flatten logic-query)
-       (filter free-sym?)
-       (into #{})))
 
 (defn ^:private dsl->logic
   "Given a DSL query, compile it to the underlying logic (miniKanren)
