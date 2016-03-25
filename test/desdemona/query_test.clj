@@ -161,11 +161,15 @@
     'l/fail
     []
 
-    '(l/featurec x {:ip "10.0.0.1"})
+    (list clojure.core.logic/featurec
+          (#'q/free-sym 'x)
+          {:ip "10.0.0.1"})
     [[{:ip "10.0.0.1"}]])
   (testing "explicit maximum number of results"
     (let [results [[{:ip "10.0.0.1"}]]
-          query '(l/featurec x {:ip "10.0.0.1"})]
+          query (list clojure.core.logic/featurec
+                      (#'q/free-sym 'x)
+                      {:ip "10.0.0.1"})]
       (are [n-results] (= results (#'q/run-logic-query n-results query events))
         1
         10))))
