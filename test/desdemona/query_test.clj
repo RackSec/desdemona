@@ -29,6 +29,14 @@
   (is (= '(= (:ip x) "10.0.0.1")
          (q/infix->dsl "ip(x) = 10.0.0.1"))))
 
+(deftest free-sym-tests
+  (is (not (#'q/free-sym? 's))
+      "sym not marked as free")
+  (is (not (#'q/free-sym? 1))
+      "not a symbol")
+  (is (#'q/free-sym? (#'q/free-sym 's))
+      "sym explicitly marked as free"))
+
 (deftest find-free-vars-tests
   (are [expected query] (= expected (#'q/find-free-vars query))
     #{}
