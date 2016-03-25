@@ -81,3 +81,7 @@
 
 (def infix->dsl
   (comp parsed-infix->dsl infix-parser))
+
+(defn ^:private find-free-vars
+  [logic-query]
+  #{})
