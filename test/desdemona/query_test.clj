@@ -149,4 +149,7 @@
 (deftest find-free-vars-tests
   (are [expected query] (= expected (#'q/find-free-vars query))
     #{}
-    '()))
+    '()
+
+    #{'x}
+    '(clojure.core.logic/featurec x {:ip "10.0.0.1"})))
