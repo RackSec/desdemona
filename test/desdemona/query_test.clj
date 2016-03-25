@@ -29,6 +29,21 @@
   (is (= '(= (:ip x) "10.0.0.1")
          (q/infix->dsl "ip(x) = 10.0.0.1"))))
 
+(deftest find-free-vars-tests
+  (are [expected query] (= expected (#'q/find-free-vars query))
+    #{}
+    '()
+
+    #{'x}
+    (#'q/dsl->logic '(= (:ip x) "10.0.0.1"))
+
+    #{'x}
+    (#'q/dsl->logic '(= (:type x) "egress"))
+
+    #{'x}
+    (#'q/dsl->logic '(and (= (:ip x) "10.0.0.1")
+                          (= (:type x) "egress")))))
+
 (def dsl->logic
   @#'desdemona.query/dsl->logic)
 
@@ -145,16 +160,3 @@
       (are [n-results] (= results (#'q/run-logic-query n-results query events))
         1
         10))))
-
-(deftest find-free-vars-tests
-  (are [expected query] (= expected (#'q/find-free-vars query))
-    #{}
-    '()
-
-    #{'x}
-    '(clojure.core.logic/featurec x {:ip "10.0.0.1"})))
-
-    ;; #{'x}
-    ;; '(clojure.core.logic/conde
-    ;;   [(clojure.core.logic/featurec x {:ip "10.0.0.1"})
-    ;; (clojure.core.logic/featurec x {:type "egress"})])
