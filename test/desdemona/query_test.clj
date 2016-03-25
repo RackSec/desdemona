@@ -90,7 +90,7 @@
    {:ip "10.0.0.2"
     :type "ingress"}])
 
-(deftest dsl-query-tests
+(deftest run-dsl-query-tests
   (are [query results] (= results (q/run-dsl-query query events))
     '(= (:ip x) "10.0.0.1")
     [[{:ip "10.0.0.1"}]]
