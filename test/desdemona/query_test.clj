@@ -44,31 +44,29 @@
     (#'q/dsl->logic '(and (= (:ip x) "10.0.0.1")
                           (= (:type x) "egress")))))
 
-(def dsl->logic
-  @#'desdemona.query/dsl->logic)
-
 (deftest dsl->logic-tests
-  (is (thrown? IllegalArgumentException (dsl->logic '(BOGUS BOGUS BOGUS))))
+  (is (thrown? IllegalArgumentException
+               (#'q/dsl->logic '(BOGUS BOGUS BOGUS))))
   (is (= '(clojure.core.logic/featurec x {:ip "10.0.0.1"})
-         (dsl->logic '(= (:ip x) "10.0.0.1"))
-         (dsl->logic '(= "10.0.0.1" (:ip x)))))
+         (#'q/dsl->logic '(= (:ip x) "10.0.0.1"))
+         (#'q/dsl->logic '(= "10.0.0.1" (:ip x)))))
   (testing "logical conjunction"
     (is (= '(clojure.core.logic/conde
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})
               (clojure.core.logic/featurec x {:type "egress"})])
-           (dsl->logic '(and (= (:ip x) "10.0.0.1")
-                             (= (:type x) "egress"))))))
+           (#'q/dsl->logic '(and (= (:ip x) "10.0.0.1")
+                                 (= (:type x) "egress"))))))
   (testing "logical disjunction"
     (is (= '(clojure.core.logic/conde
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})]
              [(clojure.core.logic/featurec x {:type "egress"})])
-           (dsl->logic '(or (= (:ip x) "10.0.0.1")
-                            (= (:type x) "egress")))))
+           (#'q/dsl->logic '(or (= (:ip x) "10.0.0.1")
+                                (= (:type x) "egress")))))
     (is (= '(clojure.core.logic/conde
              [(clojure.core.logic/featurec x {:type "egress"})]
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})])
-           (dsl->logic '(or (= (:type x) "egress")
-                            (= (:ip x) "10.0.0.1")))))))
+           (#'q/dsl->logic '(or (= (:type x) "egress")
+                                (= (:ip x) "10.0.0.1")))))))
 
 (def events
   [{:ip "10.0.0.1"}
