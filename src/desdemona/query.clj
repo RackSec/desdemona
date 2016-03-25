@@ -82,7 +82,7 @@
 (def infix->dsl
   (comp parsed-infix->dsl infix-parser))
 
-(def ^:private free-sym
+(def ^:private free-sym?
   "Check if an object has the free variable metadata annotation."
   (every-pred symbol? (comp ::free meta)))
 
