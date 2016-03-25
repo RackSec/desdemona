@@ -65,7 +65,8 @@
       `(l/featurec ~lvar {~attr ~value}))
 
     [((= value ((attr lvar) :seq)) :seq)]
-    `(l/featurec ~lvar {~attr ~value})
+    (let [lvar (free-sym lvar)]
+      `(l/featurec ~lvar {~attr ~value}))
 
     [(('and & terms) :seq)]
     (let [logic-terms (map dsl->logic terms)]
