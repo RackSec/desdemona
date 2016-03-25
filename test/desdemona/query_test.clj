@@ -145,3 +145,8 @@
       (are [n-results] (= results (#'q/run-logic-query n-results query events))
         1
         10))))
+
+(deftest find-free-vars-tests
+  (are [expected query] (= expected (#'q/find-free-vars query))
+    #{}
+    '()))
