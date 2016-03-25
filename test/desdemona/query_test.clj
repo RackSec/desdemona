@@ -46,6 +46,9 @@
     (#'q/dsl->logic '(= (:ip x) "10.0.0.1"))
 
     #{'x}
+    (#'q/dsl->logic '(= "10.0.0.1" (:ip x)))
+
+    #{'x}
     (#'q/dsl->logic '(= (:type x) "egress"))
 
     #{'x}
