@@ -88,5 +88,10 @@
               (comp nil? namespace)))
 
 (defn ^:private find-free-vars
+  "Finds all the free logic variables in a given logic query.
+
+  This takes advantage of the fact that function references for goal
+  functions/macros (conde, featurec...) will be fully qualified, but free
+  variables will be unadorned by a namespace."
   [logic-query]
   #{})
