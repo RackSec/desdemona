@@ -94,10 +94,16 @@
     (is (thrown? IllegalArgumentException
                  (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.2")))))
   (testing "linking events"
-    (is (= '(fresh [s#]
-              (clojure.core.logic/featurec x {:ip s#})
-              (clojure.core.logic/featurec y {:ip s#}))
-           (#'q/dsl->logic '(= (:ip x) (:ip y)))))))
+    (let [gensym-count (atom 0)
+          fake-gensym (fn [& args]
+                        (->> (swap! gensym-count inc)
+                             (str "fake-gensym-")
+                             (symbol )))]
+      (with-redefs [clojure.core/gensym fake-gensym]
+        (is (= '(clojure.core.logic/fresh [fake-gensym-1]
+                  (clojure.core.logic/featurec x {:ip fake-gensym-1})
+                  (clojure.core.logic/featurec y {:ip fake-gensym-1}))
+               (#'q/dsl->logic '(= (:ip x) (:ip y)))))))))
 
 (def events
   [{:ip "10.0.0.1"}
