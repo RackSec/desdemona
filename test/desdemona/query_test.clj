@@ -84,7 +84,12 @@
              [(clojure.core.logic/featurec x {:type "egress"})]
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})])
            (#'q/dsl->logic '(or (= (:type x) "egress")
-                                (= (:ip x) "10.0.0.1")))))))
+                                (= (:ip x) "10.0.0.1"))))))
+  (testing "linking events"
+    (is (= '(fresh [s#]
+              (clojure.core.logic/featurec x {:ip s#})
+              (clojure.core.logic/featurec y {:ip s#}))
+           (#'q/dsl->logic '(= (:ip x) (:ip y)))))))
 
 (def events
   [{:ip "10.0.0.1"}
