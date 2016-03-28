@@ -38,7 +38,7 @@
                  [instaparse "1.4.1"]
 
                  [com.gfredericks/system-slash-exit "0.2.0"]]
-  :plugins [[lein-cljfmt "0.3.0"]
+  :plugins [[lein-cljfmt "0.4.1"]
             [lein-cloverage "1.0.7-SNAPSHOT"]
             [lein-kibit "0.1.2"]
             [jonase/eastwood "0.2.3"]
