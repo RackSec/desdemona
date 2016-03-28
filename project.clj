@@ -21,7 +21,7 @@
                  [org.clojure/clojurescript "1.7.228"]
 
                  [reagent "0.6.0-alpha"]
-                 [reagent-forms "0.5.21"]
+                 [reagent-forms "0.5.22"]
                  [reagent-utils "0.1.7"]
                  [hiccup "1.0.5"]
                  [secretary "1.2.3"]
