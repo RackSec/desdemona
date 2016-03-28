@@ -58,6 +58,10 @@
        (finally
          (in-ns (ns-name old-ns)))))))
 
+(def dsl-literal?
+  "Is this a literal in the DSL?"
+  string?)
+
 (defn ^:private dsl->logic
   "Given a DSL query, compile it to the underlying logic (miniKanren)
   expressions."
