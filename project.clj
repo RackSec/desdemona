@@ -15,7 +15,7 @@
                  [org.clojure/tools.cli "0.3.3"]
                  [mysql/mysql-connector-java "5.1.38"]
 
-                 [byte-streams "0.2.0"]
+                 [byte-streams "0.2.1"]
                  [camel-snake-kebab "0.3.2"]
 
                  [org.clojure/clojurescript "1.7.228"]
