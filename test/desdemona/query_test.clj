@@ -103,6 +103,13 @@
                  (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.1"))))
     (is (thrown? IllegalArgumentException
                  (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.2")))))
+  (testing "multiple terms unified with a literal"
+    (is (= '(clojure.core.logic/all
+             (clojure.core.logic/featurec x {:ip "10.0.0.1"})
+             (clojure.core.logic/featurec y {:ip "10.0.0.1"}))
+           (#'q/dsl->logic '(= (:ip x) (:ip y) "10.0.0.1"))
+           (#'q/dsl->logic '(= (:ip x) "10.0.0.1" (:ip y)))
+           (#'q/dsl->logic '(= "10.0.0.1" (:ip x) (:ip y))))))
   (testing "linking events"
     (with-fake-gensym
       (is (= '(clojure.core.logic/fresh [fake-gensym-1]
