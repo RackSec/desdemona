@@ -56,7 +56,10 @@
 
     #{'x}
     (#'q/dsl->logic '(and (= (:ip x) "10.0.0.1")
-                          (= (:type x) "egress")))))
+                          (= (:type x) "egress")))
+
+    #{'x 'y}
+    (#'q/dsl->logic '(= (:ip x) (:ip y)))))
 
 (deftest dsl->logic-tests
   (is (thrown? IllegalArgumentException
