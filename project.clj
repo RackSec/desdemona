@@ -13,7 +13,7 @@
                  [cheshire "5.5.0"]
                  [aero "0.2.0"]
                  [org.clojure/tools.cli "0.3.3"]
-                 [mysql/mysql-connector-java "5.1.18"]
+                 [mysql/mysql-connector-java "5.1.38"]
 
                  [byte-streams "0.2.0"]
                  [camel-snake-kebab "0.3.2"]
