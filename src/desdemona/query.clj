@@ -67,13 +67,13 @@
   expressions."
   [dsl-query]
   (m/match [dsl-query]
-    [((= ((attr lvar) :seq) value) :seq)]
-    (let [lvar (free-sym lvar)]
-      `(l/featurec ~lvar {~attr ~value}))
-
-    [((= value ((attr lvar) :seq)) :seq)]
-    (let [lvar (free-sym lvar)]
-      `(l/featurec ~lvar {~attr ~value}))
+    [(('= & terms) :seq)]
+    (let [{literals true attr-terms false} (group-by dsl-literal? terms)]
+      (m/match [(count literals) (count attr-terms)]
+        [1 1] (let [[value] literals
+                    [[attr lvar]] attr-terms
+                    lvar (free-sym lvar)]
+                `(l/featurec ~lvar {~attr ~value}))))
 
     [(('and & terms) :seq)]
     (let [logic-terms (map dsl->logic terms)]
