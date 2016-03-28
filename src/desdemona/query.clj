@@ -24,7 +24,7 @@
   [logic-query]
   (->> (flatten logic-query)
        (filter free-sym?)
-       (into #{})))
+       set))
 
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
