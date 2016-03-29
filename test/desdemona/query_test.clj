@@ -199,7 +199,11 @@
   (testing "multi-arity featurec with literal"
     (are [query results] (= results (q/run-dsl-query 10 query events))
       '(= (:ip x) (:ip y) "1.2.3.4")
-      [])))
+      []
+
+      '(= (:ip x) (:ip y) "10.0.0.1")
+      [[{:ip "10.0.0.1"}
+        {:ip "10.0.0.1"}]])))
 
 (deftest run-logic-query-tests
   (are [query results] (= results (#'q/run-logic-query query events))
