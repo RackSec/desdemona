@@ -195,7 +195,11 @@
        [{:ip "10.0.0.2"    ;; ip clause succeeded
          :type "egress"}]
        [{:ip "10.0.0.2"    ;; ip clause succeeded
-         :type "ingress"}]])))
+         :type "ingress"}]]))
+  (testing "multi-arity featurec with literal"
+    (are [query results] (= results (q/run-dsl-query 10 query events))
+      '(= (:ip x) (:ip y) "1.2.3.4")
+      [])))
 
 (deftest run-logic-query-tests
   (are [query results] (= results (#'q/run-logic-query query events))
