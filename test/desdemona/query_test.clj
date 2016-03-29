@@ -203,7 +203,20 @@
 
       '(= (:ip x) (:ip y) "10.0.0.1")
       [[{:ip "10.0.0.1"}
-        {:ip "10.0.0.1"}]])))
+        {:ip "10.0.0.1"}]]))
+  (testing "multi-arity features without literal"
+    (are [query results] (= results (q/run-dsl-query 10 query events))
+      '(= (:ip x) (:ip y))
+      [[{:ip "10.0.0.1"}
+        {:ip "10.0.0.1"}]
+       [{:ip "10.0.0.2" :type "egress"}
+        {:ip "10.0.0.2" :type "egress"}]
+       [{:ip "10.0.0.2" :type "egress"}
+        {:ip "10.0.0.2" :type "ingress"}]
+       [{:ip "10.0.0.2" :type "ingress"}
+        {:ip "10.0.0.2" :type "egress"}]
+       [{:ip "10.0.0.2" :type "ingress"}
+        {:ip "10.0.0.2" :type "ingress"}]])))
 
 (deftest run-logic-query-tests
   (are [query results] (= results (#'q/run-logic-query query events))
