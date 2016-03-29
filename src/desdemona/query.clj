@@ -69,17 +69,13 @@
   (m/match [dsl-query]
     [(('= & terms) :seq)]
     (let [{literals true attr-terms false} (group-by dsl-literal? terms)
-          featurec-term (fn [value [attr lvar]]
-                          (let [lvar (free-sym lvar)]
-                            `(l/featurec ~lvar {~attr ~value})))
-          literal-featurec-term (partial featurec-term (first literals))]
+          feature (fn [value [attr lvar]]
+                    `(l/featurec ~(free-sym lvar) {~attr ~value}))]
       (m/match [(count literals) (count attr-terms)]
-        [1 1] (literal-featurec-term (first attr-terms))
-        [1 _] (let [logic-terms (map literal-featurec-term attr-terms)]
-                `(l/all ~@logic-terms))
-        [0 _] (let [u (gensym)
-                    logic-terms (map (partial featurec-term u) attr-terms)]
-                `(l/fresh [~u] ~@logic-terms))))
+        [1 1] (feature (first literals) (first attr-terms))
+        [1 _] `(l/all ~@(map (partial feature (first literals)) attr-terms))
+        [0 _] (let [u (gensym)]
+                `(l/fresh [~u] ~@(map (partial feature u) attr-terms)))))
 
     [(('and & terms) :seq)]
     (let [logic-terms (map dsl->logic terms)]
