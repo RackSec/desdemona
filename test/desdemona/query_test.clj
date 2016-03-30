@@ -100,7 +100,8 @@
                                 (= (:ip x) "10.0.0.1"))))))
   (testing "multiple literals"
     (is (thrown? IllegalArgumentException
-                 (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.1"))))
+                 (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.1")))
+        "repeated but consistent literal")
     (is (thrown? IllegalArgumentException
                  (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.2")))))
   (testing "multiple terms unified with a literal"
