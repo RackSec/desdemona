@@ -6,6 +6,26 @@
    [instaparse.core :as insta]
    [clojure.java.io :refer [resource]]))
 
+(defn ^:private free-sym
+  "Returns symbol, but marked as a free variable."
+  [sym]
+  (vary-meta sym assoc ::free true))
+
+(def ^:private free-sym?
+  "Check if an object has the free variable metadata annotation."
+  (every-pred symbol? (comp ::free meta)))
+
+(defn ^:private find-free-vars
+  "Finds all the free logic variables in a given logic query.
+
+  This takes advantage of the fact that function references for goal
+  functions/macros (conde, featurec...) will be fully qualified, but free
+  variables will be unadorned by a namespace."
+  [logic-query]
+  (->> (flatten logic-query)
+       (filter free-sym?)
+       set))
+
 (defn ^:private generate-logic-query
   "Expands a query and events to a core.logic program that executes
   it.
@@ -17,11 +37,14 @@
   it to correctly bound the number of answers. This helps us limit how
   long it takes to query."
   [n-answers logic-query events]
-  `(l/run ~n-answers [results#]
-     (l/fresh [~'x] ;; ~'x means "literally x, don't gensym", see #28
-       (l/== [~'x] results#)
-       (l/membero ~'x ~events)
-       ~logic-query)))
+  (let [free-vars (find-free-vars logic-query)
+        membero-clauses (for [v free-vars]
+                          `(l/membero ~v ~events))]
+    `(l/run ~n-answers [results#]
+       (l/fresh [~@free-vars]
+         (l/== [~@free-vars] results#)
+         ~@membero-clauses
+         ~logic-query))))
 
 (defn ^:private run-logic-query
   "Runs a query over some events and finds n answers (default 1)."
@@ -41,10 +64,12 @@
   [dsl-query]
   (m/match [dsl-query]
     [((= ((attr lvar) :seq) value) :seq)]
-    `(l/featurec ~lvar {~attr ~value})
+    (let [lvar (free-sym lvar)]
+      `(l/featurec ~lvar {~attr ~value}))
 
     [((= value ((attr lvar) :seq)) :seq)]
-    `(l/featurec ~lvar {~attr ~value})
+    (let [lvar (free-sym lvar)]
+      `(l/featurec ~lvar {~attr ~value}))
 
     [(('and & terms) :seq)]
     (let [logic-terms (map dsl->logic terms)]
