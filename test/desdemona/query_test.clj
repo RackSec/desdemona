@@ -103,7 +103,8 @@
                  (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.1")))
         "repeated but consistent literal")
     (is (thrown? IllegalArgumentException
-                 (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.2")))))
+                 (#'q/dsl->logic '(= (:ip x) "1.1.1.1" "8.8.8.8")))
+        "repeated inconsistent literal"))
   (testing "multiple terms unified with a literal"
     (is (= '(clojure.core.logic/all
              (clojure.core.logic/featurec x {:ip "10.0.0.1"})
