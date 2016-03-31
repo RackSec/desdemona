@@ -11,17 +11,16 @@
                  [org.onyxplatform/onyx-seq "0.8.8.0"]
 
                  [cheshire "5.5.0"]
-                 [aero "0.1.3"]
+                 [aero "0.2.0"]
                  [org.clojure/tools.cli "0.3.3"]
-                 [mysql/mysql-connector-java "5.1.18"]
+                 [mysql/mysql-connector-java "5.1.38"]
 
-                 [byte-streams "0.2.0"]
+                 [byte-streams "0.2.1"]
                  [camel-snake-kebab "0.3.2"]
 
-                 [org.clojure/clojurescript "1.7.228"]
-
+                 [org.clojure/clojurescript "1.8.40"]
                  [reagent "0.6.0-alpha"]
-                 [reagent-forms "0.5.21"]
+                 [reagent-forms "0.5.22"]
                  [reagent-utils "0.1.7"]
                  [hiccup "1.0.5"]
                  [secretary "1.2.3"]
