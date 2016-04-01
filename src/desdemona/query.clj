@@ -96,6 +96,10 @@
   (insta/parser (resource "infix-query-grammar.ebnf")))
 
 (defn ^:private infix-term->dsl
+  "Parses an infix term to DSL format.
+
+  This is different from parsed-infix->dsl because that will only accept full
+  queries, whereas this will parse individual terms in a query."
   [term]
   (m/match term
     [:fn-call
