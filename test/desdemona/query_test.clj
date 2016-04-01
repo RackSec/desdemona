@@ -55,7 +55,7 @@
            (#'q/infix-parser "10.0.0.1 = ip(x) = ip(y)")))))
 
 (deftest infix-term->dsl-tests
-  (are [term dsl] (= dsl (q/infix->dsl term))
+  (are [term dsl] (= dsl (#'q/infix-term->dsl term))
     [:fn-call
      [:identifier "ip"]
      [:identifier "xyzzy"]]
