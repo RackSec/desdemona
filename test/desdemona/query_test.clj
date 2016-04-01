@@ -56,7 +56,14 @@
 
 (deftest infix->dsl-tests
   (is (= '(= (:ip x) "10.0.0.1")
-         (q/infix->dsl "ip(x) = 10.0.0.1"))))
+         (q/infix->dsl "ip(x) = 10.0.0.1")))
+  (testing "equality between two fn calls & literal"
+    (is (= '(= (:ip x) (:ip y) "10.0.0.1")
+           (q/infix->dsl "ip(x) = ip(y) = 10.0.0.1")))
+    (is (= '(= (:ip x) "10.0.0.1" (:ip y))
+           (q/infix->dsl "ip(x) = 10.0.0.1 = ip(y)")))
+    (is (= '(= "10.0.0.1" (:ip x) (:ip y))
+           (q/infix->dsl "10.0.0.1 = ip(x) = ip(y)")))))
 
 (deftest free-sym-tests
   (is (not (#'q/free-sym? 's))
