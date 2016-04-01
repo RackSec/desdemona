@@ -56,7 +56,20 @@
 
     #{'x}
     (#'q/dsl->logic '(and (= (:ip x) "10.0.0.1")
-                          (= (:type x) "egress")))))
+                          (= (:type x) "egress")))
+
+    #{'x 'y}
+    (#'q/dsl->logic '(= (:ip x) (:ip y)))))
+
+(defmacro with-fake-gensym
+  [& body]
+  `(let [gensym-count# (atom 0)
+         fake-gensym# (fn [& args#]
+                        (->> (swap! gensym-count# inc)
+                             (str "fake-gensym-")
+                             (symbol)))]
+     (with-redefs [clojure.core/gensym fake-gensym#]
+       ~@body)))
 
 (deftest dsl->logic-tests
   (is (thrown? IllegalArgumentException
@@ -84,7 +97,27 @@
              [(clojure.core.logic/featurec x {:type "egress"})]
              [(clojure.core.logic/featurec x {:ip "10.0.0.1"})])
            (#'q/dsl->logic '(or (= (:type x) "egress")
-                                (= (:ip x) "10.0.0.1")))))))
+                                (= (:ip x) "10.0.0.1"))))))
+  (testing "multiple literals"
+    (is (thrown? IllegalArgumentException
+                 (#'q/dsl->logic '(= (:ip x) "10.0.0.1" "10.0.0.1")))
+        "repeated but consistent literal")
+    (is (thrown? IllegalArgumentException
+                 (#'q/dsl->logic '(= (:ip x) "1.1.1.1" "8.8.8.8")))
+        "repeated inconsistent literal"))
+  (testing "multiple terms unified with a literal"
+    (is (= '(clojure.core.logic/all
+             (clojure.core.logic/featurec x {:ip "10.0.0.1"})
+             (clojure.core.logic/featurec y {:ip "10.0.0.1"}))
+           (#'q/dsl->logic '(= (:ip x) (:ip y) "10.0.0.1"))
+           (#'q/dsl->logic '(= (:ip x) "10.0.0.1" (:ip y)))
+           (#'q/dsl->logic '(= "10.0.0.1" (:ip x) (:ip y))))))
+  (testing "linking events"
+    (with-fake-gensym
+      (is (= '(clojure.core.logic/fresh [fake-gensym-1]
+                (clojure.core.logic/featurec x {:ip fake-gensym-1})
+                (clojure.core.logic/featurec y {:ip fake-gensym-1}))
+             (#'q/dsl->logic '(= (:ip x) (:ip y))))))))
 
 (def events
   [{:ip "10.0.0.1"}
@@ -164,7 +197,28 @@
        [{:ip "10.0.0.2"    ;; ip clause succeeded
          :type "egress"}]
        [{:ip "10.0.0.2"    ;; ip clause succeeded
-         :type "ingress"}]])))
+         :type "ingress"}]]))
+  (testing "multi-arity featurec with literal"
+    (are [query results] (= results (q/run-dsl-query 10 query events))
+      '(= (:ip x) (:ip y) "1.2.3.4")
+      []
+
+      '(= (:ip x) (:ip y) "10.0.0.1")
+      [[{:ip "10.0.0.1"}
+        {:ip "10.0.0.1"}]]))
+  (testing "multi-arity features without literal"
+    (are [query results] (= results (q/run-dsl-query 10 query events))
+      '(= (:ip x) (:ip y))
+      [[{:ip "10.0.0.1"}
+        {:ip "10.0.0.1"}]
+       [{:ip "10.0.0.2" :type "egress"}
+        {:ip "10.0.0.2" :type "egress"}]
+       [{:ip "10.0.0.2" :type "egress"}
+        {:ip "10.0.0.2" :type "ingress"}]
+       [{:ip "10.0.0.2" :type "ingress"}
+        {:ip "10.0.0.2" :type "egress"}]
+       [{:ip "10.0.0.2" :type "ingress"}
+        {:ip "10.0.0.2" :type "ingress"}]])))
 
 (deftest run-logic-query-tests
   (are [query results] (= results (#'q/run-logic-query query events))

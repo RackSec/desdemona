@@ -58,18 +58,24 @@
        (finally
          (in-ns (ns-name old-ns)))))))
 
+(def dsl-literal?
+  "Is this a literal in the DSL?"
+  string?)
+
 (defn ^:private dsl->logic
   "Given a DSL query, compile it to the underlying logic (miniKanren)
   expressions."
   [dsl-query]
   (m/match [dsl-query]
-    [((= ((attr lvar) :seq) value) :seq)]
-    (let [lvar (free-sym lvar)]
-      `(l/featurec ~lvar {~attr ~value}))
-
-    [((= value ((attr lvar) :seq)) :seq)]
-    (let [lvar (free-sym lvar)]
-      `(l/featurec ~lvar {~attr ~value}))
+    [(('= & terms) :seq)]
+    (let [{literals true attr-terms false} (group-by dsl-literal? terms)
+          feature (fn [value [attr lvar]]
+                    `(l/featurec ~(free-sym lvar) {~attr ~value}))]
+      (m/match [(count literals) (count attr-terms)]
+        [1 1] (feature (first literals) (first attr-terms))
+        [1 _] `(l/all ~@(map (partial feature (first literals)) attr-terms))
+        [0 _] (let [u (gensym)]
+                `(l/fresh [~u] ~@(map (partial feature u) attr-terms)))))
 
     [(('and & terms) :seq)]
     (let [logic-terms (map dsl->logic terms)]
