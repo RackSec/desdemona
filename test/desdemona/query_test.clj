@@ -54,6 +54,16 @@
                    (fn-call "ip" "y")]]
            (#'q/infix-parser "10.0.0.1 = ip(x) = ip(y)")))))
 
+(deftest infix-term->dsl-tests
+  (are [term dsl] (= dsl (q/infix->dsl term))
+    [:fn-call
+     [:identifier "ip"]
+     [:identifier "xyzzy"]]
+    '(:ip "xyzzy")
+
+    [:ipv4-addr "10" "0" "0" "1"]
+    "10.0.0.1"))
+
 (deftest infix->dsl-tests
   (is (= '(= (:ip x) "10.0.0.1")
          (q/infix->dsl "ip(x) = 10.0.0.1")))
