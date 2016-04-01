@@ -30,12 +30,22 @@
                  (fn-call "ip" "y")]]
          (#'q/infix-parser "ip(x) = ip(y)"))
       "equality between two fn calls")
-  (is (= [:expr [:eq
-                 (fn-call "ip" "x")
-                 (fn-call "ip" "y")
-                 [:ipv4-addr "10" "0" "0" "1"]]]
-         (#'q/infix-parser "ip(x) = ip(y) = 10.0.0.1"))
-      "equality between two fn calls & literal"))
+  (testing "equality between two fn calls & literal"
+    (is (= [:expr [:eq
+                   (fn-call "ip" "x")
+                   (fn-call "ip" "y")
+                   [:ipv4-addr "10" "0" "0" "1"]]]
+           (#'q/infix-parser "ip(x) = ip(y) = 10.0.0.1")))
+    (is (= [:expr [:eq
+                   (fn-call "ip" "x")
+                   [:ipv4-addr "10" "0" "0" "1"]
+                   (fn-call "ip" "y")]]
+           (#'q/infix-parser "ip(x) = 10.0.0.1 = ip(y)")))
+    (is (= [:expr [:eq
+                   [:ipv4-addr "10" "0" "0" "1"]
+                   (fn-call "ip" "x")
+                   (fn-call "ip" "y")]]
+           (#'q/infix-parser "10.0.0.1 = ip(x) = ip(y)")))))
 
 (deftest infix->dsl-tests
   (is (= '(= (:ip x) "10.0.0.1")
