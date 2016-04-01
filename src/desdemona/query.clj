@@ -95,6 +95,17 @@
 (def ^:private infix-parser
   (insta/parser (resource "infix-query-grammar.ebnf")))
 
+(defn ^:private infix-term->dsl
+  [term]
+  (m/match term
+    [:fn-call
+     [:identifier "ip"]
+     [:identifier arg]]
+    `(:ip ~(symbol arg))
+
+    [:ipv4-addr & addr-parts]
+    (s/join "." addr-parts)))
+
 (defn ^:private parsed-infix->dsl
   [parsed]
   (m/match parsed
