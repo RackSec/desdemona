@@ -3,13 +3,16 @@
    [desdemona.query :as q]
    [clojure.test :refer [deftest is are testing]]))
 
+(defn ^:private fn-call
+  "Expected parse tree for a function call."
+  [f arg]
+  [:fn-call [:identifier f] [:identifier arg]])
+
 (deftest infix-parser-tests
   (is (= [:expr [:ipv4-address "10" "0" "0" "1"]]
          (#'q/infix-parser "10.0.0.1"))
       "ipv4 addresses")
-  (is (= [:expr [:fn-call
-                 [:identifier "ip"]
-                 [:identifier "x"]]]
+  (is (= [:expr (fn-call "ip" "x")]
          (#'q/infix-parser "ip(x)"))
       "simple fn calls")
   (is (= [:expr [:eq
@@ -18,28 +21,18 @@
          (#'q/infix-parser "a = b"))
       "equality between identifiers")
   (is (= [:expr [:eq
-                 [:fn-call
-                  [:identifier "ip"]
-                  [:identifier "x"]]
+                 (fn-call "ip" "x")
                  [:ipv4-address "10" "0" "0" "1"]]]
          (#'q/infix-parser "ip(x) = 10.0.0.1"))
       "equality between fn call and IP address literal")
   (is (= [:expr [:eq
-                 [:fn-call
-                  [:identifier "ip"]
-                  [:identifier "x"]]
-                 [:fn-call
-                  [:identifier "ip"]
-                  [:identifier "y"]]]]
+                 (fn-call "ip" "x")
+                 (fn-call "ip" "y")]]
          (#'q/infix-parser "ip(x) = ip(y)"))
       "equality between two fn calls")
   (is (= [:expr [:eq
-                 [:fn-call
-                  [:identifier "ip"]
-                  [:identifier "x"]]
-                 [:fn-call
-                  [:identifier "ip"]
-                  [:identifier "y"]]
+                 (fn-call "ip" "x")
+                 (fn-call "ip" "y")
                  [:ipv4-address "10" "0" "0" "1"]]]
          (#'q/infix-parser "ip(x) = ip(y)"))
       "equality between two fn calls & literal"))
