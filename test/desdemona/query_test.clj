@@ -59,7 +59,7 @@
     [:fn-call
      [:identifier "ip"]
      [:identifier "xyzzy"]]
-    '(:ip "xyzzy")
+    '(:ip xyzzy)
 
     [:ipv4-addr "10" "0" "0" "1"]
     "10.0.0.1"))
