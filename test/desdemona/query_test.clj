@@ -30,6 +30,13 @@
                  (fn-call "ip" "y")]]
          (#'q/infix-parser "ip(x) = ip(y)"))
       "equality between two fn calls")
+  (is (= [:expr [:eq
+                 (fn-call "ip" "p")
+                 (fn-call "ip" "q")
+                 (fn-call "ip" "r")
+                 (fn-call "ip" "s")]]
+         (#'q/infix-parser "ip(p) = ip(q) = ip(r) = ip(s)"))
+      "equality between >2 fn calls")
   (testing "equality between two fn calls & literal"
     (is (= [:expr [:eq
                    (fn-call "ip" "x")
