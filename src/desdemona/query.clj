@@ -105,7 +105,7 @@
      [:fn-call
       [:identifier "ip"]
       [:identifier arg]]
-     [:ipv4-address & addr-parts]]
+     [:ipv4-addr & addr-parts]]
     (let [arg (symbol arg)
           addr (s/join "." addr-parts)]
       `(~'= (:ip ~arg) ~addr))))

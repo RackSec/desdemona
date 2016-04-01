@@ -1,6 +1,6 @@
 (* -*- mode: bison -*- *)
 
-expr ::= eq | fn-call | ipv4-address | identifier
+expr ::= eq | fn-call | ipv4-addr | identifier
 
 identifier ::= #"[A-Za-z-]+"
 maybe-whitespace ::= " "*
@@ -8,7 +8,7 @@ maybe-whitespace ::= " "*
 fn-call ::= identifier <"("> identifier <")">
 
 eq ::= eqable ( <maybe-whitespace> <"="> <maybe-whitespace> eqable )+
-<eqable> ::= fn-call | identifier | ipv4-address
+<eqable> ::= fn-call | identifier | ipv4-addr
 
-ipv4-address ::= decimal-byte <"."> decimal-byte <"."> decimal-byte <"."> decimal-byte
+ipv4-addr ::= decimal-byte <"."> decimal-byte <"."> decimal-byte <"."> decimal-byte
 <decimal-byte> ::= #"25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?"

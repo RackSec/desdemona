@@ -9,7 +9,7 @@
   [:fn-call [:identifier f] [:identifier arg]])
 
 (deftest infix-parser-tests
-  (is (= [:expr [:ipv4-address "10" "0" "0" "1"]]
+  (is (= [:expr [:ipv4-addr "10" "0" "0" "1"]]
          (#'q/infix-parser "10.0.0.1"))
       "ipv4 addresses")
   (is (= [:expr (fn-call "ip" "x")]
@@ -22,7 +22,7 @@
       "equality between identifiers")
   (is (= [:expr [:eq
                  (fn-call "ip" "x")
-                 [:ipv4-address "10" "0" "0" "1"]]]
+                 [:ipv4-addr "10" "0" "0" "1"]]]
          (#'q/infix-parser "ip(x) = 10.0.0.1"))
       "equality between fn call and IP address literal")
   (is (= [:expr [:eq
@@ -33,7 +33,7 @@
   (is (= [:expr [:eq
                  (fn-call "ip" "x")
                  (fn-call "ip" "y")
-                 [:ipv4-address "10" "0" "0" "1"]]]
+                 [:ipv4-addr "10" "0" "0" "1"]]]
          (#'q/infix-parser "ip(x) = ip(y) = 10.0.0.1"))
       "equality between two fn calls & literal"))
 
