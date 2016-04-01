@@ -116,14 +116,8 @@
     [:expr terms]
     (parsed-infix->dsl terms)
 
-    [:eq
-     [:fn-call
-      [:identifier "ip"]
-      [:identifier arg]]
-     [:ipv4-addr & addr-parts]]
-    (let [arg (symbol arg)
-          addr (s/join "." addr-parts)]
-      `(~'= (:ip ~arg) ~addr))))
+    [:eq & terms]
+    (cons '= (map infix-term->dsl terms))))
 
 (def infix->dsl
   (comp parsed-infix->dsl infix-parser))
