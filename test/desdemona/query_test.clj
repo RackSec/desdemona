@@ -34,7 +34,7 @@
                  (fn-call "ip" "x")
                  (fn-call "ip" "y")
                  [:ipv4-address "10" "0" "0" "1"]]]
-         (#'q/infix-parser "ip(x) = ip(y)"))
+         (#'q/infix-parser "ip(x) = ip(y) = 10.0.0.1"))
       "equality between two fn calls & literal"))
 
 (deftest infix->dsl-tests
