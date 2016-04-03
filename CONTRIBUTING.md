@@ -6,12 +6,14 @@ mandatory; a person with commit access has to sign off before
 something can be merged, and that person can not be the same person as
 the author.
 
-We aspire to perfect test coverage. This is protected by a gating
-continuous integration check: pull requests can not land if they
-reduce test coverage. We also aim to enforce consistent, idiomatic use
-of our tools. Wherever possible, this is also implemented by gating
-CI. This includes an [EditorConfig][ec] file: please consider
-installing an EditorConfig plugin for your editor.
+We aspire to perfect test coverage. This is protected by a gating continuous
+integration check: pull requests can not land if they reduce test
+coverage. Practicality beats purity; e.g. in the case of obvious tooling
+issues (e.g. cloverage's treatment of `for`), this rule shouldn't block the
+PR. We also aim to enforce consistent, idiomatic use of our tools. Wherever
+possible, this is also implemented by gating CI. This includes an
+[EditorConfig][ec] file: please consider installing an EditorConfig plugin for
+your editor.
 
 Push changes to your own fork, even if you have push access to the
 main repo.
