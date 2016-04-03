@@ -13,7 +13,8 @@ issues (e.g. cloverage's treatment of `for`), this rule shouldn't block the
 PR. We also aim to enforce consistent, idiomatic use of our tools. Wherever
 possible, this is also implemented by gating CI. This includes an
 [EditorConfig][ec] file: please consider installing an EditorConfig plugin for
-your editor.
+your editor. Additionally, the [Clojure Style Guide][style] is the preferred
+source for opinions on idiomatic Clojure code.
 
 Push changes to your own fork, even if you have push access to the
 main repo.
@@ -23,4 +24,5 @@ Conduct. By participating in this project you agree to abide by its
 terms. You can find the code of conduct in [`CONDUCT.md`][conduct].
 
 [ec]: http://editorconfig.org/
+[style]: https://github.com/bbatsov/clojure-style-guide
 [conduct]: https://github.com/RackSec/desdemona/blob/master/CONDUCT.md
