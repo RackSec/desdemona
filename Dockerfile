@@ -7,12 +7,15 @@ MAINTAINER Rackspace Managed Security <rms-engineering@rackspace.com>
 # https://github.com/RackSec/desdemona/issues/76
 RUN apt-get update && apt-get upgrade -y && apt-get install -y npm
 
-# Add Desdemona to the Docker container.
-COPY . /usr/src/desdemona
+RUN mkdir -p /usr/src/desdemona
 WORKDIR /usr/src/desdemona
 
 # Cache the dependencies in a Docker fs layer.
+COPY project.clj /usr/src/desdemona
 RUN lein deps
+
+# Add Desdemona to the Docker container.
+COPY . /usr/src/desdemona
 
 RUN lein uberjar
 RUN mv target/desdemona-*-standalone.jar /srv/desdemona.jar
