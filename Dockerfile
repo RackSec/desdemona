@@ -11,7 +11,7 @@ RUN mkdir -p /usr/src/desdemona
 WORKDIR /usr/src/desdemona
 
 # Cache the dependencies in a Docker fs layer.
-COPY project.clj /usr/src/desdemona
+COPY project.clj /usr/src/desdemona/
 RUN lein deps
 
 # Add Desdemona to the Docker container.
