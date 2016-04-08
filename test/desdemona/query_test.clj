@@ -3,13 +3,16 @@
    [desdemona.query :as q]
    [clojure.test :refer [deftest is are testing]]))
 
+(defn ^:private fn-call
+  "Expected parse tree for a function call."
+  [f arg]
+  [:fn-call [:identifier f] [:identifier arg]])
+
 (deftest infix-parser-tests
-  (is (= [:expr [:ipv4-address "10" "0" "0" "1"]]
+  (is (= [:expr [:ipv4-addr "10" "0" "0" "1"]]
          (#'q/infix-parser "10.0.0.1"))
       "ipv4 addresses")
-  (is (= [:expr [:fn-call
-                 [:identifier "ip"]
-                 [:identifier "x"]]]
+  (is (= [:expr (fn-call "ip" "x")]
          (#'q/infix-parser "ip(x)"))
       "simple fn calls")
   (is (= [:expr [:eq
@@ -18,12 +21,38 @@
          (#'q/infix-parser "a = b"))
       "equality between identifiers")
   (is (= [:expr [:eq
-                 [:fn-call
-                  [:identifier "ip"]
-                  [:identifier "x"]]
-                 [:ipv4-address "10" "0" "0" "1"]]]
+                 (fn-call "ip" "x")
+                 [:ipv4-addr "10" "0" "0" "1"]]]
          (#'q/infix-parser "ip(x) = 10.0.0.1"))
-      "equality between fn call and IP address literal"))
+      "equality between fn call and IP address literal")
+  (is (= [:expr [:eq
+                 (fn-call "ip" "x")
+                 (fn-call "ip" "y")]]
+         (#'q/infix-parser "ip(x) = ip(y)"))
+      "equality between two fn calls")
+  (is (= [:expr [:eq
+                 (fn-call "ip" "p")
+                 (fn-call "ip" "q")
+                 (fn-call "ip" "r")
+                 (fn-call "ip" "s")]]
+         (#'q/infix-parser "ip(p) = ip(q) = ip(r) = ip(s)"))
+      "equality between >2 fn calls")
+  (testing "equality between two fn calls & literal"
+    (is (= [:expr [:eq
+                   (fn-call "ip" "x")
+                   (fn-call "ip" "y")
+                   [:ipv4-addr "10" "0" "0" "1"]]]
+           (#'q/infix-parser "ip(x) = ip(y) = 10.0.0.1")))
+    (is (= [:expr [:eq
+                   (fn-call "ip" "x")
+                   [:ipv4-addr "10" "0" "0" "1"]
+                   (fn-call "ip" "y")]]
+           (#'q/infix-parser "ip(x) = 10.0.0.1 = ip(y)")))
+    (is (= [:expr [:eq
+                   [:ipv4-addr "10" "0" "0" "1"]
+                   (fn-call "ip" "x")
+                   (fn-call "ip" "y")]]
+           (#'q/infix-parser "10.0.0.1 = ip(x) = ip(y)")))))
 
 (deftest infix->dsl-tests
   (is (= '(= (:ip x) "10.0.0.1")
