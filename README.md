@@ -1,6 +1,6 @@
 # desdemona
 
-[![Build Status](https://travis-ci.org/RackSec/desdemona.svg?branch=master)](https://travis-ci.org/RackSec/desdemona)
+[![Build Status](https://jenkins.racksec.io/job/desdemona-master/badge/icon)](https://jenkins.racksec.io/job/desdemona-master/)
 [![codecov.io](https://codecov.io/github/RackSec/desdemona/coverage.svg?branch=master)](https://codecov.io/github/RackSec/desdemona?branch=master)
 
 Experiments in data-driven security operations using stream
