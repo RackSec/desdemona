@@ -1,7 +1,7 @@
 (ns desdemona.jobs.sample-submit-job
   (:require [desdemona.catalogs.sample-catalog :refer [build-catalog]]
             [desdemona.tasks.kafka :refer [add-kafka-input]]
-            [desdemona.tasks.sql :refer [add-sql-insert-output]]
+            [desdemona.tasks.swift :refer [add-swift-output]]
             [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
             [desdemona.lifecycles.logging :refer [add-logging]]
             [desdemona.workflows.sample-workflow :refer [build-workflow]]
@@ -13,7 +13,7 @@
 ;; Since we always run in Docker Compose, kafka is added as an input, and onyx-sql is used as the output
 
 (defn build-job []
-  (let [batch-size 1
+  (let [batch-size 5
         batch-timeout 1000
         base-job {:catalog (build-catalog batch-size batch-timeout)
                   :lifecycles (build-lifecycles)
@@ -27,15 +27,13 @@
                                       :kafka/zookeeper "zk:2181"
                                       :kafka/deserializer-fn :desdemona.tasks.kafka/deserialize-message-json
                                       :kafka/offset-reset :smallest})
-        (add-sql-insert-output :write-lines {:onyx/batch-size batch-size
-                                             :sql/classname "com.mysql.jdbc.Driver"
-                                             :sql/subprotocol "mysql"
-                                             :sql/subname "//db:3306/logs"
-                                             :sql/user "onyx"
-                                             :sql/password "onyx"
-                                             :sql/table :logLines})
+        (add-swift-output :write-swift {:onyx/batch-size batch-size
+                                        :onyx/batch-timeout batch-timeout
+                                        :swift/auth-url "http://mimic:8900/identity/v2.0/tokens"
+                                        :swift/username "mimic"
+                                        :swift/api-key "12345"})
         (add-logging :read-lines)
-        (add-logging :write-lines))))
+        (add-logging :write-swift))))
 
 (defn -main [& args]
   (let [config (read-config (clojure.java.io/resource "config.edn") {:profile :dev})

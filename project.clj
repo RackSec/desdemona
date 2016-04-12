@@ -18,6 +18,8 @@
                  [byte-streams "0.2.1"]
                  [camel-snake-kebab "0.3.2"]
 
+                 [clj-http "2.1.0"]
+
                  [org.clojure/clojurescript "1.8.40"]
                  [reagent "0.6.0-alpha"]
                  [reagent-forms "0.5.22"]

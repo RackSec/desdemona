@@ -5,8 +5,6 @@
 (deftest build-workflow-test
   (let [expected [[:read-lines :original-wrapper]
                   [:original-wrapper :determine-origin]
-                  [:determine-origin :build-row]
-                  [:build-row :prepare-rows]
-                  [:prepare-rows :write-lines]]
+                  [:determine-origin :write-swift]]
         got (build-workflow)]
     (is (= expected got))))

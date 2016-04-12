@@ -18,17 +18,4 @@
     :onyx/type :function
     :onyx/batch-size batch-size
     :onyx/batch-timeout batch-timeout
-    :onyx/doc "Determine the origin of the message"}
-
-   {:onyx/name :build-row
-    :onyx/fn :desdemona.functions.sample-functions/build-row
-    :onyx/type :function
-    :onyx/batch-size batch-size
-    :onyx/batch-timeout batch-timeout
-    :onyx/doc "Transform the segment into a row for MySQL"}
-
-   {:onyx/name :prepare-rows
-    :onyx/fn :desdemona.functions.sample-functions/prepare-rows
-    :onyx/type :function
-    :onyx/batch-size batch-size
-    :onyx/batch-timeout batch-timeout}])
+    :onyx/doc "Determine the origin of the message"}])

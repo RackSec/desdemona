@@ -66,19 +66,6 @@ Make sure you create the Kafka topic by connecting to the producer:
 script/connect_kafka.sh
 ```
 
-And the MySQL database:
-
-```
-script/connect_mysql.sh
-```
-
-Run this SQL, which is available in `resources/table.sql`:
-
-```
-use logs;
-CREATE TABLE logLines (id int primary key auto_increment, line text);
-```
-
 Now you can submit a job:
 
 ```
