@@ -1,11 +1,11 @@
 (ns desdemona.plugins.swift
   (:require
-    [onyx.peer.pipeline-extensions :as p-ext]
-    [onyx.peer.function :as function]
-    [cheshire.core :as json]
-    [clj-http.client :as http]
-    [byte-streams :as bs]
-    [camel-snake-kebab.core :refer [->kebab-case-keyword]]))
+   [onyx.peer.pipeline-extensions :as p-ext]
+   [onyx.peer.function :as function]
+   [cheshire.core :as json]
+   [clj-http.client :as http]
+   [byte-streams :as bs]
+   [camel-snake-kebab.core :refer [->kebab-case-keyword]]))
 
 (defn ^:private find-first
   "Get the first item from the given collection that matches the given function."
@@ -79,7 +79,7 @@
   (.format (java.text.SimpleDateFormat. "HH:mm:ss-SSS") (java.util.Date.)))
 
 (defrecord SwiftWriteRows
-  [auth-url username api-key]
+           [auth-url username api-key]
   p-ext/Pipeline
 
   (read-batch

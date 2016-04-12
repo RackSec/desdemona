@@ -1,6 +1,6 @@
 (ns desdemona.functions.sample-functions
   (:require
-    [clojure.core.match :refer [match]]))
+   [clojure.core.match :refer [match]]))
 
 (defn add-original-wrapper
   [segment]
