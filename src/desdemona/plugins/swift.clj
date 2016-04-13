@@ -4,6 +4,8 @@
    [onyx.peer.function :as function]
    [cheshire.core :as json]
    [clj-http.client :as http]
+   [clj-time.core :as t]
+   [clj-time.format :as f]
    [byte-streams :as bs]
    [camel-snake-kebab.core :refer [->kebab-case-keyword]]))
 
@@ -70,13 +72,13 @@
   "We create one container per day, named based on the date. This function
   generates a container name indicating today's date."
   []
-  (.format (java.text.SimpleDateFormat. "yyyy-MM-dd") (java.util.Date.)))
+  (f/unparse (f/formatter "yyyy-MM-dd") (t/now)))
 
 (defn calculate-file-name
   "We create one file per batch, named based on the current time. The resolution
   is intended to be small enough such that each filename will be unique per batch."
   []
-  (.format (java.text.SimpleDateFormat. "HH:mm:ss-SSS") (java.util.Date.)))
+  (f/unparse (f/formatter "HH:mm:ss-SSS") (t/now)))
 
 (defrecord SwiftWriteRows
            [auth-url username api-key]
