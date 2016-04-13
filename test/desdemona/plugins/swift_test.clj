@@ -8,13 +8,6 @@
             [desdemona.plugins.swift :as swift])
   (:import (org.joda.time DateTimeUtils)))
 
-;(deftest find-first-test
-;  (let [f #(= 3 %)
-;        coll [1 2 3 4 5]
-;        expected 3
-;        got (swift/find-first f coll)]
-;    (is (= expected got))))
-
 (defmacro freeze-time [time & forms]
   `(try
      (DateTimeUtils/setCurrentMillisFixed (.getMillis ~time))
