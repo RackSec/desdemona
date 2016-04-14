@@ -123,7 +123,7 @@
                                    200)]
     (let [record (swift/->SwiftWriteRows "http://authurl.com" "username" "apikey")
           event {:onyx.core/results {:tree [{:leaves [{:message {:foo 1}}
-                                                     {:message {:foo 2}}]}
+                                                      {:message {:foo 2}}]}
                                             {:leaves [{:message {:foo 3}}
                                                       {:message {:foo 4}}]}]}}
           result (.write-batch record event)]
