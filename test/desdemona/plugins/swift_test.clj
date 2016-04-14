@@ -5,6 +5,8 @@
             [clojure.java.io :as io]
             [clj-time.core :as t]
             [clj-http.fake :as http]
+            [onyx.peer.pipeline-extensions :as p-ext]
+            [onyx.peer.function :as function]
             [desdemona.plugins.swift :as swift])
   (:import (org.joda.time DateTimeUtils)))
 
@@ -86,6 +88,59 @@
   (freeze-time (t/date-time 2016 6 8 14 15 45 401)
                (let [file-name (swift/calculate-file-name)]
                  (is (= "14:15:45-401" file-name)))))
+
+(deftest swift-write-rows-read-batch-test
+  "This test verifies that read-batch calls function/read-batch with the event
+  that is passed into it."
+  (with-redefs [function/read-batch (fn [event] event)]
+    (let [record (swift/->SwiftWriteRows "http://authurl.com" "username" "apikey")
+          event {:event 1}
+          result (.read-batch record event)]
+      (is (= event result)))))
+
+(deftest swift-write-rows-write-batch-test
+  (with-redefs [swift/authenticate (fn [auth-url username api-key]
+                                     (is (= "http://authurl.com" auth-url))
+                                     (is (= "username" username))
+                                     (is (= "apikey" api-key))
+                                     {:access {:token {:id "authtoken"}
+                                               :service-catalog [{:name "cloudFiles"
+                                                                  :type "object-store"
+                                                                  :endpoints [{:public-url "http://cfurl.com"}]}]}})
+                swift/calculate-container-name (fn [] "containername")
+                swift/calculate-file-name (fn [] "filename")
+                swift/create-container (fn [cloud-files-url auth-token container-name]
+                                         (is (= "http://cfurl.com" cloud-files-url))
+                                         (is (= "authtoken" auth-token))
+                                         (is (= "containername" container-name))
+                                         200)
+                swift/write-file (fn [cloud-files-url auth-token container-name file-name contents]
+                                   (is (= "http://cfurl.com" cloud-files-url))
+                                   (is (= "authtoken" auth-token))
+                                   (is (= "containername" container-name))
+                                   (is (= "filename" file-name))
+                                   (is (= [{:foo 1} {:foo 2} {:foo 3} {:foo 4}] contents))
+                                   200)]
+    (let [record (swift/->SwiftWriteRows "http://authurl.com" "username" "apikey")
+          event {:onyx.core/results {:tree [{:leaves [{:message {:foo 1}}
+                                                     {:message {:foo 2}}]}
+                                            {:leaves [{:message {:foo 3}}
+                                                      {:message {:foo 4}}]}]}}
+          result (.write-batch record event)]
+      (is (= {:onyx.core/written? true} result)))))
+
+(deftest swift-write-rows-write-batch-empty-test
+  "This test verifies that a batch with no segments does not make any HTTP calls."
+  (let [record (swift/->SwiftWriteRows "url" "username" "apikey")
+        event {:onyx.core/results {:tree '()}}
+        result (.write-batch record event)]
+    (is (= {:onyx.core/written? true} result))))
+
+(deftest swift-write-rows-seal-resource-test
+  "This test verifies that seal-resource does nothing."
+  (let [record (swift/->SwiftWriteRows "http://authurl.com" "username" "apikey")
+        result (.seal-resource record :empty-event)]
+    (is (= {} result))))
 
 (deftest write-batch-test
   (let [pipeline-data {:onyx.core/task-map {:swift/auth-url "authurl"
