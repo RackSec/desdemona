@@ -1,7 +1,11 @@
 # desdemona
 
-[![Build Status](https://jenkins.racksec.io/job/desdemona-master/badge/icon)](https://jenkins.racksec.io/job/desdemona-master/)
-[![codecov.io](https://codecov.io/github/RackSec/desdemona/coverage.svg?branch=master)](https://codecov.io/github/RackSec/desdemona?branch=master)
+[![Build Status][covimg][build]
+[![codecov.io][cimg)][cov]
+[buildimg]: https://jenkins.racksec.io/job/desdemona-master/badge/icon
+[build]: (https://jenkins.racksec.io/job/desdemona-master/)
+[cov]: https://codecov.io/github/RackSec/desdemona?branch=master
+[csvg]: https://codecov.io/github/RackSec/desdemona/coverage.svg?branch=master
 
 Experiments in data-driven security operations using stream
 processing.
