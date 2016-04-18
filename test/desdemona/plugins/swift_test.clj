@@ -40,8 +40,7 @@
     (http/with-fake-routes
       {"http://authurl.com" {:post (fn [req]
                                      (let [body (json/parse-stream (io/reader (req :body)) ->kebab-case-keyword)
-                                           username (-> body :auth :rax-kskey:api-key-credentials :username)
-                                           api-key (-> body :auth :rax-kskey:api-key-credentials :api-key)]
+                                           [username api-key] (-> body :auth :rax-kskey:api-key-credentials ((juxt :username :api-key)))]
                                        {:status 200
                                         :headers {}
                                         :body (json/generate-string {:username username

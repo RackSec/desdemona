@@ -7,7 +7,7 @@ peer:
     - mimic:mimic
   environment:
     ONYX_ID: 1
-    N_PEERS: 8
+    N_PEERS: 8  # there must be more peers than the number of tasks in the workflow
   # The container must be privileged to remount /dev/shm; which is necessary
   # to be big enough for Aeron (256M, default 64k.)
   privileged: true

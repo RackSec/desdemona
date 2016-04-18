@@ -5,6 +5,7 @@
             [desdemona.lifecycles.sample-lifecycle :refer [build-lifecycles]]
             [desdemona.lifecycles.logging :refer [add-logging]]
             [desdemona.workflows.sample-workflow :refer [build-workflow]]
+            [clojure.java.io :as io]
             [aero.core :refer [read-config]]
             [onyx.api]))
 
@@ -36,7 +37,7 @@
         (add-logging :write-swift))))
 
 (defn -main [& args]
-  (let [config (read-config (clojure.java.io/resource "config.edn") {:profile :dev})
+  (let [config (read-config (io/resource "config.edn") {:profile :dev})
         peer-config (get config :peer-config)
         job (build-job)
         {:keys [job-id]} (onyx.api/submit-job peer-config job)]

@@ -2,6 +2,7 @@
   (:require
    [onyx.peer.pipeline-extensions :as p-ext]
    [onyx.peer.function :as function]
+   [taoensso.timbre :refer [info]]
    [cheshire.core :as json]
    [clj-http.client :as http]
    [clj-time.core :as t]
@@ -97,7 +98,7 @@
               cloud-files-url (-> auth-response get-cloud-files :endpoints first :public-url)
               container-name (calculate-container-name)
               file-name (calculate-file-name)]
-          (println "Writing" (count segments) "segments to" container-name file-name)
+          (info "Writing" (count segments) "segments to" container-name file-name)
           (create-container cloud-files-url auth-token container-name)
           (write-file cloud-files-url auth-token container-name file-name segments))))
     {:onyx.core/written? true})
