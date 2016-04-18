@@ -96,8 +96,10 @@ bit of memory. If it has insufficient memory, you'll see the following
 error message in the docker-compose output:
 
 ```
-kafka_1     | # There is insufficient memory for the Java Runtime Environment to continue.
-kafka_1     | # Native memory allocation (mmap) failed to map 1073741824 bytes for committing reserved memory.
+kafka_1     | # There is insufficient memory for the Java Runtime Environment
+to continue.
+kafka_1     | # Native memory allocation (mmap) failed to map 1073741824 bytes
+for committing reserved memory.
 ```
 
 You can fix this by increasing the amount of RAM in the VirtualBox VM
