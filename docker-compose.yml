@@ -14,7 +14,8 @@ peer:
   expose:
     - "40200"
     - "40200/udp"
-  command: bash -c "echo 'desdemona is waiting for 20s because of docker'; sleep 20; script/run.sh"
+  command: bash -c "echo 'desdemona is waiting for 20s because docker';
+                    sleep 20; script/run.sh"
 zookeeper:
   image: 'wurstmeister/zookeeper'
   ports:
@@ -30,7 +31,8 @@ kafka:
     - "9092:9092"
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-  command: bash -c "echo 'kafka is waiting for 10s because of docker'; sleep 10; start-kafka.sh"
+  command: bash -c "echo 'kafka is waiting for 10s because of docker';
+                    sleep 10; start-kafka.sh"
 syslog-ng:
   build: script/syslog-ng
   links:
