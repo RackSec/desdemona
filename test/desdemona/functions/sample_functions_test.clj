@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [cheshire.core :as json]
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]
-            [desdemona.functions.sample-functions :refer [message-origin add-message-origin add-original-wrapper]]))
+            [desdemona.functions.sample-functions
+             :refer [message-origin add-message-origin add-original-wrapper]]))
 
 (deftest add-original-wrapper-test
   (let [segment {:some :values}

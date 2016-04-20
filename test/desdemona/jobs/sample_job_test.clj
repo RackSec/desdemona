@@ -16,12 +16,13 @@
         expected-workflow [[:read-lines :original-wrapper]
                            [:original-wrapper :determine-origin]
                            [:determine-origin :write-swift]]
-        expected-lifecycles [{:lifecycle/task :write-swift
-                              :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
-                             {:lifecycle/task :read-lines
-                              :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
-                             {:lifecycle/task :read-lines
-                              :lifecycle/calls :onyx.plugin.kafka/read-messages-calls}]]
+        expected-lifecycles
+        [{:lifecycle/task :write-swift
+          :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
+         {:lifecycle/task :read-lines
+          :lifecycle/calls :desdemona.lifecycles.logging/log-calls}
+         {:lifecycle/task :read-lines
+          :lifecycle/calls :onyx.plugin.kafka/read-messages-calls}]]
     (is (= expected-catalog-names
            (map :onyx/name catalog)))
     (is (= "test1"

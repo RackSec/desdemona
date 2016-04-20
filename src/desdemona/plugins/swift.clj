@@ -11,7 +11,8 @@
    [camel-snake-kebab.core :refer [->kebab-case-keyword]]))
 
 (defn ^:private find-first
-  "Get the first item from the given collection that matches the given function."
+  "Get the first item from the given collection for which the given function
+  returns true."
   [f coll]
   (first (filter f coll)))
 
@@ -19,34 +20,38 @@
   "Reach into an authentication response and extract the Cloud Files data from
   the service catalog."
   [auth-response]
-  (find-first #(and (= "cloudFiles" (:name %)) (= "object-store" (:type %))) (-> auth-response :access :service-catalog)))
+  (find-first #(and (= "cloudFiles" (:name %)) (= "object-store" (:type %)))
+              (-> auth-response :access :service-catalog)))
 
 (defn get-token
-  "Reach into an authentication response and extract the authentication-related
-  part of it (which will include both the auth token as well as expiration date)."
+  "Reach into an authentication response and extract the auth-related part
+  of it (which will include both the auth token and the expiration date)."
   [auth-response]
   (-> auth-response :access :token))
 
 (defn authenticate
   "Authenticate with Cloud Files and return the authentication response. This
-  response will include an auth token that can be used for subsequent requests,
-  as well as a service catalog that will indicate the URL to use for, for example,
-  Cloud Files."
+  response will include an auth token that can be used for subsequent
+  requests, as well as a service catalog that will indicate the URL to use
+  for, for example, Cloud Files."
   [auth-url username api-key]
-  (let [body (json/generate-string {"auth" {"RAX-KSKEY:apiKeyCredentials" {"username" username
-                                                                           "apiKey" api-key}}})
+  (let [body (json/generate-string {"auth" {"RAX-KSKEY:apiKeyCredentials"
+                                            {"username" username
+                                             "apiKey" api-key}}})
         response (http/post auth-url
                             {:body body
                              :content-type :json
                              :accept :json
                              :throw-entire-message true
                              :as :stream})
-        decoded (json/decode-stream (bs/to-reader (response :body)) ->kebab-case-keyword)]
+        decoded (json/decode-stream (bs/to-reader (response :body))
+                                    ->kebab-case-keyword)]
     decoded))
 
 (defn create-container
   "Create a container on Cloud Files. This requires an auth token, which is
-  passed as a request header. If the container already exists, nothing happens."
+  passed as a request header. If the container already exists, nothing
+  happens."
   [cf-url auth-token container-name]
   (let [url (str cf-url "/" container-name)
         response (http/put url
@@ -76,8 +81,9 @@
   (f/unparse (f/formatter "yyyy-MM-dd") (t/now)))
 
 (defn calculate-file-name
-  "We create one file per batch, named based on the current time. The resolution
-  is intended to be small enough such that each filename will be unique per batch."
+  "We create one file per batch, named based on the current time. The
+  resolution is intended to be small enough such that each filename will be
+  unique per batch."
   []
   (f/unparse (f/formatter "HH:mm:ss-SSS") (t/now)))
 
@@ -95,12 +101,15 @@
       (when (not-empty segments)
         (let [auth-response (authenticate auth-url username api-key)
               auth-token (-> auth-response get-token :id)
-              cloud-files-url (-> auth-response get-cloud-files :endpoints first :public-url)
+              cloud-files-url (-> auth-response get-cloud-files :endpoints
+                                  first :public-url)
               container-name (calculate-container-name)
               file-name (calculate-file-name)]
-          (info "Writing" (count segments) "segments to" container-name file-name)
+          (info "Writing" (count segments) "segments to"
+                container-name file-name)
           (create-container cloud-files-url auth-token container-name)
-          (write-file cloud-files-url auth-token container-name file-name segments))))
+          (write-file cloud-files-url auth-token container-name file-name
+                      segments))))
     {:onyx.core/written? true})
 
   (seal-resource
