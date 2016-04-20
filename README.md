@@ -1,8 +1,8 @@
 # desdemona
 
-[![Build Status][buildimg][build]
-[![codecov.io][cimg][cov]
-[build]: (https://jenkins.racksec.io/job/desdemona-master/)
+[![Build Status][buildimg]][build]
+[![codecov.io][cimg]][cov]
+[build]: https://jenkins.racksec.io/job/desdemona-master/
 [buildimg]: https://jenkins.racksec.io/job/desdemona-master/badge/icon
 [cov]: https://codecov.io/github/RackSec/desdemona?branch=master
 [cimg]: https://codecov.io/github/RackSec/desdemona/coverage.svg?branch=master
