@@ -269,6 +269,7 @@
           query (list clojure.core.logic/featurec
                       (#'q/free-sym 'x)
                       {:ip "10.0.0.1"})]
-      (are [n-results] (= results (#'q/run-logic-query n-results query events))
+      (are [n-results]
+           (= results (#'q/run-logic-query n-results query events))
         1
         10))))

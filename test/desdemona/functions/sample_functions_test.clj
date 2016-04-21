@@ -3,12 +3,11 @@
             [clojure.java.io :as io]
             [cheshire.core :as json]
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]
-            [desdemona.functions.sample-functions
-             :refer [message-origin add-message-origin add-original-wrapper]]))
+            [desdemona.functions.sample-functions :as f]))
 
 (deftest add-original-wrapper-test
   (let [segment {:some :values}
-        got (add-original-wrapper segment)]
+        got (f/add-original-wrapper segment)]
     (is (= {:original {:some :values}} got))))
 
 (defn raw-example
@@ -23,14 +22,14 @@
   {:original (raw-example kind)})
 
 (deftest message-origin-test
-  (are [origin] (= origin (message-origin (raw-example origin)))
+  (are [origin] (= origin (f/message-origin (raw-example origin)))
     :syslog
     :json
     :falconhose
     :cloudpassage))
 
 (deftest add-message-origin-test
-  (are [origin] (= origin ((add-message-origin (example origin)) :origin))
+  (are [origin] (= origin ((f/add-message-origin (example origin)) :origin))
     :syslog
     :json
     :falconhose

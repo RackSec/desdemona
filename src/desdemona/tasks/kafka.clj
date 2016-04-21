@@ -20,16 +20,18 @@
   "Instrument a job with Kafka lifecycles and catalog entries."
   [job task opts]
   (-> job
-      (update :catalog conj (merge {:onyx/name task
-                                    :onyx/plugin :onyx.plugin.kafka/read-messages
-                                    :onyx/type :input
-                                    :onyx/medium :kafka
-                                    :kafka/fetch-size 307200
-                                    :kafka/chan-capacity 1000
-                                    :kafka/offset-reset :smallest
-                                    :kafka/empty-read-back-off 500
-                                    :kafka/commit-interval 500
-                                    :onyx/doc "Reads messages from a Kafka topic"}
-                                   opts))
-      (update :lifecycles conj {:lifecycle/task task
-                                :lifecycle/calls :onyx.plugin.kafka/read-messages-calls})))
+      (update :catalog conj
+              (merge {:onyx/name task
+                      :onyx/plugin :onyx.plugin.kafka/read-messages
+                      :onyx/type :input
+                      :onyx/medium :kafka
+                      :kafka/fetch-size 307200
+                      :kafka/chan-capacity 1000
+                      :kafka/offset-reset :smallest
+                      :kafka/empty-read-back-off 500
+                      :kafka/commit-interval 500
+                      :onyx/doc "Reads messages from a Kafka topic"}
+                     opts))
+      (update :lifecycles conj
+              {:lifecycle/task task
+               :lifecycle/calls :onyx.plugin.kafka/read-messages-calls})))
