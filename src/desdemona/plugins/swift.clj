@@ -45,7 +45,7 @@
                              :throw-entire-message true
                              :as :stream})]
     (-> response :body bs/to-reader (json/decode-stream
-                                      ->kebab-case-keyword))))
+                                     ->kebab-case-keyword))))
 
 (defn create-container
   "Create a container on Cloud Files. This requires an auth token, which is
