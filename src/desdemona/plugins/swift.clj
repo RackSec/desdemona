@@ -96,19 +96,18 @@
 
   (write-batch
     [_ {:keys [onyx.core/results]}]
-    (let [segments (map :message (mapcat :leaves (:tree results)))]
-      (when (not-empty segments)
-        (let [auth-response (authenticate! auth-url username api-key)
-              auth-token (-> auth-response get-token :id)
-              cloud-files-url (-> auth-response get-cloud-files :endpoints
-                                  first :public-url)
-              container-name (calculate-container-name)
-              file-name (calculate-file-name)]
-          (info "Writing" (count segments) "segments to"
-                container-name file-name)
-          (create-container cloud-files-url auth-token container-name)
-          (write-file cloud-files-url auth-token container-name file-name
-                      segments))))
+    (when-let [segments (seq (map :message (mapcat :leaves (:tree results))))]
+      (let [auth-response (authenticate! auth-url username api-key)
+            auth-token (-> auth-response get-token :id)
+            cloud-files-url (-> auth-response get-cloud-files :endpoints
+                                first :public-url)
+            container-name (calculate-container-name)
+            file-name (calculate-file-name)]
+        (info "Writing" (count segments) "segments to"
+              container-name file-name)
+        (create-container cloud-files-url auth-token container-name)
+        (write-file cloud-files-url auth-token container-name file-name
+                    segments)))
     {:onyx.core/written? true})
 
   (seal-resource
