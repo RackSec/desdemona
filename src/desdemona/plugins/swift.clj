@@ -29,7 +29,7 @@
   [auth-response]
   (-> auth-response :access :token))
 
-(defn authenticate
+(defn authenticate!
   "Authenticate with Cloud Files and return the authentication response. This
   response will include an auth token that can be used for subsequent
   requests, as well as a service catalog that will indicate the URL to use
@@ -43,10 +43,9 @@
                              :content-type :json
                              :accept :json
                              :throw-entire-message true
-                             :as :stream})
-        decoded (json/decode-stream (bs/to-reader (response :body))
-                                    ->kebab-case-keyword)]
-    decoded))
+                             :as :stream})]
+    (-> response :body bs/to-reader (json/decode-stream
+                                      ->kebab-case-keyword))))
 
 (defn create-container
   "Create a container on Cloud Files. This requires an auth token, which is
@@ -99,7 +98,7 @@
     [_ {:keys [onyx.core/results]}]
     (let [segments (map :message (mapcat :leaves (:tree results)))]
       (when (not-empty segments)
-        (let [auth-response (authenticate auth-url username api-key)
+        (let [auth-response (authenticate! auth-url username api-key)
               auth-token (-> auth-response get-token :id)
               cloud-files-url (-> auth-response get-cloud-files :endpoints
                                   first :public-url)

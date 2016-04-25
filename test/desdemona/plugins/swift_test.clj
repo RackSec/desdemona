@@ -34,8 +34,8 @@
         got (swift/get-token auth-response)]
     (is (= token got))))
 
-(deftest authenticate-test
-  (testing "This test verifies that the authenticate function makes a request
+(deftest authenticate!-test
+  (testing "This test verifies that the authenticate! function makes a request
            to the URL specified by the auth-url parameter, and includes the
            username and api-key in the expected JSON format."
     (http/with-fake-routes
@@ -51,7 +51,7 @@
                    :body (json/generate-string {:username username
                                                 :api-key api-key})}))}}
       (let [result
-            (swift/authenticate "http://authurl.com" "username" "apikey")]
+            (swift/authenticate! "http://authurl.com" "username" "apikey")]
         (is (= {:username "username" :api-key "apikey"} result))))))
 
 (deftest create-container-test
@@ -112,7 +112,7 @@
         (is (= event result))))))
 
 (deftest swift-write-rows-write-batch-test
-  (with-redefs [swift/authenticate
+  (with-redefs [swift/authenticate!
                 (fn [auth-url username api-key]
                   (is (= "http://authurl.com" auth-url))
                   (is (= "username" username))
