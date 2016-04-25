@@ -119,7 +119,7 @@
   that actually writes batches to Cloud Files."
   [pipeline-data]
   (let [task-map (:onyx.core/task-map pipeline-data)
-        auth-url (:swift/auth-url task-map)
-        username (:swift/username task-map)
-        api-key (:swift/api-key task-map)]
+        {auth-url :swift/auth-url
+         username :swift/username
+         api-key :swift/api-key} task-map]
     (->SwiftWriteRows auth-url username api-key)))
