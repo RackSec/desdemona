@@ -4,7 +4,8 @@
    [onyx.peer.function :as function]
    [taoensso.timbre :refer [info]]
    [cheshire.core :as json]
-   [clj-http.client :as http]
+   [aleph.http :as http]
+   [manifold.deferred :as md]
    [clj-time.core :as t]
    [clj-time.format :as f]
    [byte-streams :as bs]
@@ -37,41 +38,39 @@
   [auth-url username api-key]
   (let [body (json/generate-string {"auth" {"RAX-KSKEY:apiKeyCredentials"
                                             {"username" username
-                                             "apiKey" api-key}}})
-        response (http/post auth-url
-                            {:body body
-                             :content-type :json
-                             :accept :json
-                             :throw-entire-message true
-                             :as :stream})]
-    (-> response :body bs/to-reader (json/decode-stream
-                                     ->kebab-case-keyword))))
+                                             "apiKey" api-key}}})]
+    @(md/chain (http/post auth-url {:body body
+                                    :content-type :json
+                                    :accept :json
+                                    :throw-entire-message true
+                                    :as :stream})
+               :body
+               bs/to-reader
+               #(json/decode-stream % ->kebab-case-keyword))))
 
-(defn create-container
+(defn create-container!
   "Create a container on Cloud Files. This requires an auth token, which is
   passed as a request header. If the container already exists, nothing
   happens."
   [cf-url auth-token container-name]
-  (let [url (str cf-url "/" container-name)
-        response (http/put url
-                           {:accept :json
-                            :throw-entire-message true
-                            :headers {"X-Auth-Token" auth-token}})]
-    (:status response)))
+  (let [url (str cf-url "/" container-name)]
+    @(md/chain (http/put url {:accept :json
+                              :throw-entire-message true
+                              :headers {"X-Auth-Token" auth-token}})
+               :status)))
 
-(defn write-file
+(defn write-file!
   "Encode the given contents to JSON and write them to the given file on
   Cloud Files, at the given URL. This requires an auth token, which is passed
   as a request header. If the file already exists, it is overwritten."
   [cf-url auth-token container-name file-name contents]
   (let [url (str cf-url "/" container-name "/" file-name)
-        body (json/generate-string contents)
-        response (http/put url
-                           {:body body
-                            :content-type :json
-                            :throw-entire-message true
-                            :headers {"X-Auth-Token" auth-token}})]
-    (:status response)))
+        body (json/generate-string contents)]
+    @(md/chain (http/put url {:body body
+                              :content-type :json
+                              :throw-entire-message true
+                              :headers {"X-Auth-Token" auth-token}})
+               :status)))
 
 (defn calculate-container-name
   "We create one container per day, named based on the date. This function
@@ -105,9 +104,9 @@
             file-name (calculate-file-name)]
         (info "Writing" (count segments) "segments to"
               container-name file-name)
-        (create-container cloud-files-url auth-token container-name)
-        (write-file cloud-files-url auth-token container-name file-name
-                    segments)))
+        (create-container! cloud-files-url auth-token container-name)
+        (write-file! cloud-files-url auth-token container-name file-name
+                     segments)))
     {:onyx.core/written? true})
 
   (seal-resource

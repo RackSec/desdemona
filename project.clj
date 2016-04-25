@@ -18,8 +18,8 @@
                  [byte-streams "0.2.1"]
                  [camel-snake-kebab "0.3.2"]
 
-                 [clj-http "2.1.0"]
-                 [clj-http-fake "1.0.2"]
+                 [manifold "0.1.4"]
+                 [aleph "0.4.1"]
                  [clj-time "0.11.0"]
 
                  [org.clojure/clojurescript "1.8.40"]
