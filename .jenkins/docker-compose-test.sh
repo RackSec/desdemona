@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+git submodule update --init --recursive
 docker-compose build
 docker-compose up -d
 sleep 5
