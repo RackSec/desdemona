@@ -1,0 +1,3 @@
+[submodule "script/mimic"]
+	path = script/mimic
+	url = https://github.com/rackerlabs/mimic.git

@@ -6,6 +6,4 @@
 (defn build-workflow []
   [[:read-lines :original-wrapper]
    [:original-wrapper :determine-origin]
-   [:determine-origin :build-row]
-   [:build-row :prepare-rows]
-   [:prepare-rows :write-lines]])
+   [:determine-origin :write-swift]])
