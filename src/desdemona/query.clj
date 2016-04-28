@@ -95,20 +95,29 @@
 (def ^:private infix-parser
   (insta/parser (resource "infix-query-grammar.ebnf")))
 
+(defn ^:private infix-term->dsl
+  "Parses an infix term to DSL format.
+
+  This is different from parsed-infix->dsl because that will only accept full
+  queries, whereas this will parse individual terms in a query."
+  [term]
+  (m/match term
+    [:fn-call
+     [:identifier "ip"]
+     [:identifier arg]]
+    `(:ip ~(symbol arg))
+
+    [:ipv4-addr & addr-parts]
+    (s/join "." addr-parts)))
+
 (defn ^:private parsed-infix->dsl
   [parsed]
   (m/match parsed
     [:expr terms]
     (parsed-infix->dsl terms)
 
-    [:eq
-     [:fn-call
-      [:identifier "ip"]
-      [:identifier arg]]
-     [:ipv4-addr & addr-parts]]
-    (let [arg (symbol arg)
-          addr (s/join "." addr-parts)]
-      `(~'= (:ip ~arg) ~addr))))
+    [:eq & terms]
+    (cons '= (map infix-term->dsl terms))))
 
 (def infix->dsl
   (comp parsed-infix->dsl infix-parser))
