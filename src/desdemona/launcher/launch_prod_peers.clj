@@ -2,10 +2,10 @@
   (:require [desdemona.launcher.utils :as utils]
             [taoensso.timbre :as t]
             [onyx.plugin.kafka]
-            [onyx.plugin.sql]
             [onyx.plugin.core-async]
             [onyx.plugin.seq]
             [desdemona.functions.sample-functions]
+            [desdemona.plugins.swift]
             [desdemona.jobs.sample-submit-job]
             [desdemona.lifecycles.sample-lifecycle])
   (:gen-class))

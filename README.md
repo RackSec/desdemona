@@ -1,7 +1,11 @@
 # desdemona
 
-[![Build Status](https://travis-ci.org/RackSec/desdemona.svg?branch=master)](https://travis-ci.org/RackSec/desdemona)
-[![codecov.io](https://codecov.io/github/RackSec/desdemona/coverage.svg?branch=master)](https://codecov.io/github/RackSec/desdemona?branch=master)
+[![Build Status][buildimg]][build]
+[![codecov.io][cimg]][cov]
+[build]: https://jenkins.racksec.io/job/desdemona-master/
+[buildimg]: https://jenkins.racksec.io/job/desdemona-master/badge/icon
+[cov]: https://codecov.io/github/RackSec/desdemona?branch=master
+[cimg]: https://codecov.io/github/RackSec/desdemona/coverage.svg?branch=master
 
 Experiments in data-driven security operations using stream
 processing.
@@ -66,19 +70,6 @@ Make sure you create the Kafka topic by connecting to the producer:
 script/connect_kafka.sh
 ```
 
-And the MySQL database:
-
-```
-script/connect_mysql.sh
-```
-
-Run this SQL, which is available in `resources/table.sql`:
-
-```
-use logs;
-CREATE TABLE logLines (id int primary key auto_increment, line text);
-```
-
 Now you can submit a job:
 
 ```
@@ -96,8 +87,10 @@ bit of memory. If it has insufficient memory, you'll see the following
 error message in the docker-compose output:
 
 ```
-kafka_1     | # There is insufficient memory for the Java Runtime Environment to continue.
-kafka_1     | # Native memory allocation (mmap) failed to map 1073741824 bytes for committing reserved memory.
+kafka_1     | # There is insufficient memory for the Java Runtime Environment
+to continue.
+kafka_1     | # Native memory allocation (mmap) failed to map 1073741824 bytes
+for committing reserved memory.
 ```
 
 You can fix this by increasing the amount of RAM in the VirtualBox VM
@@ -121,9 +114,15 @@ function, giving it an Onyx ID and ZooKeeper address.
 
 ### Run the front-end for development
 
-First, make sure you have [Leiningen](http://leiningen.org/) installed and then run `lein figsass` from the project directory. This will start a Leiningen server at `http://localhost:3449/` as well as automatically watch, compile and inject the project source files for you.
+First, make sure you have [Leiningen](http://leiningen.org/) installed and
+then run `lein figsass` from the project directory. This will start a
+Leiningen server at `http://localhost:3449/` as well as automatically watch,
+compile and inject the project source files for you.
 
-`lein figsass` is just an alias running two tasks in parallel: `scss :dev auto` and `figwheel`. For Sass compilation, project assumes you have [sassc](https://github.com/sass/sassc) binary installed. You can use different binary by changing the `:executable` under `:scss` inside `project.clj`.
+`lein figsass` is just an alias running two tasks in parallel: `scss :dev
+auto` and `figwheel`. For Sass compilation, project assumes you have
+[sassc](https://github.com/sass/sassc) binary installed. You can use different
+binary by changing the `:executable` under `:scss` inside `project.clj`.
 
 ## License
 

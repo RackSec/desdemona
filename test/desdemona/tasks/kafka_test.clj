@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [cheshire.core :as json]
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]
-            [desdemona.tasks.kafka :refer [deserialize-message-raw deserialize-message-json]]))
+            [desdemona.tasks.kafka
+             :refer [deserialize-message-raw deserialize-message-json]]))
 
 (deftest deserialize-message-json-test
   (let [in {"this" "will"
@@ -22,7 +23,8 @@
         decoded (json/decode raw ->kebab-case-keyword)
         got (deserialize-message-json (.getBytes raw))]
     (is (= (decoded :facility) (got :facility)))
-    (is (= (-> decoded :parsed :metadata :customer-id-string) (-> got :parsed :metadata :customer-id-string)))))
+    (is (= (-> decoded :parsed :metadata :customer-id-string)
+           (-> got :parsed :metadata :customer-id-string)))))
 
 (deftest deserialize-message-json-fails-test
   (let [got (deserialize-message-json "this should be bytes")]
@@ -39,4 +41,5 @@
 
 (deftest deserialize-message-raw-fails-test
   (let [got (deserialize-message-raw "this should be bytes")]
-    (is (= "No matching ctor found for class java.lang.String" (.getMessage (got :error))))))
+    (is (= "No matching ctor found for class java.lang.String"
+           (.getMessage (got :error))))))

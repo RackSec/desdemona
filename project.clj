@@ -18,6 +18,10 @@
                  [byte-streams "0.2.1"]
                  [camel-snake-kebab "0.3.2"]
 
+                 [manifold "0.1.4"]
+                 [aleph "0.4.1"]
+                 [clj-time "0.11.0"]
+
                  [org.clojure/clojurescript "1.8.40"]
                  [reagent "0.6.0-alpha"]
                  [reagent-forms "0.5.22"]
@@ -27,7 +31,8 @@
                  [venantius/accountant "0.1.7"]
                  [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
                  [org.clojure/tools.nrepl "0.2.12"]
-                 [cljsjs/react-bootstrap "0.28.1-1" :exclusions [org.webjars.bower/jquery]]
+                 [cljsjs/react-bootstrap "0.28.1-1"
+                  :exclusions [org.webjars.bower/jquery]]
                  [ring/ring-defaults "0.2.0"]
                  [ring/ring-mock "0.3.0"]
 

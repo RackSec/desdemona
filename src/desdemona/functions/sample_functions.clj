@@ -6,14 +6,6 @@
   [segment]
   {:original segment})
 
-(defn build-row
-  [segment]
-  {:line (str (name (:origin segment)) ": " (-> segment :original :message))})
-
-(defn prepare-rows
-  [segment]
-  {:rows [segment]})
-
 (defn message-origin
   [message]
   (match [message]

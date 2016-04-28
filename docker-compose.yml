@@ -3,18 +3,19 @@ peer:
   links:
     - zookeeper:zk
     - kafka:kafka
-    - db:db
     - syslog-ng:syslog-ng
+    - mimic:mimic
   environment:
     ONYX_ID: 1
-    N_PEERS: 6
+    N_PEERS: 8  # there must be more peers than tasks in the workflow
   # The container must be privileged to remount /dev/shm; which is necessary
   # to be big enough for Aeron (256M, default 64k.)
   privileged: true
   expose:
     - "40200"
     - "40200/udp"
-  command: bash -c "echo 'desdemona is waiting for 20s because of docker'; sleep 20; script/run.sh"
+  command: bash -c "echo 'desdemona is waiting for 20s because docker';
+                    sleep 20; script/run.sh"
 zookeeper:
   image: 'wurstmeister/zookeeper'
   ports:
@@ -30,16 +31,8 @@ kafka:
     - "9092:9092"
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-  command: bash -c "echo 'kafka is waiting for 10s because of docker'; sleep 10; start-kafka.sh"
-db:
-  image: mysql
-  environment:
-    MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-    MYSQL_USER: onyx
-    MYSQL_PASSWORD: onyx
-    MYSQL_DATABASE: logs
-  ports:
-    - "3306:3306"
+  command: bash -c "echo 'kafka is waiting for 10s because of docker';
+                    sleep 10; start-kafka.sh"
 syslog-ng:
   build: script/syslog-ng
   links:
@@ -48,6 +41,10 @@ syslog-ng:
       - ./script/syslog-ng/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf
   ports:
       - "601:601"
+mimic:
+  build: script/mimic
+  ports:
+    - "8900:8900"
 test:
   image: desdemona_peer
   command: lein test
