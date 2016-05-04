@@ -1,0 +1,41 @@
+.table-sorted {
+
+  .table > thead > tr > th {
+    position: relative;
+    cursor: pointer;
+    padding-left: 20px;
+    white-space: nowrap;
+  }
+
+  .table th:before {
+    content: "";
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid #b6b6b6;
+    border-left: 3px solid transparent;
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: -2px;
+  }
+
+  .table th:after {
+    content: "";
+    border-right: 3px solid transparent;
+    border-top: 3px solid #b6b6b6;
+    border-left: 3px solid transparent;
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 3px;
+  }
+
+  .table .asc:before {
+    border-bottom-color: #111;
+  }
+
+  .table .desc:after {
+    border-top-color: #111;
+  }
+}

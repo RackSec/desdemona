@@ -8,5 +8,5 @@
         rows (:results state-deref)
         all-keys (-> (mapcat wd/get-all-keys rows) distinct wd/prepare-keys)]
     [:div {:class "container-fluid"}
-     [:div {:class "table-responsive"}
+     [:div {:class "table-responsive table-sorted"}
       [wd/sorted-table all-keys rows session/state]]]))
