@@ -3,7 +3,8 @@
             [reagent.core :as r]
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
-            [accountant.core :as accountant]))
+            [accountant.core :as accountant]
+            [desdemona.ui.sample-data :refer [sample-state]]))
 
 (defn current-page []
   [:div
@@ -15,6 +16,7 @@
 
 (defn init!
   []
+  (session/reset! sample-state)
   (accountant/configure-navigation!
    {:nav-handler
     (fn [path]
