@@ -1,6 +1,6 @@
 (ns desdemona.ui.core
   (:require [desdemona.ui.nav :refer [nav]]
-            [reagent.core :as r :refer [atom]]
+            [reagent.core :as r]
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]))
