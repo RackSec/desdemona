@@ -33,11 +33,11 @@
         component [table/table-component]]
     (session/swap! merge state)
     (with-mounted-component component
-     (fn [c div]
-       (let [first-th (.querySelector div "th:first-of-type")
-             first-row-entry (.querySelector div "tr:first-of-type > td")
-             rows-count (.-length (.querySelectorAll div "tbody tr"))]
-         (testing "generated markup"
-           (is (= (.-innerHTML first-th) "A"))
-           (is (= (.-innerHTML first-row-entry) "1"))
-           (is (= rows-count results-count))))))))
+      (fn [c div]
+        (let [first-th (.querySelector div "th:first-of-type")
+              first-row-entry (.querySelector div "tr:first-of-type > td")
+              rows-count (.-length (.querySelectorAll div "tbody tr"))]
+          (testing "generated markup"
+            (is (= (.-innerHTML first-th) "A"))
+            (is (= (.-innerHTML first-row-entry) "1"))
+            (is (= rows-count results-count))))))))
