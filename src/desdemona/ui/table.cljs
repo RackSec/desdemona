@@ -3,9 +3,8 @@
             [reagent.session :as session]))
 
 (defn table-component
-  [state]
-  (let [state-deref @state
-        rows (:results state-deref)
+  []
+  (let [rows (:results @session/state)
         all-keys (-> (mapcat wd/get-all-keys rows) distinct wd/prepare-keys)]
     [:div {:class "container-fluid"}
      [:div {:class "table-responsive table-sorted"}

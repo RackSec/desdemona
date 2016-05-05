@@ -9,7 +9,7 @@
 (defn current-page []
   [:div
    (nav)
-   [(session/get :current-page) session/state]])
+   [(session/get :current-page)]])
 
 (defn mount-root []
   (r/render [current-page] (.getElementById js/document "app")))
