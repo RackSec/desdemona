@@ -1,4 +1,5 @@
-(ns desdemona.ui.sample-data)
+(ns desdemona.ui.sample-data
+  (:require [wilson.dom :as wd]))
 
 (def example-results
   [{:id "5719f32c7305fa39841e9a1b"
@@ -912,4 +913,8 @@
     :critical true
     :created-at "2005-03-30T11:49:32-02:00"}])
 
-(def sample-state {:results example-results})
+(def sample-state {:results example-results
+                   :table-toggled-ks (->
+                                     (mapcat wd/get-all-keys example-results)
+                                     distinct
+                                     wd/prepare-keys)})
