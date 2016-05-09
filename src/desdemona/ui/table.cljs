@@ -4,8 +4,10 @@
 
 (defn table-component
   []
-  (let [rows (:results @session/state)
-        all-keys (-> (mapcat wd/get-all-keys rows) distinct wd/prepare-keys)]
+  (let [state-deref @session/state]
     [:div {:class "container-fluid"}
      [:div {:class "table-responsive table-sorted"}
-      [wd/sorted-table all-keys rows session/state]]]))
+      [wd/sorted-table
+       (:table-toggled-ks state-deref)
+       (:results state-deref)
+       session/state]]]))
