@@ -35,7 +35,7 @@
                   :exclusions [org.webjars.bower/jquery]]
                  [ring/ring-defaults "0.2.0"]
                  [ring/ring-mock "0.3.0"]
-                 [wilson "0.18.0" :exclusions [cljsjs/react]]
+                 [wilson "0.19.0" :exclusions [cljsjs/react]]
 
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]
