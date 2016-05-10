@@ -28,7 +28,10 @@
 
 (deftest table-component-test
   (let [state {:results [{:a 1 :b 2}
-                         {:a 4 :b 2}]}
+                         {:a 4 :b 2}]
+               :table-toggled-ks [:a :b]
+               :all-table-ks [:a :b]
+               :columns-toggler-open? false}
         results-count (count (:results state))
         component [table/table-component]]
     (session/swap! merge state)
