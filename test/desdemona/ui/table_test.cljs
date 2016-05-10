@@ -6,8 +6,10 @@
    [reagent.session :as session]
    [cljs.core.match :refer-macros [match]]))
 
-(def isClient (not (nil? (try (.-document js/window)
-                              (catch js/Object e nil)))))
+(def isClient?
+  "Are we running in a browser?"
+  (some? (try (.-document js/window)
+              (catch js/Object e nil))))
 
 (def rflush r/flush)
 
@@ -19,7 +21,7 @@
     div))
 
 (defn with-mounted-component [comp f]
-  (when isClient
+  (when isClient?
     (let [div (add-test-div "_testreagent")]
       (let [comp (r/render-component comp div #(f comp div))]
         (r/unmount-component-at-node div)
