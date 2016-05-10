@@ -10,20 +10,19 @@
    (conj coll k)))
 
 (defn columns-toggler-component
-  []
-  (let [ks (:all-table-ks @session/state)]
-    (into [:ul.nav.nav-pills.nav-stacked]
-     (for [k ks]
-      [:li
-       [:a {:href "#"
-            :on-click #(session/update! :table-toggled-ks toggle-key k)}
-        (wd/describe-key k)]]))))
+  [ks session-entry]
+  (into [:ul.nav.nav-pills.nav-stacked]
+   (for [k ks]
+    [:li
+     [:a {:href "#"
+          :on-click #(session/update! session-entry toggle-key k)}
+      (wd/describe-key k)]])))
 
 (defn table-component
   []
   (let [state-deref @session/state]
     [:div {:class "container-fluid"}
-     [columns-toggler-component]
+     [columns-toggler-component (:all-table-ks state-deref) :table-toggled-ks]
      [:div {:class "table-responsive table-sorted"}
       [wd/sorted-table
        (:table-toggled-ks state-deref)
