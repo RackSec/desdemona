@@ -6,7 +6,6 @@
    [reagent.session :as session]
    [cljs.core.match :refer-macros [match]]))
 
-<<<<<<< HEAD
 (def test-state {:results [{:a 1 :b 2}
                            {:a 4 :b 2}]
                  :table-toggled-ks (sorted-set :a :b)
