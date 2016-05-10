@@ -10,6 +10,8 @@
    (conj coll k)))
 
 (defn columns-toggler-component
+  "Component with a list of buttons with a click handler to toggle keys in
+  given session-entry."
   [ks session-entry]
   (into [:ul.nav.nav-pills.nav-stacked]
    (for [k ks]
