@@ -1,9 +1,10 @@
 (ns desdemona.ui.core
   (:require [desdemona.ui.nav :refer [nav]]
-            [reagent.core :as reagent :refer [atom]]
+            [reagent.core :as r]
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
-            [accountant.core :as accountant]))
+            [accountant.core :as accountant]
+            [desdemona.ui.sample-data :refer [sample-state]]))
 
 (defn current-page []
   [:div
@@ -11,10 +12,11 @@
    [(session/get :current-page)]])
 
 (defn mount-root []
-  (reagent/render [current-page] (.getElementById js/document "app")))
+  (r/render [current-page] (.getElementById js/document "app")))
 
 (defn init!
   []
+  (session/reset! sample-state)
   (accountant/configure-navigation!
    {:nav-handler
     (fn [path]
