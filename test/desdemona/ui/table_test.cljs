@@ -6,6 +6,12 @@
    [reagent.session :as session]
    [cljs.core.match :refer-macros [match]]))
 
+(def test-state {:results [{:a 1 :b 2}
+                           {:a 4 :b 2}]
+                 :table-toggled-ks (sorted-set :a :b)
+                 :all-table-ks (sorted-set :a :b)
+                 :columns-toggler-open? false})
+
 (def isClient (not (nil? (try (.-document js/window)
                               (catch js/Object e nil)))))
 
@@ -26,15 +32,27 @@
         (r/flush)
         (.removeChild (.-body js/document) div)))))
 
+(deftest columns-toggler-component-test
+  (session/reset! test-state)
+  (with-mounted-component [table/columns-toggler-component
+                           (:all-table-ks @session/state)
+                           :table-toggled-ks]
+    (fn [c div]
+      (let [first-li (.querySelector div "li:first-of-type")
+            first-link (.querySelector div "li:first-of-type a")
+            active? #(.contains (.-classList %) "active")]
+        (testing "generated markup"
+          (is (= (.-innerHTML first-link) "A"))
+          (is (active? first-li)))
+        (testing "clicks"
+          (is (some #{:a} (:table-toggled-ks @session/state)))
+          (.click first-link)
+          (is (nil? (some #{:a} (:table-toggled-ks @session/state)))))))))
+
 (deftest table-component-test
-  (let [state {:results [{:a 1 :b 2}
-                         {:a 4 :b 2}]
-               :table-toggled-ks [:a :b]
-               :all-table-ks [:a :b]
-               :columns-toggler-open? false}
-        results-count (count (:results state))
+  (let [results-count (count (:results test-state))
         component [table/table-component]]
-    (session/swap! merge state)
+    (session/reset! test-state)
     (with-mounted-component component
       (fn [c div]
         (let [first-th (.querySelector div "th:first-of-type")
