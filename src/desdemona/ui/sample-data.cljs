@@ -913,8 +913,18 @@
     :critical true
     :created-at "2005-03-30T11:49:32-02:00"}])
 
+(defn compare-keys
+  "Compares two keys using wilson.dom/describe-key."
+  [k1 k2]
+  (compare (wd/describe-key k1) (wd/describe-key k2)))
+
+(def all-ks (->
+             (mapcat wd/get-all-keys example-results)
+             distinct
+             wd/prepare-keys))
+
+(def sorted-all-ks (into (sorted-set-by compare-keys) all-ks))
+
 (def sample-state {:results example-results
-                   :table-toggled-ks (->
-                                     (mapcat wd/get-all-keys example-results)
-                                     distinct
-                                     wd/prepare-keys)})
+                   :table-toggled-ks sorted-all-ks
+                   :all-table-ks sorted-all-ks})
