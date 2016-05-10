@@ -1,0 +1,19 @@
+.nav.nav--light {
+
+  & > li > a {
+    color: rgba($white, .6);
+    border-radius: 0;
+
+    &:hover,
+    &:focus {
+      color: $white;
+      background: none;
+    }
+  }
+
+  & > li.active > a {
+    background: none;
+    border-left: 3px solid $orange;
+    color: $white;
+  }
+}

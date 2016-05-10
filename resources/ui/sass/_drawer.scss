@@ -1,0 +1,50 @@
+.drawer {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 240px;
+  z-index: 10;
+  transition: all .2s ease-in-out;
+
+  &.drawer--left {
+    left: -240px;
+  }
+
+  &.drawer--left.open {
+    left: 0;
+  }
+
+  .drawer-toggler {
+    position:absolute;
+    left: 100%;
+    padding: 0;
+    width: 15px;
+    height: 15px;
+    top: 0;
+
+    &:before {
+      content: "";
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 5px solid white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%)
+    }
+  }
+
+  &.drawer--left.open .drawer-toggler:before {
+    border-left: 0;
+    border-right: 5px solid white;
+  }
+}
+
+.after-drawer {
+  transition: all .2s ease-in-out;
+
+  &.after-drawer--left.drawer-open {
+    margin-left: 240px;
+  }
+}
+

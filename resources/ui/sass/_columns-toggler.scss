@@ -1,0 +1,17 @@
+.columns-toggler {
+  margin-top: -20px;
+  background: $grey;
+
+  h3 {
+    padding-bottom: 6px; // align content below with table
+  }
+
+  .drawer-toggler {
+    background: $grey;
+  }
+
+  .nav.nav--light > li.active > a {
+    background: darken($grey, 2%);
+
+  }
+}

@@ -927,4 +927,5 @@
 
 (def sample-state {:results example-results
                    :table-toggled-ks sorted-all-ks
-                   :all-table-ks sorted-all-ks})
+                   :all-table-ks sorted-all-ks
+                   :columns-toggler-open? false})
