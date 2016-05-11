@@ -1,4 +1,5 @@
-(ns desdemona.ui.sample-data)
+(ns desdemona.ui.sample-data
+  (:require [wilson.dom :as wd]))
 
 (def example-results
   [{:id "5719f32c7305fa39841e9a1b"
@@ -912,6 +913,19 @@
     :critical true
     :created-at "2005-03-30T11:49:32-02:00"}])
 
+(defn compare-keys
+  "Compares two keys using wilson.dom/describe-key."
+  [k1 k2]
+  (compare (wd/describe-key k1) (wd/describe-key k2)))
+
+(def all-ks (->
+             (mapcat wd/get-all-keys example-results)
+             distinct
+             wd/prepare-keys))
+
+(def sorted-all-ks (into (sorted-set-by compare-keys) all-ks))
+
 (def sample-state {:results example-results
-                   :table-sort-key :id
-                   :table-sort-order :asc})
+                   :table-toggled-ks sorted-all-ks
+                   :all-table-ks sorted-all-ks
+                   :columns-toggler-open? false})
