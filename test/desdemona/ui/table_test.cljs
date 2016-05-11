@@ -4,7 +4,8 @@
    [cljs.test :as t :refer-macros [deftest testing is are]]
    [reagent.core :as r]
    [reagent.session :as session]
-   [cljs.core.match :refer-macros [match]]))
+   [cljs.core.match :refer-macros [match]]
+   [dommy.core :as d :refer-macros [sel sel1]]))
 
 (def test-state {:results [{:a 1 :b 2}
                            {:a 4 :b 2}]
@@ -20,10 +21,9 @@
 (def rflush r/flush)
 
 (defn add-test-div [name]
-  (let [doc     js/document
-        body    (.-body js/document)
-        div     (.createElement doc "div")]
-    (.appendChild body div)
+  (let [body    (sel1 :body)
+        div     (d/create-element "div")]
+    (d/append! body div)
     div))
 
 (defn with-mounted-component [comp f]
@@ -32,7 +32,7 @@
       (let [comp (r/render-component comp div #(f comp div))]
         (r/unmount-component-at-node div)
         (r/flush)
-        (.removeChild (.-body js/document) div)))))
+        (d/remove! (sel1 :body) div)))))
 
 (deftest columns-toggler-component-test
   (session/reset! test-state)
@@ -40,11 +40,11 @@
                            (:all-table-ks @session/state)
                            :table-toggled-ks]
     (fn [c div]
-      (let [first-li (.querySelector div "li:first-of-type")
-            first-link (.querySelector div "li:first-of-type a")
-            active? #(.contains (.-classList %) "active")]
+      (let [first-li (sel1 div :li)
+            first-link (sel1 div [:li :a])
+            active? #(d/has-class? % "active")]
         (testing "generated markup"
-          (is (= (.-innerHTML first-link) "A"))
+          (is (= (d/html first-link) "A"))
           (is (active? first-li)))
         (testing "clicks"
           (is (some #{:a} (:table-toggled-ks @session/state)))

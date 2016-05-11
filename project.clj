@@ -21,6 +21,7 @@
                  [manifold "0.1.4"]
                  [aleph "0.4.1"]
                  [clj-time "0.11.0"]
+                 [com.taoensso/timbre "4.3.1"]
 
                  [org.clojure/clojurescript "1.8.40"]
                  [reagent "0.6.0-alpha"]
@@ -36,6 +37,7 @@
                  [ring/ring-defaults "0.2.0"]
                  [ring/ring-mock "0.3.0"]
                  [wilson "0.19.0" :exclusions [cljsjs/react]]
+                 [prismatic/dommy "1.1.0"]
 
                  [org.clojure/core.logic "0.8.10"]
                  [org.clojure/core.match "0.3.0-alpha4"]
