@@ -21,7 +21,6 @@
                  [manifold "0.1.4"]
                  [aleph "0.4.1"]
                  [clj-time "0.11.0"]
-                 [com.taoensso/timbre "4.3.1"]
 
                  [org.clojure/clojurescript "1.8.40"]
                  [reagent "0.6.0-alpha"]
