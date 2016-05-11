@@ -5,9 +5,8 @@
 (defn toggle-key
   "Adds/removes k in given coll and returns the coll."
   [coll k]
-  (if (contains? coll k)
-    (disj coll k)
-    (conj coll k)))
+  ((if (contains? coll k)
+     disj conj) coll k))
 
 (defn columns-toggler-component
   "Component with a list of buttons with a click handler to toggle keys in
