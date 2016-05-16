@@ -51,14 +51,6 @@
            (wd/describe-key k)])
         ks)]]]))
 
-(defn get-el-width
-  [el]
-  (:width (d/bounding-client-rect el)))
-
-(defn get-el-height
-  [el]
-  (:height (d/bounding-client-rect el)))
-
 (defn set-sticky-table-widths
   "Sets table/ths widths on sticky-table to match those of sorted-table."
   []

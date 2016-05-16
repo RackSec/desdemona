@@ -10,3 +10,11 @@
 
 (def menu-item
   (r/adapt-react-class (aget js/ReactBootstrap "MenuItem")))
+
+(defn get-el-width
+  [el]
+  (:width (d/bounding-client-rect el)))
+
+(defn get-el-height
+  [el]
+  (:height (d/bounding-client-rect el)))
