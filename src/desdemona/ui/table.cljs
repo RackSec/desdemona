@@ -56,33 +56,35 @@
         table-sticky (sel1 :#table-sticky)
         sticky-headers (sel [:.table-sticky :th])
         table-headers (sel [:.table-sorted :th])
-        page-header-height (get-el-height (sel1 :#page-nav))
-        page-header-margin-bot (d/px (sel1 :#page-nav) :margin-bottom)
+        page-nav (sel1 :#page-nav)
         page-scroll-y (.-pageYOffset js/window)]
-    ;set sticky-table width
-    (d/set-style! table-sticky
-                  :width
-                  (str (get-el-width table) "px"))
-    ;set table-headers widths
-    (doseq [[sticky-th table-th] (map vector
-                                      sticky-headers
-                                      table-headers)]
-      (d/set-style! sticky-th
+    (when (pos? (count sticky-headers))
+      ;set sticky-table width
+      (d/set-style! table-sticky
                     :width
-                    (str (get-el-width table-th) "px")))
-    ;set top position
-    (d/set-style! table-sticky
-                  :top
-                  (str (- page-scroll-y
-                          page-header-height
-                          page-header-margin-bot)
-                       "px"))
-    ;recur
-    (.requestAnimationFrame js/window set-sticky-table-widths)))
+                    (str (get-el-width table) "px"))
+        ;set table-headers widths
+      (doseq [[sticky-th table-th] (map vector
+                                        sticky-headers
+                                        table-headers)]
+        (d/set-style! sticky-th
+                      :width
+                      (str (get-el-width table-th) "px")))
+        ;set top position
+      (d/set-style! table-sticky
+                    :top
+                    (str (- page-scroll-y
+                            (get-el-height page-nav)
+                            (d/px page-nav :margin-bottom))
+                         "px"))
+      (.requestAnimationFrame js/window set-sticky-table-widths))))
 
 (def sticky-header-component
   (with-meta sticky-table-header
-    {:component-did-mount #(set-sticky-table-widths)}))
+    {:component-did-mount (fn [this]
+                            (.requestAnimationFrame
+                             js/window
+                             set-sticky-table-widths))}))
 
 (defn table-component
   []
