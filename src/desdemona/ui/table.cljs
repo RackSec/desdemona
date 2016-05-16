@@ -34,25 +34,6 @@
                    :on-click #(session/update! session-entry toggle-key k)}
                (wd/describe-key k)]]))]))
 
-(defn sticky-table-header
-  "Repeats sorted-table headers for headers affix showing up on scroll."
-  [ks]
-  (let [state-deref @session/state]
-    [:table {:class "table table-sticky"
-             :id "table-sticky"}
-     [:thead
-      [:tr
-       (map-indexed
-        (fn [i k]
-          ^{:key (wd/describe-key k)}
-          [:th {:class (when (= k (sort-key-id state-deref))
-                         (name (sort-order-id state-deref)))
-                :on-click (fn []
-                            (let [ths (sel [:.table-sorted :th])]
-                              (.click (nth ths i))))}
-           (wd/describe-key k)])
-        ks)]]]))
-
 (defn set-sticky-table-widths
   "Sets table/ths widths on sticky-table to match those of sorted-table."
   []
@@ -85,6 +66,25 @@
                             (d/px page-nav :margin-bottom))
                          "px"))
       (.requestAnimationFrame js/window set-sticky-table-widths))))
+
+(defn sticky-table-header
+  "Repeats sorted-table headers for headers affix showing up on scroll."
+  [ks]
+  (let [state-deref @session/state]
+    [:table {:class "table table-sticky"
+             :id "table-sticky"}
+     [:thead
+      [:tr
+       (map-indexed
+        (fn [i k]
+          ^{:key (wd/describe-key k)}
+          [:th {:class (when (= k (sort-key-id state-deref))
+                         (name (sort-order-id state-deref)))
+                :on-click (fn []
+                            (let [ths (sel [:.table-sorted :th])]
+                              (.click (nth ths i))))}
+           (wd/describe-key k)])
+        ks)]]]))
 
 (def sticky-header-component
   (with-meta sticky-table-header
