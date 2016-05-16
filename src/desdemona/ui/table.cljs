@@ -1,7 +1,8 @@
 (ns desdemona.ui.table
   (:require [wilson.dom :as wd]
             [reagent.session :as session]
-            [dommy.core :as d :refer-macros [sel sel1]]))
+            [dommy.core :as d :refer-macros [sel sel1]]
+            [desdemona.ui.dom :refer [get-el-height get-el-width]]))
 
 (def sort-order-id :table-sort-order)
 (def sort-key-id :table-sort-key)
@@ -19,7 +20,8 @@
   (let [state-deref @session/state
         active? #(some #{%} (session-entry state-deref))
         toggler-class (str "columns-toggler drawer drawer--left"
-                           (when (:columns-toggler-open? state-deref) " open"))]
+                           (when (:columns-toggler-open? state-deref)
+                             " open"))]
     [:div {:class toggler-class}
      [:button {:class "drawer-toggler btn brad-0"
                :on-click
