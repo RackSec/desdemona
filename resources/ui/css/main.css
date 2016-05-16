@@ -5667,7 +5667,9 @@ tbody.collapse.in {
   left: 0;
   right: 0;
   background: #373942;
-  color: #fff; }
+  color: #fff;
+  transition: all .4s;
+  opacity: 0; }
   .table-sticky thead > tr > th {
     padding-top: 0;
     padding-bottom: 0;

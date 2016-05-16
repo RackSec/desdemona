@@ -59,18 +59,21 @@
         page-nav (sel1 :#page-nav)
         page-scroll-y (.-pageYOffset js/window)]
     (when (pos? (count sticky-headers))
+      ; change opacity
+      (if (> page-scroll-y (+ (get-el-height page-nav) 50))
+        (d/set-style! table-sticky :opacity 1)
+        (d/set-style! table-sticky :opacity 0))
       ;set sticky-table width
       (d/set-style! table-sticky
-                    :width
-                    (str (get-el-width table) "px"))
-        ;set table-headers widths
+                    :width (str (get-el-width table) "px"))
+      ;set table-headers widths
       (doseq [[sticky-th table-th] (map vector
                                         sticky-headers
                                         table-headers)]
         (d/set-style! sticky-th
                       :width
                       (str (get-el-width table-th) "px")))
-        ;set top position
+      ;set top position
       (d/set-style! table-sticky
                     :top
                     (str (- page-scroll-y
