@@ -42,7 +42,7 @@
 }
 
 // sticky-header showing up on scroll
-.table-sticky {
+.table.table-sticky {
   table-layout: fixed;
   position: absolute;
   top: 0;
@@ -50,12 +50,28 @@
   right: 0;
   background: $grey;
   color: $white;
-  transition: all .4s;
+  transition: all .2s;
   opacity: 0;
 
   thead > tr > th {
     padding-top: 0;
     padding-bottom: 0;
     font-size: 12px;
+  }
+
+  th:before {
+    border-bottom-color: rgba($white, .4);
+  }
+
+  th:after {
+    border-top-color: rgba($white, .4);
+  }
+
+  .asc:before {
+    border-bottom-color: $white;
+  }
+
+  .desc:after {
+    border-top-color: $white;
   }
 }

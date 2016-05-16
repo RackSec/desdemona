@@ -5660,7 +5660,7 @@ tbody.collapse.in {
   .table-sorted .table .desc:after {
     border-top-color: #111; }
 
-.table-sticky {
+.table.table-sticky {
   table-layout: fixed;
   position: absolute;
   top: 0;
@@ -5668,12 +5668,20 @@ tbody.collapse.in {
   right: 0;
   background: #373942;
   color: #fff;
-  transition: all .4s;
+  transition: all .2s;
   opacity: 0; }
-  .table-sticky thead > tr > th {
+  .table.table-sticky thead > tr > th {
     padding-top: 0;
     padding-bottom: 0;
     font-size: 12px; }
+  .table.table-sticky th:before {
+    border-bottom-color: rgba(255, 255, 255, 0.4); }
+  .table.table-sticky th:after {
+    border-top-color: rgba(255, 255, 255, 0.4); }
+  .table.table-sticky .asc:before {
+    border-bottom-color: #fff; }
+  .table.table-sticky .desc:after {
+    border-top-color: #fff; }
 
 .columns-toggler {
   margin-top: -20px;

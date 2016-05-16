@@ -3,6 +3,9 @@
             [reagent.session :as session]
             [dommy.core :as d :refer-macros [sel sel1]]))
 
+(def sort-order-id :table-sort-order)
+(def sort-key-id :table-sort-key)
+
 (defn toggle-key
   "Adds/removes k in given coll and returns the coll."
   [coll k]
@@ -32,14 +35,21 @@
 (defn sticky-table-header
   "Repeats sorted-table headers for headers affix showing up on scroll."
   [ks]
-  [:table {:class "table table-sticky"
-           :id "table-sticky"}
-   [:thead
-    [:tr
-     (for [k ks]
-       ^{:key (wd/describe-key k)}
-       [:th
-        (wd/describe-key k)])]]])
+  (let [state-deref @session/state]
+    [:table {:class "table table-sticky"
+             :id "table-sticky"}
+     [:thead
+      [:tr
+       (map-indexed
+        (fn [i k]
+          ^{:key (wd/describe-key k)}
+          [:th {:class (when (= k (sort-key-id state-deref))
+                         (name (sort-order-id state-deref)))
+                :on-click (fn []
+                            (let [ths (sel [:.table-sorted :th])]
+                              (.click (nth ths i))))}
+           (wd/describe-key k)])
+        ks)]]]))
 
 (defn get-el-width
   [el]
@@ -103,5 +113,7 @@
       [wd/sorted-table
        (:table-toggled-ks state-deref)
        (:results state-deref)
-       session/state]
+       session/state
+       {:sort-order-id sort-order-id
+        :sort-key-id sort-key-id}]
       [sticky-header-component (:table-toggled-ks state-deref)]]]))
