@@ -1,4 +1,5 @@
 .table-sorted {
+  position: relative;
 
   .table > thead > tr > th {
     position: relative;
@@ -37,5 +38,22 @@
 
   .table .desc:after {
     border-top-color: #111;
+  }
+}
+
+// sticky-header showing up on scroll
+.table-sticky {
+  table-layout: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: $grey;
+  color: $white;
+
+  thead > tr > th {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 12px;
   }
 }
