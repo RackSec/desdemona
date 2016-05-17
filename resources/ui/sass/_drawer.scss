@@ -4,7 +4,7 @@
   top: 0;
   width: 240px;
   z-index: 10;
-  transition: all .2s ease-in-out;
+  transition: left .2s ease-in-out;
 
   &.drawer--left {
     left: -240px;
@@ -19,7 +19,7 @@
     left: 100%;
     padding: 0;
     width: 15px;
-    height: 15px;
+    height: 17px;
     top: 0;
 
     &:before {

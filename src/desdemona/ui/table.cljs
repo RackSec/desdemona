@@ -13,7 +13,18 @@
   ((if (contains? coll k)
      disj conj) coll k))
 
-(defn columns-toggler-component
+(defn make-toggler-affix
+  []
+  (let [toggler (sel1 :#columns-toggler)
+        page-nav (sel1 :#page-nav)
+        page-scroll-y (.-pageYOffset js/window)]
+    ((if (> page-scroll-y (get-el-height page-nav))
+       d/add-class!
+       d/remove-class!)
+     toggler "has-affix")
+    (.requestAnimationFrame js/window make-toggler-affix)))
+
+(defn columns-toggler
   "Component with a list of buttons with a click handler to toggle keys in
   given session-entry."
   [ks session-entry]
@@ -22,17 +33,26 @@
         toggler-class (str "columns-toggler drawer drawer--left"
                            (when (:columns-toggler-open? state-deref)
                              " open"))]
-    [:div {:class toggler-class}
-     [:button {:class "drawer-toggler btn brad-0"
-               :on-click
-               #(session/update! :columns-toggler-open? not)}]
-     [:h3.uppercase.font-medium.color-white.text-center "Toggle columns"]
-     (into [:ul.nav.nav-pills.nav-stacked.nav--light]
-           (for [k ks]
-             [:li {:class (when (active? k) "active")}
-              [:a {:href "#"
-                   :on-click #(session/update! session-entry toggle-key k)}
-               (wd/describe-key k)]]))]))
+    [:div {:class toggler-class
+           :id "columns-toggler"}
+     [:div {:class "toggler-body"}
+      [:button {:class "drawer-toggler btn brad-0"
+                :on-click
+                #(session/update! :columns-toggler-open? not)}]
+      [:h3.uppercase.font-medium.color-white.text-center "Toggle columns"]
+      (into [:ul.nav.nav-pills.nav-stacked.nav--light]
+            (for [k ks]
+              [:li {:class (when (active? k) "active")}
+               [:a {:href "#"
+                    :on-click #(session/update! session-entry toggle-key k)}
+                (wd/describe-key k)]]))]]))
+
+(def columns-toggler-component
+  (with-meta columns-toggler
+    {:component-did-mount (fn [this]
+                            (.requestAnimationFrame
+                             js/window
+                             make-toggler-affix))}))
 
 (defn set-sticky-table-widths
   "Sets table/ths widths on sticky-table to match those of sorted-table."

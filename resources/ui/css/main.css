@@ -5668,7 +5668,7 @@ tbody.collapse.in {
   right: 0;
   background: #373942;
   color: #fff;
-  transition: all .2s;
+  transition: opacity .3s;
   opacity: 0; }
   .table.table-sticky thead > tr > th {
     padding-top: 0;
@@ -5686,6 +5686,11 @@ tbody.collapse.in {
 .columns-toggler {
   margin-top: -20px;
   background: #373942; }
+  .columns-toggler.has-affix .toggler-body {
+    position: fixed; }
+  .columns-toggler .toggler-body {
+    top: 0;
+    width: 240px; }
   .columns-toggler h3 {
     padding-bottom: 6px; }
   .columns-toggler .drawer-toggler {
@@ -5708,7 +5713,7 @@ tbody.collapse.in {
   top: 0;
   width: 240px;
   z-index: 10;
-  transition: all .2s ease-in-out; }
+  transition: left .2s ease-in-out; }
   .drawer.drawer--left {
     left: -240px; }
   .drawer.drawer--left.open {
@@ -5718,7 +5723,7 @@ tbody.collapse.in {
     left: 100%;
     padding: 0;
     width: 15px;
-    height: 15px;
+    height: 17px;
     top: 0; }
     .drawer .drawer-toggler:before {
       content: "";
