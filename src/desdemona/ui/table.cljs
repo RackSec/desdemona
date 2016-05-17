@@ -18,11 +18,12 @@
   (let [toggler (sel1 :#columns-toggler)
         page-nav (sel1 :#page-nav)
         page-scroll-y (.-pageYOffset js/window)]
-    ((if (> page-scroll-y (get-el-height page-nav))
-       d/add-class!
-       d/remove-class!)
-     toggler "has-affix")
-    (.requestAnimationFrame js/window make-toggler-affix)))
+    (when toggler
+      ((if (> page-scroll-y (get-el-height page-nav))
+         d/add-class!
+         d/remove-class!)
+       toggler "has-affix")
+      (.requestAnimationFrame js/window make-toggler-affix))))
 
 (defn columns-toggler
   "Component with a list of buttons with a click handler to toggle keys in
