@@ -5673,7 +5673,8 @@ tbody.collapse.in {
   .table.table-sticky thead > tr > th {
     padding-top: 0;
     padding-bottom: 0;
-    font-size: 12px; }
+    font-size: 12px;
+    border-bottom: 0; }
   .table.table-sticky th:before {
     border-bottom-color: rgba(255, 255, 255, 0.4); }
   .table.table-sticky th:after {
