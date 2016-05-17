@@ -1,6 +1,7 @@
 (ns desdemona.ui.dom
   (:require [reagent.core :as r]
-            [cljsjs.react-bootstrap]))
+            [cljsjs.react-bootstrap]
+            [dommy.core :as d]))
 
 (def button
   (r/adapt-react-class (aget js/ReactBootstrap "Button")))
