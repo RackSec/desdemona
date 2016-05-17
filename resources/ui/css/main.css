@@ -5670,6 +5670,8 @@ tbody.collapse.in {
   color: #fff;
   transition: opacity .3s;
   opacity: 0; }
+  .table.table-sticky thead > tr {
+    height: 18px; }
   .table.table-sticky thead > tr > th {
     padding-top: 0;
     padding-bottom: 0;
@@ -5724,7 +5726,7 @@ tbody.collapse.in {
     left: 100%;
     padding: 0;
     width: 15px;
-    height: 17px;
+    height: 18px;
     top: 0; }
     .drawer .drawer-toggler:before {
       content: "";
