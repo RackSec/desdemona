@@ -2,7 +2,8 @@
   (:require [wilson.dom :as wd]
             [reagent.session :as session]
             [dommy.core :as d :refer-macros [sel sel1]]
-            [desdemona.ui.dom :refer [get-el-height get-el-width]]))
+            [desdemona.ui.dom :refer [get-el-height get-el-width]]
+            [reagent.core :as r]))
 
 (def sort-order-id :table-sort-order)
 (def sort-key-id :table-sort-key)
@@ -86,7 +87,7 @@
                             (get-el-height page-nav)
                             (d/px page-nav :margin-bottom))
                          "px"))
-      (.requestAnimationFrame js/window set-sticky-table-widths))))
+      (r/next-tick set-sticky-table-widths))))
 
 (defn sticky-table-header
   "Repeats sorted-table headers for headers affix showing up on scroll."
@@ -110,9 +111,7 @@
 (def sticky-header-component
   (with-meta sticky-table-header
     {:component-did-mount (fn [this]
-                            (.requestAnimationFrame
-                             js/window
-                             set-sticky-table-widths))}))
+                            (r/next-tick set-sticky-table-widths))}))
 
 (defn table-component
   []
