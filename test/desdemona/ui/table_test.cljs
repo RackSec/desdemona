@@ -5,7 +5,8 @@
    [reagent.core :as r]
    [reagent.session :as session]
    [cljs.core.match :refer-macros [match]]
-   [dommy.core :as d :refer-macros [sel sel1]]))
+   [dommy.core :as d :refer-macros [sel sel1]]
+   [wilson.dom :as wd]))
 
 (def test-state {:results [{:a 1 :b 2}
                            {:a 4 :b 2}]
@@ -50,6 +51,21 @@
           (is (some #{:a} (:table-toggled-ks @session/state)))
           (.click first-link)
           (is (nil? (some #{:a} (:table-toggled-ks @session/state)))))))))
+
+(deftest sticky-header-component-test
+  []
+  (let [ks (:all-table-ks test-state)
+        component (table/sticky-header-component ks)
+        [table-class table-id ths] (match component
+                                     [:table {:class table-class
+                                              :id table-id}
+                                      [:thead
+                                       [:tr ths]]]
+                                     [table-class table-id ths])]
+    (is (= table-class "table table-sticky"))
+    (is (= table-id "table-sticky"))
+    (doseq [[[_ _ desc] k] (map vector ths ks)]
+      (is (= desc (wd/describe-key k))))))
 
 (deftest table-component-test
   (let [results-count (count (:results test-state))

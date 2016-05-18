@@ -28,7 +28,8 @@
 
 (deftest nav-test
   (is (= (n/nav)
-         [:div.navbar.navbar-default.navbar-double-row
+         [:div {:class "navbar navbar-default navbar-double-row"
+                :id "page-nav"}
           [:div.container-fluid.pt-30.pb-30
            [:div.navbar-header
             [:a.navbar-brand.brand-logo {:href "#"}
