@@ -5688,7 +5688,8 @@ tbody.collapse.in {
 
 .columns-toggler {
   margin-top: -20px;
-  background: #373942; }
+  background: #373942;
+  min-height: calc(100vh - 53px); }
   .columns-toggler.has-affix .toggler-body {
     position: fixed; }
   .columns-toggler .toggler-body {

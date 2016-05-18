@@ -1,6 +1,8 @@
 .columns-toggler {
   margin-top: -20px;
   background: $grey;
+    min-height: calc(100vh - 53px);
+
 
   &.has-affix .toggler-body{
     position: fixed;
