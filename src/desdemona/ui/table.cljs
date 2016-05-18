@@ -24,7 +24,7 @@
          d/add-class!
          d/remove-class!)
        toggler "has-affix")
-      (.requestAnimationFrame js/window make-toggler-affix))))
+      (r/next-tick make-toggler-affix))))
 
 (defn columns-toggler
   "Component with a list of buttons with a click handler to toggle keys in
@@ -51,10 +51,7 @@
 
 (def columns-toggler-component
   (with-meta columns-toggler
-    {:component-did-mount (fn [this]
-                            (.requestAnimationFrame
-                             js/window
-                             make-toggler-affix))}))
+    {:component-did-mount #(r/next-tick make-toggler-affix)}))
 
 (defn set-sticky-table-widths
   "Sets table/ths widths on sticky-table to match those of sorted-table."
@@ -110,8 +107,7 @@
 
 (def sticky-header-component
   (with-meta sticky-table-header
-    {:component-did-mount (fn [this]
-                            (r/next-tick set-sticky-table-widths))}))
+    {:component-did-mount #(r/next-tick set-sticky-table-widths)}))
 
 (defn table-component
   []
