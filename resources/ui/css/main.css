@@ -5694,6 +5694,9 @@ tbody.collapse.in {
   .columns-toggler .toggler-body {
     top: 0;
     width: 240px; }
+    .columns-toggler .toggler-body ul {
+      max-height: calc(100vh - 53px);
+      overflow-y: auto; }
   .columns-toggler h3 {
     padding-bottom: 6px; }
   .columns-toggler .drawer-toggler {

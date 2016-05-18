@@ -9,6 +9,11 @@
   .toggler-body {
     top: 0;
     width: 240px;
+
+    ul {
+      max-height: calc(100vh - 53px);
+      overflow-y: auto;
+    }
   }
 
   h3 {
