@@ -31,7 +31,8 @@
   given session-entry."
   [ks session-entry]
   (let [state-deref @session/state
-        active? #(some #{%} (session-entry state-deref))
+        toggled-cols (session-entry state-deref)
+        active? #(some #{%} toggled-cols)
         toggler-class (str "columns-toggler drawer drawer--left"
                            (when (:columns-toggler-open? state-deref)
                              " open"))]
@@ -46,7 +47,8 @@
             (for [k ks]
               [:li {:class (when (active? k) "active")}
                [:a {:href "#"
-                    :on-click #(session/update! session-entry toggle-key k)}
+                    :on-click #(when (> (count toggled-cols) 1)
+                                (session/update! session-entry toggle-key k))}
                 (wd/describe-key k)]]))]]))
 
 (def columns-toggler-component
