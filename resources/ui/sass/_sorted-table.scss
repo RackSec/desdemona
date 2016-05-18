@@ -50,8 +50,12 @@
   right: 0;
   background: $grey;
   color: $white;
-  transition: all .2s;
+  transition: opacity .3s;
   opacity: 0;
+
+  thead > tr {
+    height: 18px;
+  }
 
   thead > tr > th {
     padding-top: 0;

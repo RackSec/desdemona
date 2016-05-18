@@ -2,6 +2,20 @@
   margin-top: -20px;
   background: $grey;
 
+  &.has-affix .toggler-body{
+    position: fixed;
+  }
+
+  .toggler-body {
+    top: 0;
+    width: 240px;
+
+    ul {
+      max-height: calc(100vh - 53px);
+      overflow-y: auto;
+    }
+  }
+
   h3 {
     padding-bottom: 6px; // align content below with table
   }
@@ -12,6 +26,5 @@
 
   .nav.nav--light > li.active > a {
     background: darken($grey, 2%);
-
   }
 }
