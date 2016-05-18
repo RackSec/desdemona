@@ -48,7 +48,7 @@
               [:li {:class (when (active? k) "active")}
                [:a {:href "#"
                     :on-click #(when (> (count toggled-cols) 1)
-                                (session/update! session-entry toggle-key k))}
+                                 (session/update! session-entry toggle-key k))}
                 (wd/describe-key k)]]))]]))
 
 (def columns-toggler-component
