@@ -12,6 +12,12 @@
 (def menu-item
   (r/adapt-react-class (aget js/ReactBootstrap "MenuItem")))
 
+(def overlay-trigger
+  (r/adapt-react-class (aget js/ReactBootstrap "OverlayTrigger")))
+
+(def tooltip
+  (r/adapt-react-class (aget js/ReactBootstrap "Tooltip")))
+
 (defn get-el-width
   [el]
   (:width (d/bounding-client-rect el)))
