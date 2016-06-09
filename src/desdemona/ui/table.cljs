@@ -2,7 +2,7 @@
   (:require [wilson.dom :as wd]
             [reagent.session :as session]
             [dommy.core :as d :refer-macros [sel sel1]]
-            [desdemona.ui.dom :refer [get-el-height get-el-width]]
+            [desdemona.ui.dom :as dd :refer [get-el-height get-el-width]]
             [reagent.core :as r]))
 
 (def sort-order-id :table-sort-order)
@@ -39,9 +39,13 @@
     [:div {:class toggler-class
            :id "columns-toggler"}
      [:div {:class "toggler-body"}
-      [:button {:class "drawer-toggler btn brad-0"
-                :on-click
-                #(session/update! :columns-toggler-open? not)}]
+      [dd/overlay-trigger {:placement :bottom
+                           :overlay (r/as-component
+                                     [dd/tooltip {:id "cols-toggler-trigger"}
+                                      "Toggle columns"])}
+       [:button {:class "drawer-toggler btn brad-0"
+                 :on-click
+                 #(session/update! :columns-toggler-open? not)}]]
       [:h3.uppercase.font-medium.color-white.text-center "Toggle columns"]
       (into [:ul.nav.nav-pills.nav-stacked.nav--light]
             (for [k ks]
